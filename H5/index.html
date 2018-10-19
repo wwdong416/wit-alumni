@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
     <meta name="keywords" content="校友录，校友会,手机校友录，慧脑校友录">
     <meta name="description" content="慧脑校友录,手机校友录，校友会">
-    <link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed" />
+    <link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed"/>
     <link rel="stylesheet" type="text/css" href="../css/witcs0.css">
     <link rel="stylesheet" type="text/css" href="../css/alumni.css">
     <link rel="stylesheet" type="text/css" href="../css/witcs.css">
@@ -15,135 +15,148 @@
 </head>
 
 <body class="ofa bgbody" onload="loadend()" onresize="autocss()">
-    <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
-    <div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
-        <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick="" />
-        <img data-src='../images/icon/setting.png' class="FR ICON PD10" />
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
+    <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
+    <img data-src='../images/icon/setting.png' class="FR ICON P05M"/>
+</div>
+<div class="W11 AC ofh MTH">
+    <img data-src="../images/lantian.png" class="W11">
+</div>
+<img data-src="../images/caodi.png" class="W11  AC fix indexN bottom0">
+<!-- 登录注册开始 -->
+<div id="form" class="none MT2H">
+    <input id="userphone" type="text" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入账号"/>
+    <div class="FL MLT BTN bgc73 alpha8" onclick="">注册</div>
+    <input id="userpassword" type="password" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入密码"/>
+    <div class="FL MLT BTN bgc16" onClick="login();">登录</div>
+</div>
+<!-- 登录注册结束 -->
+<div class="W11 pb150 AC" id="mymsg">
+    <div class="W11 AC F3">
+        <img id="myImg" src="../images/port03.jpg" class="B6M radius PT1M" onclick="_fun.show('mydetails');">
+        <!-- <div class="F4 LH2" onclick="location.href='setcard.html'">我的信息</div> -->
     </div>
-    <div class="W11 AC ofh">
-        <img data-src="../images/lantian.png" class="bgpic ">
-    </div>
-    <!-- 登录注册开始 -->
-    <div id="form" class="none MT8">
-        <input id="userphone" type="text" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入账号" />
-        <div class="FL MLT BTN bgc73 alpha8" onclick="">注册</div>
-        <input id="userpassword" type="password" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入密码" />
-        <div class="FL MLT BTN bgc16" onClick="login();">登录</div>
-    </div>
-    <!-- 登录注册结束 -->
-    <div class="W11 pb150 AC" id="mymsg">
-        <div class="W11 AC F3">
-            <img id="myImg" src="../images/port03.jpg" class="B6M radius PT1M" onclick="_fun.show('mydetails');">
-            <!-- <div class="F4 LH2" onclick="location.href='setcard.html'">我的信息</div> -->
+    <!-- 个人信息开始 -->
+    <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
+        <div class="index99 fix top0 H W11 AC ffHT color1">
+            <img data-src='../images/icon/back.png' class="FL B4M H4M PD10" onclick="location.href='index.html'"/>
         </div>
-        <!-- 个人信息开始 -->
-        <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
-            <div class="index99 fix top0 H W11 AC ffHT color1">
-                <img data-src='../images/icon/back.png' class="FL B4M H4M PD10" onclick="location.href='index.html'" />
+        <div class="W11 ">
+            <img src="../images/myclass.jpg" alt="" class="W11">
+        </div>
+        <div id="notice" class=" W11 bgcW F1 H AC">
+            <span class="bgc33 rad05  P05  F1">公告</span>
+            <span class="color520 ML  F1">本校友录系统将让您与校友之间分享昔日美好的时光</span>
+        </div>
+        <div id="myinfor" class=" W11">
+            <div class=" W11 TEXT bgcW MT05">
+                <div class="FL W31 bold PT1M PB1M ">个人信息</div>
+                <div class="clear"></div>
             </div>
-            <div class="W11 ">
-                <img src="../images/myclass.jpg" alt="" class="W11">
-            </div>
-            <div id="notice" class=" W11 bgcW F1 H AC">
-                <span class="bgc33 rad05  P05  F1">公告</span>
-                <span class="color520 ML  F1">本校友录系统将让您与校友之间分享昔日美好的时光</span>
-            </div>
-            <div id="myinfor" class=" W11">
-                <div class=" W11 TEXT bgcW MT05">
-                    <div class="FL W31 bold PT1M PB1M ">个人信息</div>
+            <div id="mymsg1" class=" bgcW ">
+                <div class="PT1M bordB PB1M TEXT">
+                    <div class="FL W31 ">姓名</div>
+                    <div id="myName" class="FR W32 AR ">loding...</div>
                     <div class="clear"></div>
                 </div>
-                <div id="mymsg" class=" bgcW ">
-                    <div class="PT1M bordB PB1M TEXT">
-                        <div class="FL W31 ">姓名</div>
-                        <div id="myName" class="FR W32 AR ">loding...</div>
-                        <div class="clear"></div>
-                    </div>
                 <!--     <div class="PT1M PB1M bordB TEXT">
                         <div class="FL W31 ">班级数量</div>
                         <div id="classNumber" class="FR W32 AR ">3</div>
                         <div class="clear"></div>
                     </div> -->
-                    <div class="PT1M PB1M bordB TEXT">
-                        <div class="FL W31 ">已加班级</div>
-                        <div class="FR  AR ">
-                            <!-- <div class=""> -->
-                            <span id="myClass" class="PR1 MR">loading...</span>
-                            <span class="bgc4 cur_p" id="moreclass" onClick="Show_Hidden(myAllClass)">&nbsp;&gt;&nbsp;</span>
-                            <!-- </div> -->
-                            <div id="myAllClass" class="none MT animation_sh"></div>
-                        </div>
-                        <div class="clear"></div>
+                <div class="PT1M PB1M bordB TEXT">
+                    <div class="FL W31 ">已加班级</div>
+                    <div class="FR  AR ">
+                        <!-- <div class=""> -->
+                        <span id="myClass1" class="PR1 MR">loading...</span>
+                        <span class="bgc4 cur_p" id="moreclass"
+                              onClick="Show_Hidden(myAllClass)">&nbsp;&gt;&nbsp;</span>
+                        <!-- </div> -->
+                        <div id="myAllClass" class="none MT animation_sh"></div>
                     </div>
+                    <div class="clear"></div>
                 </div>
             </div>
-            <!--<div id="findclass" class="P2 W11 flexbox bordB PT1M PB1M">-->
-                <!--<div class=" W41 bgc118 radius  pic44">-->
-                <!--</div>-->
-                <!--<ul class="W21  ffHT ML">-->
-                    <!--<li class=" F5 bold">查找班级</li>-->
-                    <!--<li class=" F1">您有3个好友关注的班级</li>-->
-                <!--</ul>-->
-                <!--<div class="W41 PL4 AR PR1">-->
-                    <!--<span class="MR bgc14 radius">&nbsp;3&nbsp;</span><span>&gt;</span>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="notify" class="P2 W11 flexbox PT1M PB1M">-->
-                <!--<div class=" W41 bgc24 radius  pic44">-->
-                <!--</div>-->
-                <!--<ul class="W21  ffHT ML">-->
-                    <!--<li class=" F5 bold">消息通知</li>-->
-                    <!--<li class=" F1">您有2条未读消息</li>-->
-                <!--</ul>-->
-                <!--<div class="W41 PL4 AR PR1">-->
-                    <!--<span class="MR bgc14 radius">&nbsp;2&nbsp;</span><span>&gt;</span>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
-        <!-- 个人信息结束 -->
-        <div id="class">
-            <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
-            <ul id="myclass" class="clear ffHT color1"></ul>
-            <a onclick="_fun.show('d_add');">
-                <li class="W32 AC MA H2M MT add">
-                </li>
-            </a>
-        </div>
-        <div id="focus">
-            <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
-            <ul id="myfocus" class="clear ffHT color1"></ul>
-            <a>
-                <li class="W32 AC MA H2M MT add">
-                </li>
-            </a>
-        </div>
+        <!--<div id="findclass" class="P2 W11 flexbox bordB PT1M PB1M">-->
+        <!--<div class=" W41 bgc118 radius  pic44">-->
+        <!--</div>-->
+        <!--<ul class="W21  ffHT ML">-->
+        <!--<li class=" F5 bold">查找班级</li>-->
+        <!--<li class=" F1">您有3个好友关注的班级</li>-->
+        <!--</ul>-->
+        <!--<div class="W41 PL4 AR PR1">-->
+        <!--<span class="MR bgc14 radius">&nbsp;3&nbsp;</span><span>&gt;</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div id="notify" class="P2 W11 flexbox PT1M PB1M">-->
+        <!--<div class=" W41 bgc24 radius  pic44">-->
+        <!--</div>-->
+        <!--<ul class="W21  ffHT ML">-->
+        <!--<li class=" F5 bold">消息通知</li>-->
+        <!--<li class=" F1">您有2条未读消息</li>-->
+        <!--</ul>-->
+        <!--<div class="W41 PL4 AR PR1">-->
+        <!--<span class="MR bgc14 radius">&nbsp;2&nbsp;</span><span>&gt;</span>-->
+        <!--</div>-->
+        <!--</div>-->
     </div>
-    <div class="W11 AC fix indexN bottom0 ofh">
-        <img data-src="../images/caodi.png" class="bgpic ">
+    <!-- 个人信息结束 -->
+    <div id="class">
+        <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
+        <ul id="myclass" class="clear ffHT color1"></ul>
+        <a onclick="_fun.show('d_add');">
+            <img src="../images/icon/add.png" alt="" class="AC MA H2M MT">
+        </a>
     </div>
-    <!-- 添加班级开始 -->
-    <div id="d_add" class="none W11 CH fix index100 top0 bgca8b">
-        <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
-        <li class="relative W11 MT2H  rad05e LSP">
-            <input name="industrycode" data-id="industry_code" placeholder="学校类别" class="clear FL MLT B9M H AL bgc107 bord_select" readonly="" data-t="radio" data-finp="clearschoolname" data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value="" />
-            <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly="" class="FL MLT C12MT2 H ALP bgc10 bord0 bord_select" value="" title="" onmousedown="creat_addr(3,0);" />
-            <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text" class="FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined" data-uid="undefined" readonly/>
-            <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
-            <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly class="FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');" />
-            <div class="FL MT B1M H AC color1">-</div>
-            <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly class="FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');" />
-            <input name="classdate" placeholder="入学年级" readonly class="FL MLT B9M H AC border bord_select" onclick="wit_date.init(this,0, '0');" />
-            <input name="group" data-id="class_name" placeholder="输入班级" class="FL MLT C15M H ALP bord_select" value="" />
-            <div class="FR B3M MT H">班</div>
-            <input name="role" data-id="position_name" placeholder="职务" class="FL MLT A2T4 H ALP" value="" readonly="" data-t="check" data-s="学生,班长,副班长,学习委员,文娱委员,劳动委员,体育委员,纪律委员,课代表" />
-            <input name="" data-id="relation_tag" maxlength="6" type="text" class="FL MLT A2T4 H F4 bord0 ALP " placeholder="关联关系分类" data-t="clear" value="" />
-            <div class="FL MLNH B4M H ofa alpha MT none" title="quick"><img title="del" src="../img/btn/del.png" class="FL B4M H"></div>
-            <textarea data-id="honors" class="FL MLT A1T2 HN4M F4 ALP bord0" placeholder="请输入成绩和荣誉"></textarea>
-            <div name="submit" class="FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
-            <div name="submit" class="FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">添加</div>
-        </li>
+    <div id="focus">
+        <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
+        <ul id="myfocus" class="clear ffHT color1"></ul>
+        <a>
+            <img src="../images/icon/add.png" alt="" class="AC MA H2M MT">
+
+        </a>
     </div>
-    <!-- 添加班级结束 -->
+</div>
+
+
+
+<!-- 添加班级开始 -->
+<div id="d_add" class="none W11 CH fix index100 top0 bgca8b">
+    <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
+    <li class="relative W11 MT2H  rad05e LSP">
+        <input name="industrycode" data-id="industry_code" placeholder="学校类别"
+               class="clear FL MLT B9M H AL bgc107 bord_select" readonly="" data-t="radio" data-finp="clearschoolname"
+               data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
+        <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
+               class="FL MLT C12MT2 H ALP bgc10 bord0 bord_select" value="" title="" onmousedown="creat_addr(3,0);"/>
+        <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
+               class="FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
+               data-uid="undefined" readonly/>
+        <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
+        <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
+               class="FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+        <div class="FL MT B1M H AC color1">-</div>
+        <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
+               class="FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+        <input name="classdate" placeholder="入学年级" readonly class="FL MLT B9M H AC border bord_select"
+               onclick="wit_date.init(this,0, '0');"/>
+        <input name="group" data-id="class_name" placeholder="输入班级" class="FL MLT C15M H ALP bord_select" value=""/>
+        <div class="FR B3M MT H">班</div>
+        <input name="role" data-id="position_name" placeholder="职务" class="FL MLT A2T4 H ALP" value="" readonly=""
+               data-t="check" data-s="学生,班长,副班长,学习委员,文娱委员,劳动委员,体育委员,纪律委员,课代表"/>
+        <input name="" data-id="relation_tag" maxlength="6" type="text" class="FL MLT A2T4 H F4 bord0 ALP "
+               placeholder="关联关系分类" data-t="clear" value=""/>
+        <div class="FL MLNH B4M H ofa alpha MT none" title="quick"><img title="del" src="../img/btn/del.png"
+                                                                        class="FL B4M H"></div>
+        <textarea data-id="honors" class="FL MLT A1T2 HN4M F4 ALP bord0" placeholder="请输入成绩和荣誉"></textarea>
+        <div name="submit" class="FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
+        <div name="submit" class="FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">添加</div>
+    </li>
+</div>
+<!-- 添加班级结束 -->
+
 </body>
 
 </html>
@@ -154,411 +167,315 @@
 <script src="../js/witjsdate.js"></script>
 <script src="../js/witjsaddr.js"></script>
 <script type="text/javascript">
-//生成目录
+    //生成目录
 
 
-function C_schoolcata(d, c) {
-    var cont = "";
-    try {
-        for (var i = 0; i < c.length; i++) { cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="location.href=&quot;w1.html?id=' + i + '&quot;)" >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>' }
-        document.getElementById(d).innerHTML = cont;
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-function C_mydetails(c) {
-    var cont = "";
-    var cont0 = "";
-    try {
-        for (var i = 1; i < c.length; i++) {
-            cont += '<p>' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</p>'
-        }
-        cont0 += c[0].unit_name + " " + c[0].dept + " " + getCut("-", 0, c[0].date_end) + "届" + " " + getCut("||", 1, c[0].class_name) + '</li>'
-        document.getElementById("myClass").innerHTML = cont0;
-        document.getElementById("myAllClass").innerHTML = cont;
-    } catch (e) {}
-}
-
-function loadend() {
-autocss();
-    loadimg();
-    postmessage({ functionname: "getuser", callback: "callback" });
-
-}
-/**
- * [Show_Hidden 点击控制div显示与隐藏]
- * @param {[id]} obj [需要显示隐藏div的id]
- */
-function Show_Hidden(obj) {
-    if (obj.style.display == "block") {
-        obj.style.display = 'none';
-
-    } else {
-        obj.style.display = 'block';
-
-    }
-}
-
-/**
- * [getCut 截取字符串]
- * @param   reg [截取的字符]
- * @param   num [获取的第几位的字符]
- * @param   msg [字符串]
- * @return      [返回截取后第num个的字符]
- */
-function getCut(reg, num, msg) {
-    var name = msg.split(reg);
-    // console.log(name[num]);
-    return name[num];
-}
-/**
- * [callback 获取用户所有信息]
- */
-function callback(msg) {
-    console.log(msg);
-    if (msg.result < 0) {
-
-        _fun.show('form');
-        _fun.hide('mymsg');
-    } else {
-        var info = msg.perinfo;
-        //获取班级信息
-        var myclass = info.perexpeducationjson;
-        console.log(myclass);
-        myName.innerHTML = info.perobjectjson.per_full_name;
-        C_schoolcata("myclass", myclass);
-        C_mydetails(myclass);
-        // var myPic = info.perobjectjson.per_portrait;
-        // myImg.src = myPic;
-        // console.log(myPic);
-        _wit.postmessage({ functionname: 'getuserinfo', callback: 'init' });
-    }
-
-}
-
-"use strict";
-autocss();
-var _userguid, _token;
-
-function init(msg) {
-    console.log(msg);
-    if (msg.result >= 0) {
-        var info = msg.message;
-        _userguid = info.user_guid;
-        _token = info.token;
-        _wit.event.input_UI("s_select", function(i, v, d) {
-            console.log(i, v, d);
-            //            if (i < 0) return;
-            //            else if()
-        });
-        _wit.event.input_limit();
-    } else {
-        _fun.toAlert("用户非法，请重新登录！");
-    }
-}
-
-function addEdu(pd) {
-
-    var o = {
-        adm_div_code: "||",
-        class_name: "||",
-        date_end: "",
-        date_start: "",
-        depart: "",
-        dept: "",
-        honors: "",
-        industry_code: "",
-        position_name: "",
-        relation_tag: "",
-        unit_name: "",
-        per_user_guid: _userguid,
-        exptype: 1
-    };
-    // fill(pd, o);
-    refill(pd, o); //填充数据
-    console.log(o);
-    if (o.adm_div_code === "||" || o.class_name === "||" || o.date_start === "" || o.date_end === "" || o.industry_code === "" || o.unit_name === "") {
-        _fun.toAlert("请将数据填写完整再添加！");
-    } else {
-        _wit.postmessage({
-            functionname: "addExp",
-            witparams: JSON.stringify({
-                type: 0,
-                json: o
-            }),
-            callbackparam: JSON.stringify({
-                type: 0,
-                json: o
-            }),
-            callback: "cbExp"
-        });
-    }
-
-}
-
-function fill(pd, o) {
-    var dl = pd.querySelectorAll("input,textarea"),
-        dc = pd.querySelector("input[name='admdivcode']"),
-        dcl = pd.querySelector("[name=group]");
-    console.log(dl);
-    Array.prototype.forEach.call(dl, function(v) {
-        o[v.dataset.id] = v.dataset.d === "title" ? v.title : v.value.trim();
-    });
-    o.class_name = dcl.title + "||" + dcl.value;
-    o.adm_div_code += "||" + dc.value;
-    delete o.undefined;
-    return o;
-} //填充数据
-function refill(pd, o) {
-    var dl = pd.querySelectorAll("input,textarea"),
-        dc = pd.querySelector("input[name='admdivcode']"),
-        dcl = pd.querySelector("[name=group]");
-    Array.prototype.forEach.call(dl, function(v) {
-        for (var i in o) {
-            // console.log(i+"  "+v.dataset.id);
-            if (i === v.dataset.id) {
-                o[i] = v.dataset.d === "title" ? v.title : v.value.trim();
+    function C_schoolcata(d, c) {
+        var cont = "";
+        try {
+            for (var i = 0; i < c.length; i++) {
+                cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="location.href=&quot;w1.html?id=' + i + '&quot;)" >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
             }
+            document.getElementById(d).innerHTML = cont;
+        } catch (e) {
+            console.log(e);
         }
-    });
-    o.class_name = dcl.title + "||" + dcl.value;
-    o.adm_div_code += "||" + dc.value;
-    return o;
-} //填充数据
+    }
 
-
-function cbExp(msg, param) {
-    console.log("正在添加");
-
-    var j = msg,
-        p = JSON.parse(param);
-    if (j && j.result >= 0) {
-        //其他端免回调
-    } else {
-        var o = p.json;
-        console.log(o);
-        console.log(p.type);
-        //            return;
-        p.type === 0 && externalfun.createexp(function(msg) {
-
-            console.log(msg);
-            _fun.toLoading(-1);
-            var j = JSON.parse(msg);
-            if (j.result >= 0) {
-                _fun.toAlert("添加经历成功！");
-                document.location.reload(); //当前页面 
-            } else {
-                _fun.toAlert(j.message + ":请填写完整信息！", 1500);
+    function C_mydetails(c) {
+        var cont = "";
+        var cont0 = "";
+        try {
+            for (var i = 1; i < c.length; i++) {
+                cont += '<p>' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</p>'
             }
-        }, JSON.stringify(o), 0);
+            cont0 += c[0].unit_name + " " + c[0].dept + " " + getCut("-", 0, c[0].date_end) + "届" + " " + getCut("||", 1, c[0].class_name) + '</li>'
+            document.getElementById("myClass").innerHTML = cont0;
+            document.getElementById("myAllClass").innerHTML = cont;
+        } catch (e) {
+        }
     }
-}
 
-/***
- *  云录关联（经历）
- */
-function toSchool() {
-    var t = event.target,
-        p = t.parentNode,
-        dt = p.querySelector("[name=industrycode]"),
-        da = p.querySelector("[name=admdivcode]"),
-        type = dt.title,
-        area = da.title;
-    if (!type || type < 0) {
-        _fun.toAlert("请选择学校类别！");
-        dt.click();
-        return;
+    function loadend() {
+        autocss();
+        loadimg();
+        postmessage({functionname: "getuser", callback: "callback"});
+
     }
-    if (!area) {
-        _fun.toAlert("请选择学校所在地址！");
-        da.click();
-        return;
+
+    /**
+     * [Show_Hidden 点击控制div显示与隐藏]
+     * @param {[id]} obj [需要显示隐藏div的id]
+     */
+    function Show_Hidden(obj) {
+        if (obj.style.display == "block") {
+            obj.style.display = 'none';
+
+        } else {
+            obj.style.display = 'block';
+
+        }
     }
-    var para = {
-        token: _token,
-        userguid: _userguid,
-        sctype: type,
-        adnum: area
-    };
-    console.log(para);
-    _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/school/retrieveschool.do", true, para, function(msg) {
-        var j = JSON.parse(msg);
-        console.log(j, t.screenTop);
-        _fun.toDownList(t, function(a, p) {
-            var dd = document.createElement("div"),
-                l = j.message,
-                dg = document.createDocumentFragment();
-            dd.className = "relative HX24M ML A11 ofa";
-            dd.id = "d_schoolList";
-            a.innerHTML = "";
-            var div = document.createElement("DIV");
-            div.innerHTML = '<input type="text" class="FL relative C8M ALP H bgc10 ellips index10" placeholder="如没有您所在的学校，请手动添加" />' +
-                '<div class="FL B6M AC H bgc105">提交</div>';
-            dg.appendChild(div);
-            dg.querySelector("div>div").onclick = function() {
-                return;
-                var d = this.previousElementSibling,
-                    dv = d.value.trim(),
-                    ds = document.querySelector("#d_schoolList");
-                if (dv.length <= 0) {
-                    d.focus();
-                    return;
-                }
-                var ix = l.findIndex(function(v) {
-                    return v.sc_name == dv;
-                });
-                if (ix >= 0) {
-                    _fun.toAlert("该学校已经存在！");
-                    ds.scrollTop = ds.children[ix + 1].offsetTop;
-                    return;
-                }
-                var para = {
-                    token: _token,
-                    userguid: _userguid,
-                    schooljson: {
-                        id: "0",
-                        sc_name: dv,
-                        ad_num: (da.title + "0000").substring(0, 6),
-                        sc_type: dt.title,
-                        sc_id: 9000000000 + 100000000 * dt.title + 100 * (da.title + "0000").substring(0, 6) + 1 * l.length //最新编码
-                        //dt.title + "" + (da.title + "0000").substring(0, 6) + "" + (l.length + 1)
-                    }
-                };
-                console.log("自定义学校添加school/create:", para);
-                _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/school/createschool.do", true, para, function(msg) {
-                    console.log(msg);
-                    var j = JSON.parse(msg);
-                    if (j.result >= 0) {
-                        _fun.toAlert("添加成功！");
-                        div = document.createElement("div");
-                        div.className = "relative W11 ALP H bgc18 ellips index10";
-                        div.setAttribute("readonly", "true");
-                        div.dataset.id = para.schooljson.sc_id;
-                        div.dataset.type = para.schooljson.sc_type;
-                        div.innerHTML = para.schooljson.sc_name;
-                        div.onclick = function() {
-                            t.value = para.schooljson.sc_name;
-                            t.title = para.schooljson.sc_id;
-                            _fun.hide(p);
-                            document.body.style.overflow = "";
-                        };
-                        ds.appendChild(div);
-                        //                            ds.scrollTop = ds.children[ds.childElementCount - 1].offsetTop;
-                    } else _fun.toAlert("添加失败！" + j.message);
-                });
-            };
-            l.forEach(function(v) {
-                div = document.createElement("div");
-                div.className = "relative W11 ALP H bgc18 ellips index10";
-                div.setAttribute("readonly", "true");
-                div.dataset.id = v.sc_id;
-                div.dataset.type = v.sc_type;
-                div.innerHTML = v.sc_name;
-                div.onclick = function() {
-                    t.value = v.sc_name;
-                    t.title = v.sc_id;
-                    _fun.hide(p);
-                    document.body.style.overflow = "";
-                };
-                dg.appendChild(div);
-            });
-            dd.appendChild(dg);
-            a.appendChild(dd);
-        });
-    }, function(msg) {
-        _fun.toAlert("获取学校失败！", 1500);
-    })
-} //获取学校列表
-function toClass() {
-    var t = event.target,
-        p = t.parentNode,
-        dt = p.querySelector("[name=schoolname]"),
-        da = p.querySelector("[name=classdate]"),
-        code = dt.title,
-        time = da.value.slice(0, 4);
-    if (!code) {
-        _fun.toAlert("请选择学校！");
-        dt.click();
-        return;
+
+    /**
+     * [getCut 截取字符串]
+     * @param   reg [截取的字符]
+     * @param   num [获取的第几位的字符]
+     * @param   msg [字符串]
+     * @return      [返回截取后第num个的字符]
+     */
+    function getCut(reg, num, msg) {
+        var name = msg.split(reg);
+        // console.log(name[num]);
+        return name[num];
     }
-    if (!time) {
-        _fun.toAlert("请选择入学年级！");
-        da.click();
-        return;
-    }
-    var para = {
-        token: _token,
-        userguid: _userguid,
-        admdivcode1: code,
-        industrycode: time
-    };
-    console.log("para:class/retrievebyai", para);
-    _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/class/retrievebyai.do", true, para, function(msg) {
+
+    /**
+     * [callback 获取用户所有信息]
+     */
+    function callback(msg) {
         console.log(msg);
-        var j = JSON.parse(msg);
-        if (j.result >= 0 && j.message) {
-            _fun.toDownList(t, function(a, p) {
+        if (msg.result < 0) {
+            _fun.show('form');
+            _fun.hide('mymsg');
+        } else {
+            var info = msg.perinfo;
+            //获取班级信息
+            var myclass = info.perexpeducationjson;
+            console.log(myclass);
+            myName.innerHTML = info.perobjectjson.per_full_name;
+            C_schoolcata("myclass", myclass);
+            C_mydetails(myclass);
+            // var myPic = info.perobjectjson.per_portrait;
+            // myImg.src = myPic;
+            // console.log(myPic);
+            _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+        }
+
+    }
+
+    "use strict";
+    autocss();
+    var _userguid, _token;
+
+    function init(msg) {
+        console.log(msg);
+        if (msg.result >= 0) {
+            var info = msg.message;
+            _userguid = info.user_guid;
+            _token = info.token;
+            _wit.event.input_UI("s_select", function (i, v, d) {
+                console.log(i, v, d);
+                //            if (i < 0) return;
+                //            else if()
+            });
+            _wit.event.input_limit();
+        } else {
+            _fun.toAlert("用户非法，请重新登录！");
+        }
+    }
+
+    function addEdu(pd) {
+
+        var o = {
+            adm_div_code: "||",
+            class_name: "||",
+            date_end: "",
+            date_start: "",
+            depart: "",
+            dept: "",
+            honors: "",
+            industry_code: "",
+            position_name: "",
+            relation_tag: "",
+            unit_name: "",
+            per_user_guid: _userguid,
+            exptype: 1
+        };
+        // fill(pd, o);
+        refill(pd, o); //填充数据
+        console.log(o);
+        if (o.adm_div_code === "||" || o.class_name === "||" || o.date_start === "" || o.date_end === "" || o.industry_code === "" || o.unit_name === "") {
+            _fun.toAlert("请将数据填写完整再添加！");
+        } else {
+            _wit.postmessage({
+                functionname: "addExp",
+                witparams: JSON.stringify({
+                    type: 0,
+                    json: o
+                }),
+                callbackparam: JSON.stringify({
+                    type: 0,
+                    json: o
+                }),
+                callback: "cbExp"
+            });
+        }
+
+    }
+
+    function fill(pd, o) {
+        var dl = pd.querySelectorAll("input,textarea"),
+            dc = pd.querySelector("input[name='admdivcode']"),
+            dcl = pd.querySelector("[name=group]");
+        console.log(dl);
+        Array.prototype.forEach.call(dl, function (v) {
+            o[v.dataset.id] = v.dataset.d === "title" ? v.title : v.value.trim();
+        });
+        o.class_name = dcl.title + "||" + dcl.value;
+        o.adm_div_code += "||" + dc.value;
+        delete o.undefined;
+        return o;
+    } //填充数据
+    function refill(pd, o) {
+        var dl = pd.querySelectorAll("input,textarea"),
+            dc = pd.querySelector("input[name='admdivcode']"),
+            dcl = pd.querySelector("[name=group]");
+        Array.prototype.forEach.call(dl, function (v) {
+            for (var i in o) {
+                // console.log(i+"  "+v.dataset.id);
+                if (i === v.dataset.id) {
+                    o[i] = v.dataset.d === "title" ? v.title : v.value.trim();
+                }
+            }
+        });
+        o.class_name = dcl.title + "||" + dcl.value;
+        o.adm_div_code += "||" + dc.value;
+        return o;
+    } //填充数据
+
+
+    function cbExp(msg, param) {
+        console.log("正在添加");
+
+        var j = msg,
+            p = JSON.parse(param);
+        if (j && j.result >= 0) {
+            //其他端免回调
+        } else {
+            var o = p.json;
+            console.log(o);
+            console.log(p.type);
+            //            return;
+            p.type === 0 && externalfun.createexp(function (msg) {
+
+                console.log(msg);
+                _fun.toLoading(-1);
+                var j = JSON.parse(msg);
+                if (j.result >= 0) {
+                    _fun.toAlert("添加经历成功！");
+                    document.location.reload(); //当前页面
+                } else {
+                    _fun.toAlert(j.message + ":请填写完整信息！", 1500);
+                }
+            }, JSON.stringify(o), 0);
+        }
+    }
+
+    /***
+     *  云录关联（经历）
+     */
+    function toSchool() {
+        var t = event.target,
+            p = t.parentNode,
+            dt = p.querySelector("[name=industrycode]"),
+            da = p.querySelector("[name=admdivcode]"),
+            type = dt.title,
+            area = da.title;
+        if (!type || type < 0) {
+            _fun.toAlert("请选择学校类别！");
+            dt.click();
+            return;
+        }
+        if (!area) {
+            _fun.toAlert("请选择学校所在地址！");
+            da.click();
+            return;
+        }
+        var para = {
+            token: _token,
+            userguid: _userguid,
+            sctype: type,
+            adnum: area
+        };
+        console.log(para);
+        _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/school/retrieveschool.do", true, para, function (msg) {
+            var j = JSON.parse(msg);
+            console.log(j, t.screenTop);
+            _fun.toDownList(t, function (a, p) {
                 var dd = document.createElement("div"),
                     l = j.message,
                     dg = document.createDocumentFragment();
-                dd.className = "relative HN4M HX24M ML A11 ofa";
-                dd.id = "classList";
+                dd.className = "relative HX24M ML A11 ofa";
+                dd.id = "d_schoolList";
                 a.innerHTML = "";
                 var div = document.createElement("DIV");
-                div.innerHTML = '<input type="text" class="FL relative C8M ALP H bgc10 ellips index10" placeholder="如没有您的班级，请手动添加全程" />' +
-                    '<div class="FL B6M AC H bgc105">新建</div>';
-                div.querySelector("div").onclick = function() {
+                div.innerHTML = '<input type="text" class="FL relative C8M ALP H bgc10 ellips index10" placeholder="如没有您所在的学校，请手动添加" />' +
+                    '<div class="FL B6M AC H bgc105">提交</div>';
+                dg.appendChild(div);
+                dg.querySelector("div>div").onclick = function () {
                     return;
-                    var ipt = this.previousElementSibling;
-                    if (ipt.value.trim().length <= 0) {
-                        ipt.focus();
+                    var d = this.previousElementSibling,
+                        dv = d.value.trim(),
+                        ds = document.querySelector("#d_schoolList");
+                    if (dv.length <= 0) {
+                        d.focus();
                         return;
                     }
-                    _fun.hide(p);
-                    document.body.style.position = "";
-                    document.body.style.overflow = "";
-                    var name = ipt.value.trim(),
-                        linse = code + time + ("00" + ++j.message.length).slice(0, 3),
-                        win = window.open("../cloud/cloud_cata.html");
-                    win.addEventListener("load", function() {
-                        win.winAdd({
-                            license: linse,
-                            admValue: dt.value,
-                            admTitle: code,
-                            ind: time,
-                            name: name
-                        });
+                    var ix = l.findIndex(function (v) {
+                        return v.sc_name == dv;
+                    });
+                    if (ix >= 0) {
+                        _fun.toAlert("该学校已经存在！");
+                        ds.scrollTop = ds.children[ix + 1].offsetTop;
                         return;
-                        win.document.querySelector("#navList").children[4].click();
-                        win.document.querySelector("#ipt_id").value = linse;
-                        win.document.querySelector("#adm_div_code1").innerHTML = dt.value;
-                        win.document.querySelector("#adm_div_code1").title = code;
-                        win.document.querySelector("#industry_code").innerHTML = time;
-                        win.document.querySelector("#industry_code").title = time;
-                        win._fun.show(win._da);
-                        win.document.body.style.position = "fixed"; //兼容移动端除了chrome外浏览器hidden无法生效
-                        win.document.body.style.overflow = "hidden";
-                        win.initAdd(win._da, { license: linse, unit: name });
+                    }
+                    var para = {
+                        token: _token,
+                        userguid: _userguid,
+                        schooljson: {
+                            id: "0",
+                            sc_name: dv,
+                            ad_num: (da.title + "0000").substring(0, 6),
+                            sc_type: dt.title,
+                            sc_id: 9000000000 + 100000000 * dt.title + 100 * (da.title + "0000").substring(0, 6) + 1 * l.length //最新编码
+                            //dt.title + "" + (da.title + "0000").substring(0, 6) + "" + (l.length + 1)
+                        }
+                    };
+                    console.log("自定义学校添加school/create:", para);
+                    _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/school/createschool.do", true, para, function (msg) {
+                        console.log(msg);
+                        var j = JSON.parse(msg);
+                        if (j.result >= 0) {
+                            _fun.toAlert("添加成功！");
+                            div = document.createElement("div");
+                            div.className = "relative W11 ALP H bgc18 ellips index10";
+                            div.setAttribute("readonly", "true");
+                            div.dataset.id = para.schooljson.sc_id;
+                            div.dataset.type = para.schooljson.sc_type;
+                            div.innerHTML = para.schooljson.sc_name;
+                            div.onclick = function () {
+                                t.value = para.schooljson.sc_name;
+                                t.title = para.schooljson.sc_id;
+                                _fun.hide(p);
+                                document.body.style.overflow = "";
+                            };
+                            ds.appendChild(div);
+                            //                            ds.scrollTop = ds.children[ds.childElementCount - 1].offsetTop;
+                        } else _fun.toAlert("添加失败！" + j.message);
                     });
                 };
-                dg.appendChild(div);
-                l.forEach(function(v) {
+                l.forEach(function (v) {
                     div = document.createElement("div");
                     div.className = "relative W11 ALP H bgc18 ellips index10";
                     div.setAttribute("readonly", "true");
-                    div.dataset.id = v.unit_id;
-                    div.innerHTML = v.unit_name;
-                    div.onclick = function() {
-                        t.value = v.unit_name;
-                        t.title = v.unit_id;
+                    div.dataset.id = v.sc_id;
+                    div.dataset.type = v.sc_type;
+                    div.innerHTML = v.sc_name;
+                    div.onclick = function () {
+                        t.value = v.sc_name;
+                        t.title = v.sc_id;
                         _fun.hide(p);
-                        //                            _fun.toConfirm("是否加入此班级云录！", function () {
-                        //                                _page = 4;
-                        //                                _info = myinfo.perobjectjson;
-                        //                                join({name: v.unit_name, license: v.unit_id});
-                        //                            }, {yes: "加入", no: "取消"});
-                        document.body.style.position = "";
                         document.body.style.overflow = "";
                     };
                     dg.appendChild(div);
@@ -566,9 +483,109 @@ function toClass() {
                 dd.appendChild(dg);
                 a.appendChild(dd);
             });
-        } else {
-            _fun.toAlert("获取班级失败！", 1500);
+        }, function (msg) {
+            _fun.toAlert("获取学校失败！", 1500);
+        })
+    } //获取学校列表
+    function toClass() {
+        var t = event.target,
+            p = t.parentNode,
+            dt = p.querySelector("[name=schoolname]"),
+            da = p.querySelector("[name=classdate]"),
+            code = dt.title,
+            time = da.value.slice(0, 4);
+        if (!code) {
+            _fun.toAlert("请选择学校！");
+            dt.click();
+            return;
         }
-    });
-} //生成学校目录
+        if (!time) {
+            _fun.toAlert("请选择入学年级！");
+            da.click();
+            return;
+        }
+        var para = {
+            token: _token,
+            userguid: _userguid,
+            admdivcode1: code,
+            industrycode: time
+        };
+        console.log("para:class/retrievebyai", para);
+        _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/class/retrievebyai.do", true, para, function (msg) {
+            console.log(msg);
+            var j = JSON.parse(msg);
+            if (j.result >= 0 && j.message) {
+                _fun.toDownList(t, function (a, p) {
+                    var dd = document.createElement("div"),
+                        l = j.message,
+                        dg = document.createDocumentFragment();
+                    dd.className = "relative HN4M HX24M ML A11 ofa";
+                    dd.id = "classList";
+                    a.innerHTML = "";
+                    var div = document.createElement("DIV");
+                    div.innerHTML = '<input type="text" class="FL relative C8M ALP H bgc10 ellips index10" placeholder="如没有您的班级，请手动添加全程" />' +
+                        '<div class="FL B6M AC H bgc105">新建</div>';
+                    div.querySelector("div").onclick = function () {
+                        return;
+                        var ipt = this.previousElementSibling;
+                        if (ipt.value.trim().length <= 0) {
+                            ipt.focus();
+                            return;
+                        }
+                        _fun.hide(p);
+                        document.body.style.position = "";
+                        document.body.style.overflow = "";
+                        var name = ipt.value.trim(),
+                            linse = code + time + ("00" + ++j.message.length).slice(0, 3),
+                            win = window.open("../cloud/cloud_cata.html");
+                        win.addEventListener("load", function () {
+                            win.winAdd({
+                                license: linse,
+                                admValue: dt.value,
+                                admTitle: code,
+                                ind: time,
+                                name: name
+                            });
+                            return;
+                            win.document.querySelector("#navList").children[4].click();
+                            win.document.querySelector("#ipt_id").value = linse;
+                            win.document.querySelector("#adm_div_code1").innerHTML = dt.value;
+                            win.document.querySelector("#adm_div_code1").title = code;
+                            win.document.querySelector("#industry_code").innerHTML = time;
+                            win.document.querySelector("#industry_code").title = time;
+                            win._fun.show(win._da);
+                            win.document.body.style.position = "fixed"; //兼容移动端除了chrome外浏览器hidden无法生效
+                            win.document.body.style.overflow = "hidden";
+                            win.initAdd(win._da, {license: linse, unit: name});
+                        });
+                    };
+                    dg.appendChild(div);
+                    l.forEach(function (v) {
+                        div = document.createElement("div");
+                        div.className = "relative W11 ALP H bgc18 ellips index10";
+                        div.setAttribute("readonly", "true");
+                        div.dataset.id = v.unit_id;
+                        div.innerHTML = v.unit_name;
+                        div.onclick = function () {
+                            t.value = v.unit_name;
+                            t.title = v.unit_id;
+                            _fun.hide(p);
+                            //                            _fun.toConfirm("是否加入此班级云录！", function () {
+                            //                                _page = 4;
+                            //                                _info = myinfo.perobjectjson;
+                            //                                join({name: v.unit_name, license: v.unit_id});
+                            //                            }, {yes: "加入", no: "取消"});
+                            document.body.style.position = "";
+                            document.body.style.overflow = "";
+                        };
+                        dg.appendChild(div);
+                    });
+                    dd.appendChild(dg);
+                    a.appendChild(dd);
+                });
+            } else {
+                _fun.toAlert("获取班级失败！", 1500);
+            }
+        });
+    } //生成学校目录
 </script>

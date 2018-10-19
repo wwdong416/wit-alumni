@@ -98,7 +98,7 @@ input[type="range"]::-webkit-slider-thumb {
 .fix55 { position: fixed; top: 50%; left: 50% }
 .fix31 { position: fixed; top: 33%; left: 33.3% }
 .top40 { top: 40%; }
-.baseline { vertical-align: baseline) }
+.baseline { vertical-align: baseline; }
 .middle { vertical-align: middle }
 .top { vertical-align: top; }
 .center { margin-left: auto; margin-right: auto; width: 20%; }
@@ -134,7 +134,7 @@ input[type="range"]::-webkit-slider-thumb {
 .PB20e { padding-bottom: 20em; }
 .PB40e { padding-bottom: 40em; }
 .W11 { width: 100%; }
-.W200P { width: 200%; }
+.W200P{ width: 200%; }
 .W21 { width: 50%; }
 .W31 { width: 33.333% }
 .W32 { width: 66.666% }

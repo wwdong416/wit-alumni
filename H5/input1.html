@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0, target-densitydpi=device-dpi">
+    <title>输入栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/witcs0.css">
+</head>
+<body class="ofa bgc9" onload="loadend()" onresize="autocss()">
+<!--通用输入选择栏、滚轮等的容器-->
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<!--弹出式选择输入框-->
+<input readonly class="FL MLT A11 H AC bord_select" data-t="radio" data-s="水平中,左对齐,右对齐,浮于左,浮于右" placeholder="单选题"/>
+<input readonly class="FL MLT A11 H AC bord_select" data-t="check" data-s="垂直中,上对齐,下对齐,浮于上,浮于下,水平中,左对齐,右对齐,浮于左,浮于右"
+       placeholder="多选题"/>
+<input id="xt" readonly class="FL MLT A11 H AC bord_select" data-t="radios" data-s="水平中,左对齐,右对齐,浮于左,浮于右" value="水平中"/>
+<input id="yt" readonly class="FL MLT A11 H AC bord_select" data-t="checks"
+       data-s="垂直中,上对齐,下对齐,浮于上,浮于下,水平中,左对齐,右对齐,浮于左,浮于右,拉开距离,家里看见了,会尽快,健康就好,就看到,撒点粉,而产生,啊短发,安抚" value="垂直中, 左对齐"/>
+<!--日期滚轮-->
+<div class="FL MT H W11 AC">新方法</div>
+<div id="Date_s" class="FL MLT A21 H AC bgcW" onclick="c_date('01234','// : ',1)">开始日期时间</div>
+<div class="FL MT H B1M AC">-</div>
+<div id="Date_e" class="FL MT A21 H AC bgcW" onclick="c_date('01234','// : ',1)">结束日期时间</div>
+<div id="Date_s1" class="FL MLT A21 H AC bgcW" onclick="c_date('012','年月日',1)">开始日期</div>
+<div class="FL MT H B1M AC">-</div>
+<div id="Date_e1" class="FL MT A21 H AC bgcW" onclick="c_date('012','YMD',1)">结束日期</div>
+<div id="Date_s1" class="FL MLT A21 H AC bgcW" onclick="c_date('34','时分',1)" data-finp="witconsole">开始时间</div>
+<div class="FL MT H B1M AC">-</div>
+<div id="Date_e1" class="FL MT A21 H AC bgcW" onclick="c_date('34',':',1)" data-finp="witconsole">结束时间</div>
+<div class="FL MT H W11 AC">老方法</div>
+<input id="DateS_2" readonly class="FL MLT A52 H ALP " placeholder="开始时间" onFocus="creat_date('34','时分',0)"
+       data-finp="witconsole"/>
+<div class="FL MLT A51 H AC bgc108">到</div>
+<input id="DateE_2" readonly class="FL MLT A52 H ALP " placeholder="结束时间" onFocus="creat_date('34','MS',1)"
+       data-finp="witconsole"/>
+<!--地址滚轮-->
+<div class="FL MT H W11 AC">新方法</div>
+<div class="FL MLT B12M H AC bgc65">工作地址<img src="../img/a/local.png" class="FR POT" onclick=""/></div>
+<div id="C_Addr" class="FL MLT C15MT2 H ALP bgcW" onclick="c_addr(3,0)">请输入地址区域</div>
+<input id="C_Addr1" class="FL MLT A1T2 H ALP " placeholder="请输入详细住址"/>
+<div class="FL MT H W11 AC">老方法</div>
+<div class="FL MLT B12M H AC bgc65">家庭地址</div>
+<input id="F_Addr" readonly class="FL MLT C15MT2 H ALP " onfocus="creat_addr(3,0)" placeholder="请输入地址区域"/><input
+        id="F_Addr1" class="FL MLT A1T2 H ALP " placeholder="请输入详细住址"/>
+
+<div><img class="FL MLT A1T2 F4 LH25 AC bgc149" id="img1" onClick="selectpic(1)" alt="+上传图片"
+          onload="ablepublish()"/><img src="../img/btn/del2.png" class="FL MLN4 MT B4M" onclick="del_preimg()"/></div>
+<div id="img0" class="FL MLT H" onClick="selectpic(2,3)">上传图片</div>
+
+<div id="form" class="W11 CH ofa">
+    <textarea class="FL MT H W11 AC" id="biao1">用户定义的代码区域</textarea>
+    <input class="FL MT H W11 AC" id="biao2"/>
+    <input class="FL MT H W11 AC" type="button" onClick="copyUrl2()" value="点击复制代码"/>
+    <div class="FL MT H W11 AC" onclick="copytoClipboard()">复制</div>
+    <div class="FL MT H W11 AC" onclick="copyfromClipboard()">粘贴</div>
+
+    <div class="FL MLT H">请滑动设置人脉距离</div>
+    <div class="FR MRT H colorR">100</div>
+    <input id="KD_range" type="range" value="100" max="120" min="0" step="1" class="FL MLT MB A11 H bgc33"
+           onInput="getvalue()"/>
+    <div class="FL MLT A41 H AC bgc105">评星级</div>
+    <div id="star" class="FL MLT A43 H4M F7 AC bgc10"></div>
+    <div class="FL MLT A41 H AC bgc105">物流服务</div>
+    <div id="wl_server" class="FL MLT A43 H4M F7 AC bgc10"></div>
+    <div id="selectli" class="index999 fix bottom0 W11 F5 LH25 AC bgc18 none"></div>
+    <textarea class="FL MLT A11 P05 H4M F4 LH15" placeholder="需要改进的是：" onInput="textheight(5)"></textarea>
+    <input type="text" class="FL MLT A11 H ALP PR1MH" placeholder="♀请输入网址或关键词"/><img src="../img/btn/del.png"
+                                                                                     class="FL MT MLN4 H"
+                                                                                     onclick="clearid()"/><img
+        name="quick_btn" src="../img/btn/witeye2.jpg" class="FL MT MLN4 H" onclick=""/>
+    <input id="" type="text" class="FL MLT A11 H ALP PR1MH" placeholder="♀请输入网址或关键词"/><img src="../img/btn/del.png"
+                                                                                           class="FL MT MLN4 H"
+                                                                                           onclick="clearid()"/>
+    <input type="text" class="FL MLT A21 H ALP PR1MH" placeholder="请输入单位"/>
+    <img title="del" src="../img/btn/del.png" class="FL MT MLN4 H" onclick="clearid()"/>
+    <input type="text" class="FL MLT A21 H ALP PR1MH" placeholder="请输入姓名"/>
+    <img title="del" src="../img/btn/del.png" class="FL MT MLN4 H" onclick="clearid()"/>
+
+    <div class="FL MLT A31 H AC bgc105 ">账号</div>
+    <input type="text" id="userphone" class="FR MRT A32 H F4 AL" placeholder="请输入手机号作为账号"/>
+    <div class="FL MLT A31 H AC bgc105 ">设置密码</div>
+    <input id="userpass" type="password" class="FR MRT A32 H F4 AL" placeholder="请输入密码"/>
+    <div class="FL MLT A31 H AC bgc105 ">确认密码</div>
+    <input id="confirm" type="password" class="FR MRT A32 H F4 AL" placeholder="请再次输入密码"/>
+    <div class="FL MLT A11 H AC bgc105 " onclick="window.location.href='license.html';">阅读许可服务协议</div>
+
+    <img src="" class="FL MLT A31 H" id="imgcode"/>
+    <input id="checkcode" class="FL MLT A31 H F4 AL" placeholder="请输入答案"/>
+    <div class="FR MRT A31 H AC bgc37" onclick="getCode();">获取验证码</div>
+    <input type="reset" class="FL MLT B12M H AC bgc5" placeholder="重设"/>
+    <input type="submit" class="FR MRT MB B12M H AC bgc16" placeholder="提交"/>
+    <canvas class="none" id="cvs"></canvas>
+</div>
+
+</body>
+</html>
+<script src="../js/wit_ajax.js"></script>
+<script src="../js/witjs0.js"></script>
+<script src="../js/wit_input0.js"></script>
+<script>
+    function witconsole() {
+        console.log(1, last_obj.title)
+    }
+
+    function copyToClipboard() {
+        window.clipboardData.setData("Text", '复制测试');
+        alert("复制成功，请粘贴到你的QQ/MSN上推荐给你的好友");
+    }
+
+    function copyfromClipboard(e) {
+        if (window.clipboardData && window.clipboardData.getData) { // IE
+            pastedText = window.clipboardData.getData('Text');
+        } else {
+            pastedText = e.originalEvent.clipboardData.getData('Text');//e.clipboardData.getData('text/plain'); autofocus
+
+        }
+        alert(pastedText);
+    }
+
+    function setCopy(_sTxt) {
+        console.log(111);
+        try {
+            if (window.clipboardData) {
+                console.log(222);
+                window.clipboardData.setData("Text", _sTxt);
+            } else if (window.netscape) {
+                console.log(333);
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                var clip =
+                    Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                if (!clip) return;
+                var trans =
+                    Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                if (!trans) return;
+                trans.addDataFlavor('text/unicode');
+                var str = new Object();
+                var len = new Object();
+                var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                var copytext = _sTxt;
+                str.data = copytext;
+                trans.setTransferData("text/unicode", str, copytext.length * 2);
+                var clipid = Components.interfaces.nsIClipboard;
+                if (!clip) return false;
+                clip.setData(trans, null, clipid.kGlobalClipboard);
+            }
+        } catch (e) {
+        }
+    }
+
+    //setCopy("测试123");
+
+    function copyUrl2() {
+        var Url2 = document.getElementById("biao1");
+        Url2.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        alert("已复制好，可贴粘。");
+    }
+
+    function loadend() {
+        autocss();
+        _init();
+        document.getElementById("biao2").focus();
+    }
+</script>

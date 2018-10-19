@@ -22,13 +22,14 @@
     <img data-src='../images/icon/setting.png' class="FR ICON P05M"/>
 </div>
 <!--top-->
-<div id="index">
-    <div class="W11 AC ofh H21M relative img-edge-cover">
-        <img data-src="../images/classbg.png" class="topimg MTH">
+<div id="index" class="MTH">
+    <div class="W11 AC ofh relative img-edge-cover">
+        <img data-src="../images/classbg.png" class="W11">
     </div>
     <div class="W11 bgc9 MT">
         <div class="FL B9M H9M bgc4 rad05e MTNMH ML">
             <!--<img class="H9M B9M rad05e classlogo absolute  MTN10M leftM " src="../images/pic2.png" alt="">-->
+            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic2.png" alt="">
         </div>
         <div class="FL PL2M ffWRYH PT1M PB1M">
             <li class=" bold F3"> xx高级中学高二（10）班 ---2018级</li>
@@ -84,10 +85,12 @@
                         <li class="MT05 FR F2 colorA">12:01</li>
                         <div class="clear"></div>
                     </ul>
+                    <!--123-->
                 </div>
             </div>
         </div>
     </div>
+    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
 </div>
 <div id="notice" class="W11 AC ofh MTH  none">
     <div class="P2M flexbox bgcddc W11">
@@ -97,20 +100,22 @@
         </div>
         <div class="FR  rad03e bgc104 P05M W31">发布通知</div>
     </div>
-
-    <div class="W11 AL">
-        <div class="W11 P1M bordBD1">
-            <div class="colorO  F3 FL italic W161"> 1</div>
-            <div>
-                <div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>
-                <div class="FR F2 colorA">2018/10/25</div>
-            </div>
-
-            <div class="clear"></div>
-        </div>
+    <div id="cont_notice">
 
     </div>
+    <!--<div class="W11 AL">-->
+    <!--<div class="W11 P1M bordBD1">-->
+    <!--<div class="colorO  F3 FL italic W161"> 1</div>-->
+    <!--<div>-->
+    <!--<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>-->
+    <!--<div class="FR F2 colorA">2018/10/25</div>-->
+    <!--</div>-->
 
+    <!--<div class="clear"></div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
 </div>
 
 <div id="information" class="W11  MTH none">
@@ -121,10 +126,11 @@
                 <div class="FL   bgc104 ACP H2M">列</div>
                 <div class="FL MR F2">
                     <select class=" B3M bord0 H2M" id="daisL" onchange="daisWH()">
-                        <!--<option value="8">8</option>-->
+                        <option value="8">8</option>
                         <option value="7" selected="selected">7</option>
                         <option value="6">6</option>
                         <option value="5">5</option>
+                        <option value="4">4</option>
                     </select>
                 </div>
 
@@ -199,6 +205,7 @@
         </div>
 
     </div>
+    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
 </div>
 
 <div id="photo" class="W11 AC MTH  none">
@@ -272,13 +279,25 @@
             </div>
         </div>
     </div>
+    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
 </div>
 
-<div id="dynamic" class="W11 AC  MTH none">
+<div id="dynamic" class="W11 AC  CH bgcf4  MTH none">
+    <div class="W11 P1M">
+        <img src="../images/pic2.png" alt="" class="FL radius B4M">
+        <div class="FL">
+            <div class="relative rad05e P05M bgc10 M talkbubble ALP2 PL1M PR1M">图片格式如何处理</div>
+        </div>
 
+        <div class="clear"></div>
+    </div>
+    <div class="W11 fix bottom10M ">
+        <input type="text" class="FL MLT ML H3M W43  ALP  " placeholder="说一下...">
+        <div class=" FR W61  bgc4 border MLT MR H3M  LH24">发送</div>
+    </div>
 </div>
 
-<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+<!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
 <div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 " id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
         <img class="H2M menuimg" src="../images/icon/index02.png" alt="">
@@ -319,6 +338,9 @@
             console.log(menu[i].id);
             menu[i].onclick = function () {
                 console.log(this.id);
+                if (this.id.indexOf("notice") > -1) {
+                    cl_notice();
+                }
                 var menuname = document.getElementsByClassName("menuname");
                 for (var j = 0; j < menuname.length; j++) {
                     menuname[j].classList.remove("active");
@@ -355,6 +377,15 @@
                 cont += '<img class="B4M rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
             }
         }
+        else if (value_w == 8) {
+            for (var i = 0; i < value_h * value_w; i++) {
+                if (i % 2 != 0) {
+                    cont += '<img class="B4M rad03e AL " src="../images/icon/classmatespic.png" alt="">'
+                } else {
+                    cont += '<img class="B4M rad03e AL ML" src="../images/icon/classmatespic.png" alt="">'
+                }
+            }
+        }
         else if (value_w == 6) {
             for (var i = 0; i < value_h * value_w; i++) {
                 cont += '<img class="A61 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
@@ -365,6 +396,11 @@
                 cont += '<img class="A51 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
             }
         }
+        else if (value_w == 4) {
+            for (var i = 0; i < value_h * value_w; i++) {
+                cont += '<img class="A41 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
+            }
+        }
         document.getElementById("daislist").innerHTML = cont;
     }
 
@@ -373,29 +409,35 @@
         var daislist = document.getElementById("daislist");
         var daislistclass = daislist.className;
         var bq_open = document.getElementById("open_all");
-        var class_name = "ofh"+" "+"H16M"+" "+"img-edge-cover"+" "+"W11"+" "+"relative";
+        var class_name = "ofh" + " " + "H16M" + " " + "img-edge-cover" + " " + "W11" + " " + "relative";
         if (daislistclass.indexOf("ofh H16M") > -1) {
-            daislist.className = "W11"+" "+"relative";
+            daislist.className = "W11" + " " + "relative";
             bq_open.src = "../images/icon/close.png";
         }
         else {
             daislist.className = class_name;
             bq_open.src = "../images/icon/open.png";
         }
-
-    }
-    function C_schoolcata(d, c) {
-        var cont = "";
-        try {
-            for (var i = 0; i < c.length; i++) {
-                cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="location.href=&quot;w1.html?id=' + i + '&quot;)" >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
-            }
-            document.getElementById(d).innerHTML = cont;
-        } catch (e) {
-            console.log(e);
-        }
     }
 
-
+    //添加通知消息
+    function cl_notice() {
+        document.getElementById("cont_notice").innerHTML = "";
+        div = document.createElement("div");
+        div.className = " W11 AL";
+        // div.dataset.id = para.schooljson.sc_id;
+        div.innerHTML = '  <div class="W11 P1M bordBD1">' +
+            '<div class="colorO  F3 FL italic W161"> 1</div>' +
+            '<div>' +
+            '<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>' +
+            '<div class="FR F2 colorA">2018/10/25</div>' +
+            '</div>' +
+            '<div class="clear"></div>' +
+            '</div>';
+        // div.onclick = function() {
+        // };
+        document.getElementById("cont_notice").appendChild(div);
+        console.log(1);
+    }
 </script>
 </html>

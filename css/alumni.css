@@ -5,11 +5,14 @@ li {
 .nav {
     background-color: #086b94;
 }
-.bgbody{
+
+.bgbody {
     background-color: #1894c6;
 }
-.bghsla{
-        background: hsla(0,0,100%,.5););
+
+.bghsla {
+    background: hsla(0, 0, 100%, .5);
+);
 }
 
 .add {
@@ -26,27 +29,6 @@ li {
     justify-content: center;
 }
 
-.bgpic {
-    width: 150%;
-    height: auto;
-    display: block;
-    margin-left: -20%;
-}
-
-.pb150 {
-    padding-bottom: 150px;
-}
-
-.cur_p{
-	cursor: pointer;
-}
-/*班级界面css*/
-.topimg{
-    width: 100%;
-    height: auto;
-
-}
-
 /*图片底部模糊*/
 .img-edge-cover:after {
     position: absolute;
@@ -55,19 +37,15 @@ li {
     height: 100%;
     top: 0;
     left: 0;
-    box-shadow:0 -10px 20px  #ffffff inset;
-}
-/*班级头像*/
-.classlogo{
-    border: 5px solid #FFFFFF;
+    box-shadow: 0 -10px 20px #ffffff inset;
 }
 
-
-.active{
+.active {
     color: #11b9ff;
 }
+
 /*评论的三角形*/
-.mes_tag em{
+.mes_tag em {
     display: block;
     border-width: 0 10px 10px;
     position: absolute;
@@ -78,19 +56,43 @@ li {
     font-size: 0;
     line-height: 0;
 }
-.bordTD1 { border-top: 1px solid #d1d1d1; }
-.bordBD1 { border-bottom: 1px solid #d1d1d1; }
 
-.bgcddc{
+
+.talkbubble:before {
+    content:"";
+    position: absolute;
+    top: 10px;
+    left: -8px;
+    width: 0;
+    height: 0;
+    /*border-top: 5px solid transparent;*/
+    border-right: 10px solid #FFFFFF;
+    border-bottom: 10px solid transparent;
+}
+
+
+.bordTD1 {
+    border-top: 1px solid #d1d1d1;
+}
+
+.bordBD1 {
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.bgcddc {
     background: #d4d5c7;
 }
 
-.color876{
+.bgcf4 {
+    background: #f4f4f4;
+}
+
+.color876 {
     color: #876543;
 }
 
-.selectnone{
-    appearance:none;
-    -moz-appearance:none;
-    -webkit-appearance:none;
+.selectnone {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
 }
