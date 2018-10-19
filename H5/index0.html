@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
+<meta name="keywords"content="校友录，校友会,手机校友录，慧脑校友录">
+<meta name="description"content="慧脑校友录,手机校友录，校友会">
+<link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed" />
+<link rel="stylesheet" type="text/css" href="../css/witcs0.css">
+<title>校友云首页</title>
+</head>
+<body class="ofa bgc103" onload="autocss();init();" onresize="autocss()">
+<div class="index99 fix top0 W11 H AC bgc72 color1">慧脑校友云
+<img data-src='../img/ico/xy2.png' class="FL B4M H4M" onclick="location.href='index.html'"/><img data-src='../img/witbtn/help1.png' class="FR B4M H4M"   onclick="location.href='cata.html'"/></div>
+<img data-src="../img/bj/lantian.png" class="MT4 W11">
+
+<div id="no_user" class="W11 AC F3">
+	<span class="H P1M bgc106 rad Bshadow" onclick="location.href='../com/reg.html'"> ---注册---</span>
+	<p>（与慧脑APP账号通用）</p>
+    <span class="H P1M bgc157 rad Bshadow" onClick="show('form')">---登录---</span>
+	<p>（用慧脑浏览器可自动登录）</p>
+
+</div>
+<div id="form" class="none clear ">
+    <input id="userphone" type="text" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入账号"/>
+    <div class="FL MLT BTN bgc73 alpha8" onclick="location.href='../com/reg.html'">注册</div>
+    <input id="userpassword" type="password" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入密码"/>
+    <div class="FL MLT BTN bgc16" onClick="login();">登录</div>
+</div>
+<div class="W11 AC F3"><img src="../img/port/port03.jpg" class="B6M rad">
+	<div class="F4 LH2" onclick="location.href='setcard.html'">我的信息</div>
+	
+    <div class="F4 LH2 P1 ffKT" onclick="location.href='study_hist.html'"><img src="../img/btn/add0.png" class="vaM POT" >我的班级</div>
+<ul id="myschool" class="clear ffHT">
+<li class="MT W11 F4 LH3 AC shadow0 bg_contain" style="background-image:url(../img/bj/muban1.png)" >某校某班</li>
+</ul>
+
+    
+    <div class="F4 LH2 P1 ffKT" onclick="location.href='w0.html'"><img src="../img/btn/add0.png" class="vaM POT" >我的关注</div>
+<div id="my" class="clear"></div>
+</div>
+
+<p class="ML MR F3 ffKT">   一起回忆和分享昔日美好的时光吧！让我们相互遥望和祝福，关怀和激励，让彼此的人生更加辛福！
+</p>
+
+<img data-src="../img/bj/caodi.png" class="fix bottom0 W11">
+</body>
+</html>
+<script src="../js/witjs0.js"></script>
+<script src="../js/wit_ajax.js"></script>
+<script>
+//	<p>（用于在校友录显示自己的信息）</p>	<p>（自动关联学校班级）</p><h1 class="ML A11 F5 LH25 AC colorR">使用说明</h1>
+
+
+
+var data_school=[{school_id:1,school_name:"温州市二医",dept_name:"",sess:"1996",clas:"实习群"},{school_id:1,school_name:"温州医学院",dept_name:"临床系",sess:"1991",clas:"(3)班"},{school_id:1,school_name:"乐清中学",dept_name:"",sess:"1988",clas:"(7)班"}]
+//生成目录
+function C_schoolcata(d,c){var cont="";
+	try {for(var i=0;i<c.length;i++){cont+='<li class="MT W11 F4 LH3 AC shadow0 bg_contain" style="background-image:url(../img/bj/muban1.png)" onclick="location.href=&quot;w1.html?id='+i+'&quot;)" >'+c[i].school_name+" "+c[i].dept_name+" "+c[i].sess+" "+c[i].clas+'</li>'}
+	document.getElementById(d).innerHTML = cont;
+	} catch(e){}
+}
+//C_schoolcata("myschool",data_school);
+
+function init() {
+	postmessage({functionname: "getusername",callback: "callback"});
+	loadimg();
+	document.querySelector("#userpassword").onkeydown = function () {
+		var k = event.keyCode || event.which;
+		if (k == 13) login();}
+}
+function login() {
+	var u = document.querySelector("#userphone"),
+		p = document.querySelector("#userpassword");
+	if (!u.value.trim()) {u.focus();return;	}
+	if (!p.value.trim()) {p.focus();return;	}
+	_fun.ajax_submit("POST", "../UserServlet.shtml", true, function (msg, Jmsg) {
+		console.log(Jmsg);
+		if (Jmsg.RESULT_CODE >= 1) location.href = "manager.html";
+		else _fun.toAlert("用户名和密码错误，请重新输入！");
+	}, "ACTION=CHECK&USERNAME=" + u.value.trim() + "&PASSWORD=" + p.value.trim(), function (msg) {console.log(msg);})
+} //登录
+function callback(msg) {console.log(msg);_u=msg.message;
+	if(_u){hide('no_user')};}
+</script>

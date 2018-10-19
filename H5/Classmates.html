@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
+    <meta name="keywords" content="校友录，校友会,手机校友录，慧脑校友录">
+    <meta name="description" content="慧脑校友录,手机校友录，校友会">
+    <link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed"/>
+
+    <link rel="stylesheet" type="text/css" href="../css/alumni.css">
+    <link rel="stylesheet" type="text/css" href="../css/witcs.css">
+    <script src="../js/witjs.js?j=1"></script>
+    <title>校友录</title>
+</head>
+
+<body class="ofa ffWRYH" onload="loadend()" onresize="autocss()">
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<!--导航栏-->
+<div class="index99 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
+    <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
+    <img data-src='../images/icon/setting.png' class="FR ICON P05M"/>
+</div>
+<!--top-->
+<div id="index">
+    <div class="W11 AC ofh H21M relative img-edge-cover">
+        <img data-src="../images/classbg.png" class="topimg MTH">
+    </div>
+    <div class="W11 bgc9 MT">
+        <div class="FL B9M H9M bgc4 rad05e MTNMH ML">
+            <!--<img class="H9M B9M rad05e classlogo absolute  MTN10M leftM " src="../images/pic2.png" alt="">-->
+        </div>
+        <div class="FL PL2M ffWRYH PT1M PB1M">
+            <li class=" bold F3"> xx高级中学高二（10）班 ---2018级</li>
+
+            <li class="F2 color333">班主任：张大千</li>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--班级头像-->
+
+    <!--top end-->
+    <div class="W11 AC ofh bgc9 relative MT">
+        <div class=" W11  F2 H3M AC flexbox MT PL1M PR1M">
+            <div class="bgc14 rad05 W91 F1 FL">置顶</div>
+            <div class="colorR ML ellips FL  F3">
+                <marquee behavior=scroll id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
+            </div>
+        </div>
+        <div class="W11 PL1M PR1M AC PB1M">
+            <div class="AC colorA PB1M PT1M flexbox">
+                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
+                <div class="W51 FL">今天</div>
+                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
+            </div>
+            <div class=" bgc10 rad05  MB">
+                <div class="P1M W11 AL ">
+                    <ul>
+                        <li class="ellips ">通知：上传了一组照片</li>
+                        <li class="MT05 FR F2 colorA">12:01</li>
+                        <div class="clear"></div>
+                    </ul>
+                </div>
+            </div>
+            <div class=" bgc10 rad05  MB">
+                <div class="P1M W11 AL ">
+                    <ul>
+                        <li class="ellips ">通知：上传了一组照片</li>
+                        <li class="MT05 FR F2 colorA">12:01</li>
+                        <div class="clear"></div>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="AC colorA PB1M PT1M flexbox">
+                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
+                <div class="W51 FL">昨天</div>
+                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
+            </div>
+            <div class=" bgc10 rad05  MB">
+                <div class="P1M W11 AL ">
+                    <ul>
+                        <li class="ellips ">通知：上传了一组照片</li>
+                        <li class="MT05 FR F2 colorA">12:01</li>
+                        <div class="clear"></div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="notice" class="W11 AC ofh MTH  none">
+    <div class="P2M flexbox bgcddc W11">
+        <div class="W32">
+            <div class="FL AL color876 bold">通告榜</div>
+            <img class="W43 " src="../images/icon/yellow-line.png" alt="">
+        </div>
+        <div class="FR  rad03e bgc104 P05M W31">发布通知</div>
+    </div>
+
+    <div class="W11 AL">
+        <div class="W11 P1M bordBD1">
+            <div class="colorO  F3 FL italic W161"> 1</div>
+            <div>
+                <div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>
+                <div class="FR F2 colorA">2018/10/25</div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="information" class="W11  MTH none">
+    <div class="W11">
+        <div class="W11 AC inlineB MT">
+            <div class="FL ML AL color8  bold ">座位表</div>
+            <div class="FR ">
+                <div class="FL   bgc104 ACP H2M">列</div>
+                <div class="FL MR F2">
+                    <select class=" B3M bord0 H2M" id="daisL" onchange="daisWH()">
+                        <!--<option value="8">8</option>-->
+                        <option value="7" selected="selected">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="FL bgc104 ACP H2M">行</div>
+                <div class="FL MR F2">
+                    <select class="B3M bord0 H2M" id="daisH" onchange="daisWH()">
+                        <option value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8" selected="selected">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="clear H3M"></div>
+            <!--<img src="../images/icon/dais.png" alt="" class="clear  W11 AC">-->
+
+        </div>
+        <img src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
+        <div id="dais" class="MT">
+            <div class="W11 ofh H16M relative img-edge-cover" id="daislist">
+
+            </div>
+            <div class="AC W11 ">
+                <img src="../images/icon/open.png" alt="" id="open_all" class="B2M AC" onclick="openAll()">
+            </div>
+        </div>
+    </div>
+    <div class="W11">
+        <div class="W11 ALP color8 bold LH2">
+            通讯录
+        </div>
+        <div class="W11 bordBD1">
+        </div>
+        <div class="W11 H7M bordBD1">
+            <div class="W11">
+                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
+                <div class="FL  C8M MT05 LH2">
+                    <div class="FL W21 color876 bold ofh">张明明</div>
+                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
+                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
+                </div>
+                <!--<div class="clear"></div>-->
+            </div>
+        </div>
+
+        <div class="W11 H7M bordBD1">
+            <div class="W11">
+                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
+                <div class="FL  C8M MT05 LH2">
+                    <div class="FL W21 color876 bold ofh">张明明</div>
+                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
+                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
+                </div>
+                <!--<div class="clear"></div>-->
+            </div>
+        </div>
+
+        <div class="W11 H7M bordBD1">
+            <div class="W11">
+                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
+                <div class="FL  C8M MT05 LH2">
+                    <div class="FL W21 color876 bold ofh">张明明</div>
+                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
+                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
+                </div>
+            </div>
+            <!--<div class="clear"></div>-->
+        </div>
+
+    </div>
+</div>
+
+<div id="photo" class="W11 AC MTH  none">
+    <img src="../images/bybg.png" alt="" class="W11">
+    <div class="W11 MT">
+        <div class="PL1M PR1M flexbox W11">
+            <div class="W32">
+                <div class="FL color8  AL">照片</div>
+                <img class="W43 " src="../images/icon/line.png" alt="">
+            </div>
+            <div class="FR  rad03e bgc104 P05M W31">上传照片</div>
+        </div>
+        <div class="W11 P1M">
+            <div class="W11 PB1M PT1M">
+                <div class="FL W41">
+                    <img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/icon/add_photo.png" alt=""></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="W11 MT">
+        <div class="PL1M PR1M flexbox W11">
+            <div class="W32">
+                <div class="FL color8  AL">视频</div>
+                <img class="W43 " src="../images/icon/line.png" alt="">
+            </div>
+            <div class="FR  rad03e bgc104 P05M W31">上传视频</div>
+        </div>
+        <div class="W11 P1M">
+            <div class="W11 PB1M PT1M">
+                <div class="FL W41">
+                    <img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">2016年秋游 照片留念</div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="W11 MT">
+        <div class="PL1M PR1M flexbox ">
+            <div class="W32">
+                <div class="FL color8  AL">文件</div>
+                <img class="W43 " src="../images/icon/line.png" alt="">
+            </div>
+            <div class="FR  rad03e bgc104 P05M W31">上传文件</div>
+        </div>
+        <div class="W11 P1M">
+            <div class="W11 PB1M PT1M">
+                <div class="FL W41"><img class="D41 rad05" src="../images/port03.jpg" alt="">
+                    <div class="F2 ellips D41">毕业论文</div>
+                </div>
+                <div class="FL W41"><img class="D41 rad05" src="../images/icon/add_folder.png" alt=""></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dynamic" class="W11 AC  MTH none">
+
+</div>
+
+<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+<div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 " id="menu_list">
+    <div class="FL W51 AC submenu" id="cl_index">
+        <img class="H2M menuimg" src="../images/icon/index02.png" alt="">
+        <div class="menuname active">首页</div>
+    </div>
+    <div class="FL W51 AC submenu" id="cl_notice">
+        <img class="H2M menuimg" src="../images/icon/notice01.png" alt="">
+        <div class="menuname">通知</div>
+    </div>
+    <div class="FL W51 AC submenu" id="cl_information">
+        <img class="H2M menuimg" src="../images/icon/information01.png" alt="">
+        <div class="menuname">同学录</div>
+    </div>
+    <div class="FL W51 AC submenu" id="cl_photo">
+        <img class="H2M menuimg" src="../images/icon/photo01.png" alt="">
+        <div class="menuname">档案</div>
+    </div>
+    <div class="FL W51 AC submenu" id="cl_dynamic">
+        <img class="H2M menuimg" src="../images/icon/dynamic01.png" alt="">
+        <div class="menuname">动态</div>
+    </div>
+</div>
+<!--bottom end-->
+</body>
+<script src="../js/wit_ajax.js"></script>
+<script src="../js/witconfig.js"></script>
+<script>
+    function loadend() {
+        autocss();
+        loadimg();
+        daisWH();
+    }
+
+    var menu = document.getElementsByClassName("submenu");
+    for (var i = 0; i < menu.length; i++) {
+        (function (i) {
+            // alert(menu[i])
+            console.log(menu[i].id);
+            menu[i].onclick = function () {
+                console.log(this.id);
+                var menuname = document.getElementsByClassName("menuname");
+                for (var j = 0; j < menuname.length; j++) {
+                    menuname[j].classList.remove("active");
+                }
+                for (var k = 0; k < menu.length; k++) {
+                    var idnamex = menu[k].id.split("cl_");
+                    menu[k].firstElementChild.src = "../images/icon/" + idnamex[1] + "01.png";
+                    document.getElementById(idnamex[1]).classList.add("none");
+                }
+                var tid = document.getElementById(this.id);
+                var timg = tid.firstElementChild;
+                var idname = this.id.split("cl_");
+                var timgsrc = "../images/icon/" + idname[1] + "02.png";
+                timg.src = timgsrc;
+                tid.lastElementChild.classList.add("active");
+                document.getElementById(idname[1]).classList.remove("none");
+            }
+        })(i)
+    }
+
+    /**
+     * 座位表的图片
+     * */
+    function daisWH() {
+        var daisW = document.getElementById("daisL");
+        var daisH = document.getElementById("daisH");
+        var value_w = daisW.options[daisW.selectedIndex].value;
+        var value_h = daisH.options[daisH.selectedIndex].value;
+        console.log("列" + value_w);
+        console.log("行" + value_h);
+        var cont = "";
+        if (value_w == 7) {
+            for (var i = 0; i < value_h * value_w; i++) {
+                cont += '<img class="B4M rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
+            }
+        }
+        else if (value_w == 6) {
+            for (var i = 0; i < value_h * value_w; i++) {
+                cont += '<img class="A61 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
+            }
+        }
+        else if (value_w == 5) {
+            for (var i = 0; i < value_h * value_w; i++) {
+                cont += '<img class="A51 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
+            }
+        }
+        document.getElementById("daislist").innerHTML = cont;
+    }
+
+    /*座位的展开与隐藏*/
+    function openAll() {
+        var daislist = document.getElementById("daislist");
+        var daislistclass = daislist.className;
+        var bq_open = document.getElementById("open_all");
+        var class_name = "ofh"+" "+"H16M"+" "+"img-edge-cover"+" "+"W11"+" "+"relative";
+        if (daislistclass.indexOf("ofh H16M") > -1) {
+            daislist.className = "W11"+" "+"relative";
+            bq_open.src = "../images/icon/close.png";
+        }
+        else {
+            daislist.className = class_name;
+            bq_open.src = "../images/icon/open.png";
+        }
+
+    }
+    function C_schoolcata(d, c) {
+        var cont = "";
+        try {
+            for (var i = 0; i < c.length; i++) {
+                cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="location.href=&quot;w1.html?id=' + i + '&quot;)" >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
+            }
+            document.getElementById(d).innerHTML = cont;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+</script>
+</html>
