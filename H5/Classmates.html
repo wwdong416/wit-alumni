@@ -42,9 +42,11 @@
 
     <!--top end-->
     <div class="W11 AC ofh bgc9 relative MT">
-        <div class=" W11  F2 H3M AC flexbox MT PL1M PR1M">
-            <div class="bgc14 rad05 W91 F1 FL">置顶</div>
-            <div class="colorR ML ellips FL  F3">
+        <div class=" W11  F2 H3M AC  MT PL1M PR1M">
+            <!--<div class="bgc14 rad05  F1 FL ">置顶</div>-->
+
+            <div class="colorR  PR1M ellips  F3">
+                <img src="../images/icon/top.png" class="B3M" alt="">
                 <marquee behavior=scroll id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
             </div>
         </div>
@@ -85,7 +87,6 @@
                         <li class="MT05 FR F2 colorA">12:01</li>
                         <div class="clear"></div>
                     </ul>
-                    <!--123-->
                 </div>
             </div>
         </div>
@@ -111,34 +112,38 @@
         <div class="W11 AC inlineB MT">
             <div class="FL ML AL color8  bold ">座位表</div>
             <div class="FR ">
-                <div class="FL   bgc104 ACP H2M">列</div>
-                <div class="FL MR F2">
-                    <select class=" B3M bord0 H2M" id="daisL" onchange="daisWH()">
-                        <option value="8">8</option>
-                        <option value="7" selected="selected">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
+            <!--<div class="FR rad03e bgc104 P05M MR" onclick="wit_date.init(this,0,'01');">-->
+                <!--调整座位        -->
+            <!--</div>-->
+            <div class="FL   bgc104 ACP H2M">列</div>
+            <div class="FL MR F2">
+            <select class=" B3M bord0 H2M" id="daisL" onchange="daisWH()">
+            <option value="8">8</option>
+            <option value="7" selected="selected">7</option>
+            <option value="6">6</option>
+            <option value="5">5</option>
+            <option value="4">4</option>
+            </select>
+            </div>
 
-                <div class="FL bgc104 ACP H2M">行</div>
-                <div class="FL MR F2">
-                    <select class="B3M bord0 H2M" id="daisH" onchange="daisWH()">
-                        <option value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8" selected="selected">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
+            <div class="FL bgc104 ACP H2M">行</div>
+            <div class="FL MR F2">
+            <select class="B3M bord0 H2M" id="daisH" onchange="daisWH()">
+            <option value="10">10</option>
+            <option value="9">9</option>
+            <option value="8" selected="selected">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5</option>
+            <option value="4">4</option>
 
-                    </select>
-                </div>
+            </select>
+            </div>
+
+
             </div>
             <div class="clear H3M"></div>
             <!--<img src="../images/icon/dais.png" alt="" class="clear  W11 AC">-->
-
         </div>
         <img src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
         <div id="dais" class="MT">
@@ -156,40 +161,8 @@
         </div>
         <div class="W11 bordBD1">
         </div>
-        <div class="W11 H7M bordBD1">
-            <div class="W11">
-                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
-                <div class="FL  C8M MT05 LH2">
-                    <div class="FL W21 color876 bold ofh">张明明</div>
-                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
-                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
-                </div>
-                <!--<div class="clear"></div>-->
-            </div>
-        </div>
-
-        <div class="W11 H7M bordBD1">
-            <div class="W11">
-                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
-                <div class="FL  C8M MT05 LH2">
-                    <div class="FL W21 color876 bold ofh">张明明</div>
-                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
-                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
-                </div>
-                <!--<div class="clear"></div>-->
-            </div>
-        </div>
-
-        <div class="W11 H7M bordBD1">
-            <div class="W11">
-                <img class="FL B5M rad0 M" src="../images/pic1.png" alt="">
-                <div class="FL  C8M MT05 LH2">
-                    <div class="FL W21 color876 bold ofh">张明明</div>
-                    <div class="FR W21 AR color8 F3 ofh">行政主管</div>
-                    <div class="FL color8 F3 ellips">浙江慧脑信息科技有限公司</div>
-                </div>
-            </div>
-            <!--<div class="clear"></div>-->
+        <div id="phone_list" class="bgcd1">
+            <!--通讯录列表-->
         </div>
 
     </div>
@@ -286,7 +259,7 @@
 </div>
 
 <!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
-<div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 " id="menu_list">
+<div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index99" id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
         <img class="H2M menuimg" src="../images/icon/index02.png" alt="">
         <div class="menuname active">首页</div>
@@ -312,12 +285,15 @@
 </body>
 <script src="../js/wit_ajax.js"></script>
 <script src="../js/witconfig.js"></script>
+<script src="../js/witjsdate.js"></script>
+<script src="../js/wittouch_02.js"></script>
 <script>
     function loadend() {
         autocss();
         loadimg();
-        daisWH();
+
     }
+
 
     var menu = document.getElementsByClassName("submenu");
     for (var i = 0; i < menu.length; i++) {
@@ -326,8 +302,22 @@
             console.log(menu[i].id);
             menu[i].onclick = function () {
                 console.log(this.id);
-                if (this.id.indexOf("notice") > -1) {
-                    cl_notice();
+                switch (this.id) {
+                    case "cl_notice":
+                        cl_notice();
+                        break;
+                    case "cl_index":
+                        cl_index();
+                        break;
+                    case "cl_information":
+                        cl_information();
+                        break;
+                    case "cl_photo":
+                        cl_photo();
+                        break;
+                    case "cl_dynamic":
+                        cl_dynamic();
+                        break;
                 }
                 var menuname = document.getElementsByClassName("menuname");
                 for (var j = 0; j < menuname.length; j++) {
@@ -357,38 +347,11 @@
         var daisH = document.getElementById("daisH");
         var value_w = daisW.options[daisW.selectedIndex].value;
         var value_h = daisH.options[daisH.selectedIndex].value;
-        console.log("列" + value_w);
-        console.log("行" + value_h);
+        console.log("座位表：列" + value_w+" 行" + value_h);
         var cont = "";
-        if (value_w == 7) {
-            for (var i = 0; i < value_h * value_w; i++) {
-                cont += '<img class="B4M rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
-            }
-        }
-        else if (value_w == 8) {
-            for (var i = 0; i < value_h * value_w; i++) {
-                if (i % 2 != 0) {
-                    cont += '<img class="B4M rad03e AL " src="../images/icon/classmatespic.png" alt="">'
-                } else {
-                    cont += '<img class="B4M rad03e AL ML" src="../images/icon/classmatespic.png" alt="">'
-                }
-            }
-        }
-        else if (value_w == 6) {
-            for (var i = 0; i < value_h * value_w; i++) {
-                cont += '<img class="A61 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
-            }
-        }
-        else if (value_w == 5) {
-            for (var i = 0; i < value_h * value_w; i++) {
-                cont += '<img class="A51 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
-            }
-        }
-        else if (value_w == 4) {
-            for (var i = 0; i < value_h * value_w; i++) {
-                cont += '<img class="A41 rad03e ML AL" src="../images/icon/classmatespic.png" alt="">'
-            }
-        }
+        for (var i = 0; i < value_h * value_w; i++) {
+            cont += "<img class='A"+value_w+"1 rad03e ML AL' src='../images/icon/classmatespic.png'  id=c_headimg" + i + ">"
+        }//绘制座位表
         document.getElementById("daislist").innerHTML = cont;
     }
 
@@ -408,24 +371,96 @@
         }
     }
 
+    function cl_index() {
+
+    }
+
+    var test = [{
+        test_id: 1,
+        test_name: "测试1",
+        test_time: "2018-08-10",
+    },
+        {
+            test_id: 2,
+            test_name: "测试2",
+            test_time: "2018-08-12",
+        },
+        {
+            test_id: 3,
+            test_name: "测试3",
+            test_time: "2018-08-13",
+        },
+        {
+            test_id: 4,
+            test_name: "测试4",
+            test_time: "2018-08-14",
+        }];
+
     //添加通知消息
     function cl_notice() {
         document.getElementById("cont_notice").innerHTML = "";
-        div = document.createElement("div");
-        div.className = " W11 AL";
-        // div.dataset.id = para.schooljson.sc_id;
-        div.innerHTML = '  <div class="W11 P1M bordBD1">' +
-            '<div class="colorO  F3 FL italic W161"> 1</div>' +
-            '<div>' +
-            '<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>' +
-            '<div class="FR F2 colorA">2018/10/25</div>' +
-            '</div>' +
-            '<div class="clear"></div>' +
-            '</div>';
-        // div.onclick = function() {
-        // };
-        document.getElementById("cont_notice").appendChild(div);
-        console.log(1);
+        test.forEach(function (v) {
+            var div = document.createElement("div");
+            div.className = " W11 AL";
+            // div.dataset.id = para.schooljson.sc_id;
+            div.innerHTML = '  <div class="W11 P1M bordBD1">' +
+                '<div class="colorO  F3 FL italic W161 bold">' + v.test_id + '</div>' +
+
+                '<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>' +
+                '<div class="FR F2 colorA">2018/10/25</div>' +
+
+                '<div class="clear"></div>' +
+                '</div>';
+            document.getElementById("cont_notice").appendChild(div);
+        });
+    }
+
+    function cl_information() {
+        daisWH();//设置默认座位表
+        var cont = document.getElementById("phone_list");
+        cont.innerHTML = "";
+        test.forEach(function (v) {
+            var div = document.createElement("div");
+            div.className = " W11 H7M bordBD1";
+            div.innerHTML = '<li class="absolute W11 H7M bordBD1 bgc10  index9">' +
+                '<img class="FL B5M rad0 M" src="../images/pic1.png" alt=""> ' +
+                '<div class="FL  C8M MT05 LH2"> ' +
+                '<div class="FL W21 color876 bold ofh F3">张明明</div> ' +
+                '<div class="FR W21 AR color8 F3 ofh">行政主管</div> ' +
+                '<div class="FL color8 F3 ellips AL">浙江慧脑信息科技有限公司' +
+                '</div></div></li>' +
+                '<div class="absolute left0 B7M H7M F4 AC LH4 bgc36 color1 ">详情</div>' +
+                '<div class="absolute right0 B7M H7M F4 AC LH4 bgc45 color1 ">打电话</div>"';
+            var li = div.querySelector("li");
+            SomeEvent(li, {
+                MOVE_LIMIT_BACK: true
+                , CW: CW
+                , S: M * 6
+                , L: M * 12
+                , MOVE_BACK: {_X: 10, X_: CW - 10}
+                , MOVE_LIMIT: true
+            }, f, {});
+            cont.appendChild(div);
+        });
+        var f = {
+            A_L: function () {
+                this.A_LL();
+            },
+            A_R: function () {
+                this.A_LR();
+            },
+            A_O: function () {
+
+            }
+        }
+    }
+
+    function cl_photo() {
+
+    }
+
+    function cl_dynamic() {
+
     }
 </script>
 </html>

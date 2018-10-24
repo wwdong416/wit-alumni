@@ -57,9 +57,8 @@ li {
     line-height: 0;
 }
 
-
 .talkbubble:before {
-    content:"";
+    content: "";
     position: absolute;
     top: 10px;
     left: -8px;
@@ -70,13 +69,16 @@ li {
     border-bottom: 10px solid transparent;
 }
 
-
 .bordTD1 {
     border-top: 1px solid #d1d1d1;
 }
 
 .bordBD1 {
     border-bottom: 1px solid #d1d1d1;
+}
+
+.bgcd1 {
+    background: #d1d1d1;
 }
 
 .bgcddc {

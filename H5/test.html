@@ -1,44 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Title</title>
+    <script src="js/Drag.js"></script>
+    <style> * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #rollImg {
+        width: 980px;
+        height: 320px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #imgCon {
+        width: 960px;
+        height: 1600px;
+        position: absolute;
+        font-size: 0;
+    }
+
+    #imgCon img {
+        width: 960px;
+        height: 320px;
+    }
+
+    #scroll {
+        width: 20px;
+        background-color: blue;
+        position: absolute;
+    }
+
+    #background {
+        width: 20px;
+        height: 320px;
+        background-color: #cccccc;
+        position: absolute;
+        left: 960px;
+        z-index: -5;
+    }
+
+    #top {
+        width: 20px;
+        height: 20px;
+        background-image: url("img1/11 (2).png");
+        background-size: 100%;
+        position: absolute;
+        left: 960px;
+    }
+
+    #down {
+        width: 20px;
+        height: 20px;
+        background-image: url("img1/11 (1).png");
+        background-size: 100%;
+        position: absolute;
+        left: 960px;
+        top: 300px;
+    } </style>
 </head>
-
 <body>
-<span class="red">* </span>
-地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：
-<span>
-      <select id="AreaId" name="AreaId" size="1" class="sel">
-           <option>-请选择地区-</option>
-           <option value="1">北京</option>
-           <option value="2">上海</option>
-           <option value="3">深圳</option>
-       </select>
-</span>
-</body>
-<script>
-    var index=document.getElementById("AreaId").selectedIndex;//获取当前选择项的索引.
-    document.getElementById("AreaId").options[index].text;//获取当前选择项的文本.
+<div id="rollImg">
+    <div id="imgCon"><img src="img/a.jpeg"> <img src="img/b.jpeg"> <img src="img/c.jpeg"> <img src="img/d.jpeg"> <img
+            src="img/e.jpeg"></div>
+    <div id="scroll"></div>
+    <div id="background"></div>
+    <button id="top"></button>
+    <button id="down"></button>
+</div>
+<script> var rollImg = document.getElementById("rollImg");
+var imgCon = document.getElementById("imgCon");
+var scroll = document.getElementById("scroll");
+var topScroll = document.getElementById("top");
+var downScroll = document.getElementById("down");
+topScroll.addEventListener("click", topHandler); //        topScroll.addEventListener("mousedown",topHandler);
+downScroll.addEventListener("click", downHandler); //        downScroll.addEventListener("mousedown",topHandler);
+scroll.style.left = "960px";
+scroll.style.top = "20px";
+scroll.style.height = (rollImg.offsetHeight - 2 * topScroll.offsetHeight) / (imgCon.offsetHeight / rollImg.offsetHeight) + "px";
+window.addEventListener("DOMMouseScroll", wheelHandler);
+window.addEventListener("mousewheel", wheelHandler);
+rollImg.addEventListener("mousedown", mouseHandler);
+scroll.addEventListener(Drag.ElEM_MOVE_EVENT, dragDivHandler);
+Drag.start(scroll, {left: 960, top: 20, width: 20, height: 280});
 
-    document.getElementById("AreaId").options[index].innerHTML;//获取当前选择项的文本.
+function dragDivHandler(e) {
+    imgCon.style.top = -(e.point.y - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
+}
 
-    var obj=document.getElementById("AreaId");
-    for(i=0;i<obj.length;i++) {//下拉框的长度就是它的选项数.
-        if(obj[i].selected==true) {
-            var text=obj[i].text;//获取当前选择项的文本.
-            console.log(text)
+function mouseHandler(e) {
+    e.preventDefault();
+}
+
+function topHandler(e) {
+    if (e.type === "click") {
+        scroll.style.top = scroll.offsetTop - 15 + "px";
+        if (scroll.offsetTop < topScroll.offsetHeight) {
+            scroll.style.top = topScroll.offsetHeight + "px";
         }
     }
-    console.log(document.getElementById("AreaId").text)  ;//注意，这句代码无效，得到的结果为undefined.
-</script>
+    /*else if(e.type==="mousedown"){
+                   scroll.style.top=scroll.offsetTop-15+"px"
+               }*/
+    imgCon.style.top = -(scroll.offsetTop - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
+}
+
+function downHandler(e) {
+    if (e.type === "click") {
+        scroll.style.top = scroll.offsetTop + 15 + "px";
+        if (scroll.offsetTop > downScroll.offsetTop - scroll.offsetHeight) {
+            scroll.style.top = downScroll.offsetTop - scroll.offsetHeight + "px";
+        }
+    }
+    /*else if(e.type==="mousedown"){
+                   scroll.style.top=scroll.offsetTop+15+"px";
+               }*/
+    imgCon.style.top = -(scroll.offsetTop - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
+}
+
+function wheelHandler(e) {
+    var delta = 0;
+    if (e.type === "mousewheel") {
+        delta = -e.wheelDelta / 40;
+    } else if (e.type === "DOMMouseScroll") {
+        delta = e.detail;
+    }
+    imgCon.style.top = imgCon.offsetTop - delta * 10 + "px";
+    if (imgCon.offsetTop >= 0) {
+        imgCon.style.top = "0px";
+    } else if (imgCon.offsetTop <= -1280) {
+        imgCon.style.top = "-1280px";
+    }
+    scroll.style.top = -imgCon.offsetTop / (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + 20 + "px";
+} </script>
+</body>
 </html>
-
-
-
-
-
-

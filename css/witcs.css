@@ -194,6 +194,7 @@ input[type="range"]::-webkit-slider-thumb {
 .LH25 { line-height: 2.5; }
 .LH3 { line-height: 3; }
 .LH35 { line-height: 3.5; }
+.LH4 { line-height: 4; }
 .LH5 { line-height: 5; }
 /*文本*/
 .indent { text-indent: 2em; }
