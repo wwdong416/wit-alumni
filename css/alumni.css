@@ -93,6 +93,10 @@ li {
     color: #876543;
 }
 
+.bgca04 {
+    background: rgba(0, 0, 0, 0.4)
+}
+
 .selectnone {
     appearance: none;
     -moz-appearance: none;
