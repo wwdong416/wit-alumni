@@ -130,7 +130,7 @@ function autocss() {
     strcss += ".B1M { width:" + M + "px;}.B2M { width:" + M * 2 + "px;}.B3M { width:" + M * 3 + "px;}.B4M {width:" + M * 4 + "px;}.B5M {width:" + M * 5 + "px;}.B6M{width:" + M * 6 + "px;}.B7M { width:" + M * 7 + "px;}.B8M { width:" + M * 8 + "px;}.B9M { width:" + M * 9 + "px;}"
     strcss += ".B10M { width:" + M * 10 + "px;}.B12M { width:" + M * 12 + "px;}.B13M { width:" + M * 13 + "px;}.B14M { width:" + M * 14 + "px;}.B15M { width:" + M * 15 + "px;}.B16M { width:" + M * 16 + "px;}.B18M { width:" + M * 18 + "px;}.B19M { width:" + M * 19 + "px;}"
     strcss += ".B24M { width:" + M * 24 + "px;}.B32M { width:" + M * 32 + "px;}.B34M { width:" + M * 34 + "px;}.B36M { width:" + M * 36 + "px;}.B38M { width:" + M * 38 + "px;}"
-    strcss += ".B64M { width:" + M * 64 + "px;}.B06M { width:" + M * 0.6 + "px;} .B05M { width:" + M * 0.6 + "px;}"
+    strcss += ".B64M { width:" + M * 64 + "px;}.B06M { width:" + M * 0.6 + "px;} .B05M { width:" + M * 0.5 + "px;}"
 //补余大小按键，有间距
     strcss += ".CW { width:" + CW + "px;} .C2W { width:" + CW * 2 + "px;} .CWS{width:" + (CW + 17) + "px;} .CW1T2 {width:" + (CW < CH ? 100 : 50) + "%;}";
     strcss += ".C3M { width:" + (CW - M * 3) + "px;}.C4M { width:" + (CW - M * 4) + "px;}.C6M { width:" + (CW - M * 6) + "px;}.C8M { width:" + (CW - M * 8) + "px;}" +

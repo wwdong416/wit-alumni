@@ -8,14 +8,15 @@
     <link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed"/>
     <link rel="stylesheet" type="text/css" href="../css/alumni.css">
     <link rel="stylesheet" type="text/css" href="../css/witcs.css">
-    <script src="../js/witjs.js?j=1"></script>
+    <script src="../js/witjs.js"></script>
     <title>校友录</title>
 </head>
 
 <body class="ofa ffWRYH" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
 <!--导航栏-->
-<div class="index99 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
+<div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
     <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
     <img src='../images/icon/setting.png' class="FR ICON P05M"/>
 </div>
@@ -89,7 +90,7 @@
             <div class="FL  P05M AL color876 bold">通告榜</div>
             <img class="W32 " src="../images/icon/yellow-line.png" alt="">
         </div>
-        <div class="FR  rad03e bgc104 P05M W41">发布通知</div>
+        <div class="FR  rad03e bgc104 P05M W41" onclick="Re_notice()">发布通知</div>
         <div class="clear PT1M"></div>
 
     </div>
@@ -108,32 +109,6 @@
                 <div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);">
                     调整座位
                 </div>
-                <!--<div class="FL   bgc104 ACP H2M">列</div>-->
-                <!--<div class="FL MR F2">-->
-                <!--<select class=" B3M bord0 H2M" id="daisL" onchange="daisWH()" title="">-->
-                <!--<option value="8">8</option>-->
-                <!--<option value="7" selected="selected">7</option>-->
-                <!--<option value="6">6</option>-->
-                <!--<option value="5">5</option>-->
-                <!--<option value="4">4</option>-->
-                <!--</select>-->
-                <!--</div>-->
-
-                <!--<div class="FL bgc104 ACP H2M">行</div>-->
-                <!--<div class="FL MR F2">-->
-                <!--<select class="B3M bord0 H2M" id="daisH" onchange="daisWH()">-->
-                <!--<option value="10">10</option>-->
-                <!--<option value="9">9</option>-->
-                <!--<option value="8" selected="selected">8</option>-->
-                <!--<option value="7">7</option>-->
-                <!--<option value="6">6</option>-->
-                <!--<option value="5">5</option>-->
-                <!--<option value="4">4</option>-->
-
-                <!--</select>-->
-                <!--</div>-->
-
-
             </div>
             <div class="clear H3M"></div>
             <!--<img src="../images/icon/dais.png" alt="" class="clear  W11 AC">-->
@@ -163,7 +138,22 @@
 </div>
 <!--档案-->
 <div id="photo" class="W11 AC MTH  none">
-    <img src="../images/bybg.png" alt="" class="W11">
+    <div class=" H18M ofh relative">
+        <ul id="ph_gra" class="absolute">
+            <li><img src="../images/classbg.png" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="../images/bybg.png" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="../images/myclass.jpg" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="../images/bybg.png" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="../images/classbg.png" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="../images/1.jpg" alt="" class="W11  H18M indexN FL"></li>
+        </ul>
+        <ul id="ph_index" class="W21 AR absolute rightM bottom0">
+            <li class="color8 radius index9 inlineB F8 "> &#8226</li>
+            <li class="color8 radius index9 inlineB F8 "> &#8226</li>
+
+        </ul>
+    </div>
+
     <div class="W11">
         <div class="P1M  W11">
             <div class="FL W43">
@@ -223,7 +213,7 @@
 </div>
 <!--bottom-->
 <!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
-<div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index99" id="menu_list">
+<div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index90" id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
         <img class="H2M menuimg" src="../images/icon/index02.png" alt="">
         <div class="menuname active">首页</div>
@@ -251,12 +241,13 @@
 <script src="../js/witconfig.js"></script>
 <script src="../js/witjsdate.js"></script>
 <script src="../js/wittouch_02.js"></script>
+<script src="../js/wit_input0.js"></script>
+<script src="../js/wit_touch.js"></script>
 
 <script>
     function loadend() {
         autocss();
         loadimg();
-
     }
 
     var menu = document.getElementsByClassName("submenu");
@@ -311,6 +302,8 @@
             H: 0,
             rowx: [],
             rowy: [],
+            d_h: 5,
+            d_w: 6,
             date_sli: []
         },
         init: function ($d, $p, $gs) {
@@ -336,15 +329,19 @@
             }
             document.getElementById(p).innerHTML = cont + "</div>";
             this.toggle(p, 1);
-            this.C_scrolli(0);
+            this.C_scrolli(0, this.attr.d_h, this.attr.d_w);
             document.getElementById('wit_date_confirm').addEventListener('click', function () {
                 var o = document.querySelector("#wit_date_opt");
                 console.log(o.innerText);
                 var daiswh = o.innerText.split("");
-                daisWH(daiswh[6],daiswh[12]);
+                var daish;
+                if (daiswh[12] == "1") {
+                    daish = 10;
+                    daisWH(daiswh[6], daish);
+                } else {
+                    daisWH(daiswh[6], daiswh[12]);
+                }
                 // console.log(daiswh[6]+"_"+daiswh[12]);
-
-
                 $.toggle(p, 0);
             }, false);
             document.getElementById("UI_bk").addEventListener("click", function () {
@@ -363,12 +360,23 @@
                 document.body.style.overflow = "auto";
             }
         },
-        C_scrolli: function (k) {
+        C_scrolli: function (k, x1, y1) {
             var x;
+            var len = 0;
             if (k == 0) {
                 x = this.attr.rowx;
+                if (x1) {
+                    var num = parseInt(x1);
+                    len = this.attr.rowx.indexOf(num);
+                }
+                console.log(x1, this.attr.rowx, len);
             } else if (k == 1) {
                 x = this.attr.rowy;
+                if (y1) {
+                    var num1 = parseInt(y1);
+                    len = this.attr.rowy.indexOf(num1);
+                }
+                console.log(y1, this.attr.rowy, len);
             }
             var content = "<ul class='FL W11 color333 bold'><li class='W11 H' ></li><li class='W11 H' ></li><li class='W11 H' ></li>";
             for (var i in x) {
@@ -377,17 +385,20 @@
             content = content + "<li class='W11 H ' ></li><li class='W11 H' ></li><li class='W11 H' ></li></ul>";
             var node = k + 1;
             if (node < 3) {
-                var scrp = document.getElementById("wit_scr").childNodes[node];
+                var scrp = document.getElementById("wit_scr").children[node];
                 scrp.innerHTML = content;
+                scrp.scrollTop = this.attr.H * len;
                 scrp.addEventListener('touchend', this.alladjust, false);
                 scrp.addEventListener('scroll', this.scrolladjust, false);
             }
             if (k < this.attr.outtype.length - 1) {
-                this.attr.rowx = x[0];
-                this.attr.outtype[k] = x[0];
-                this.C_scrolli(k + 1);
+                this.attr.rowx = this.attr.d_h;
+                console.log(this.attr.rowx);
+                this.C_scrolli(k + 1, x1, y1);
+                console.log(x1, y1);
             } else {
-                this.attr.rowy = x[0];
+                this.attr.rowy = this.attr.d_w;
+                console.log(this.attr.rowy);
                 this.displaydate();
             }
         },  //生成滚轮
@@ -423,14 +434,15 @@
             outtext += this.attr.rowx + " 列 × " + this.attr.rowy + " 行";
             this.attr.outtext = outtext;
             document.getElementById("wit_date_opt").innerHTML = this.attr.outtext;
-
+            this.attr.d_w = this.attr.rowy;
+            this.attr.d_h = this.attr.rowx;
         },
     };
 
     /**
      * 座位表的图片
      * */
-    function daisWH(value_w,value_h) {
+    function daisWH(value_w, value_h) {
         // console.log("座位表：列" + value_w + " 行" + value_h);
         var cont = "";
         for (var i = 0; i < value_h * value_w; i++) {
@@ -509,8 +521,26 @@
         });
     }
 
+    function Re_notice() {
+        var div = document.createElement("div")
+        div.className = " W11 index99 fix bgc9 CH";
+        div.innerHTML = '<div class="top0 H W11 AC ffHT bgc9 ">发布通知' +
+            '    <div  class="FL B4M H4M F2" onclick="dais.toggle(re_notice,0)"> 取消</div>' +
+            '    <div  class="FR B4M H4M F2 color8" onclick=""> 发布</div>' +
+            '</div><div class="bgc10 W11 F2 AL">' +
+            '    <input type="text" class=" FL H4M W11 F3 ALP  bordBD1" id="re_title" placeholder="标题"/>' +
+            '    <textarea class=" FL  W11 F3 ALP  bordBD1" rows="8"  style="resize:none"  id="re_content" placeholder="发布内容" ></textarea>' +
+            '<div class="W11 FL AR F1 colorA PR1M">最多输入250个字</div>' +
+            '<div  class="FL W11 F3 H4M LH3 color8 ALP bordBD1 bgc10 bord_select" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />请选择通知标签</div>' +
+            '</div>';
+
+        document.getElementById("re_notice").appendChild(div);
+        dais.toggle("re_notice", 1);
+        _wit.event.div_UI("s_select");
+    }
+
     function cl_information() {
-         daisWH(5,6);//设置默认座位表
+        daisWH(5, 6);//设置默认座位表
         var cont = document.getElementById("phone_list");
         cont.innerHTML = "";
         test.forEach(function (v) {
@@ -603,6 +633,27 @@
         var newDiv = document.createElement("div");
         newDiv.className = "clear";
         id.appendChild(newDiv);
+    }
+
+    EventUtil.listenTouchDirection(document, "", "", tou_right, "", tou_left);
+    let number = 0;
+
+    function tou_right() {
+        number++;
+        var ph_list = document.getElementById("ph_gra").children;
+        // console.log(number);
+        if (number < ph_list.length) {
+            document.getElementById("ph_gra").insertBefore(ph_list[i], document.getElementById("ph_gra").firstChild);
+        }else
+        {
+
+        }
+
+
+    }
+
+    function tou_left() {
+
     }
 </script>
 </html>

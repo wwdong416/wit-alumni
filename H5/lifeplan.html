@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="target-densitydpi=device-dpi,width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<title>生命目标</title>
+<link rel="stylesheet" type="text/css" href="../css/witcs.css">
+</head>
+<body class="ofa bgc104" onload="autocss();loadend()" onresize="autocss()">
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<div id="message" class="none index999 fix31 W31 H12M F5 AC bgc8 rad05e middle ffHT"></div>
+
+<div id="plancata" class="fix CW CH ofa bg_cover" style="background-image:url('../img/ico/26320.jpg')">
+    <div id="plan" class="fix W11 H bgc102 color1 ffHT">
+        <div class="FL B4M H AC" onclick="closewindow()">&lt;</div>
+        <div class="FR B4M H" onclick="addplan()"><img class="POT" data-src="../img/a/write.png"></div>
+        <div class="FL C9M H AC bordB_G" onclick="show('lifepic');draw_lifeach()">生命目标</div>
+    </div>
+    <div id="my_plan" class="MTH W11 color1"></div>
+</div>
+
+<div id="newplan" class="none fix index9 W11 CH bgc19 ofa">新目标</div>
+   
+<div id="lifepic" class="none fix index9 W11 CH ofa bg_cover" style="background-image:url('../img/adv/adv004.jpg')" >
+    <div class="W11 H AC colorY ffHT " >生命成就塔	
+    	<div class="FL B4M H AC color1" onclick="hide('lifepic')">&lt;</div>
+    <img class="FR H" data-src="../img/witbtn/help1.png">
+	</div>
+    <ul id="lifetower"></ul> 
+</div>
+
+</body></html>
+<script src="../js/witjs.js"></script>
+<script src="../js/witjsa.js"></script>
+<script src="../js/wit_ajax.js"></script>
+<script src="../js/wit_date.js"></script>
+<script src="../js/witjsinput.js"></script>
+
+<script>
+var myplan=[];
+if(localStorage.myplan){ myplan=JSON.parse(localStorage.myplan)};
+function loadend(){loadimg();
+	postmessage({functionname: "getuserinfo",callback: "callback"})
+}
+function callback(msg) {_u=msg.message;
+	if(!_u){alert("请先登陆慧脑浏览器");window.close()}
+	else{if(navigator.onLine==true){getlifeplan();}else{showmyplan();}}
+}
+function getlifeplan(){
+    var map = new Map();
+	map.put("token",_u.token);map.put("userguid",_u.user_guid);
+	WITAJAX.ajaxmap(map,"http://121.43.233.185/mavenwitbrowser/mytarget/retrieve.do",showmyplan,error);
+}
+function showmyplan(){var st=0,cont="";
+	if(arguments.length>0&&arguments[0].message){ 
+		myplan=JSON.parse(arguments[0].message.content_json)};console.log(myplan);	
+	for(var i=0,ln=myplan.length;i<ln;i++){var tdate=returndate("年月日",myplan[i][0]);
+		cont+='<div class="clear FL MLT A21 F3 LH2 ALP" >'+tdate+'</div><div class="FL MLT A21 F3 LH2 ARP" >'+myplan[i][1]+'</div><li class="FL ML A11 H ACP colorY ffHT" onclick="addplan('+i+')" >'+myplan[i][3]+'</li><div class="FL H1M bgc57" style="width:'+myplan[i][4]+'%"></div>';
+		if(new Date(myplan[i][0].rtrim(".0").replace(/\-/g, "/"))<=new Date()){st=i};
+	}
+	document.getElementById('my_plan').innerHTML=cont+'<p class="FL MTH ML A11 H24M F4 shadow0">写下你想要的，潜能就会油然而生；</br>追求你想要的，快乐就会相伴左右；</br>实现你想要的，你就是征服世界的英雄！</p>';
+	document.getElementById('plancata').scrollTop=M*9*st;console.log(st);
+}
+function postlifeplan(di,t){console.log(di,t);
+	if(t==-1){myplan.splice(di,1);}
+	else{var newplan=[];
+		newplan[0]=document.getElementById("date_R").title;
+		newplan[1]=document.getElementById("age").innerHTML;
+		newplan[2]=document.getElementById("plan_type").value;
+		newplan[3]=document.getElementById("plan_topic").value;
+		newplan[4]=document.getElementById("complete_d")?document.getElementById("complete_d").value:0;	
+		if(di>=0){myplan.splice(di,1,newplan)}else{myplan.unshift(newplan);}
+		myplan.sort(function(x,y){return (new Date(x[0])-new Date(y[0]))});
+	}
+	localStorage.myplan = JSON.stringify(myplan);//console.log(myplan);
+    var map = new Map();
+		map.put("token",_u.token);map.put("userguid",_u.user_guid);
+		map.put("contentjson",localStorage.myplan);//console.log(map);
+    WITAJAX.ajaxmap(map,"http://121.43.233.185/mavenwitbrowser/mytarget/create.do",postsuccess,error);
+}
+function postsuccess(msg){hide('newplan');
+	//document.getElementById("message").innerHTML="添加"+msg.message;
+//show("message");setTimeout(function(){fadeout("message")},1000);
+showmyplan();
+}
+
+var birthday="1973/5/1 8:00";
+var life_ach=[['社会贡献','财富','团队','职业','人脉','学识','家庭','健康'],[10,30,50,30,20,40,10,45]];
+function draw_lifeach(){var cont="";
+	for(var i=0;i<life_ach[0].length;i++){
+		cont+='<div class="MA H AC nowrap bgc'+(i*2+1)+'5" style="width:'+life_ach[1][i]+'%">'+life_ach[0][i]+'</div>'
+	}
+	document.getElementById('lifetower').innerHTML=cont;
+}
+function cal_age(){
+var age=(new Date(last_obj.title)-new Date(birthday))/86400000;
+	document.getElementById("age").innerHTML=Math.ceil(age/365.242199)+"岁"+Math.ceil(age%365.242199)+"天";
+}
+function addplan(di){var cont="";
+	if(di>=0){cont+='<div class="FL W11 H AC colorB ffHT">维护生命目标<div class="FL B4M H AC" onclick="hide(&quot;newplan&quot;)"><</div><div class="FR B4M H AC" onclick="postlifeplan();hide(&quot;replan&quot;)">OK</div></div><input id="date_R" readonly class="FL MLT A21 H AC" onClick="creat_date(&quot;012&quot;,&quot;年月日&quot;)" data-finp="cal_age" value='+myplan[di][0]+' title='+myplan[di][0]+' /><div id="age" class="FL MLT A21 H ARP" >'+myplan[di][1]+'</div><input id="plan_type" class="FL MLT B4M H AC bgc106" readonly data-t="radios" data-s="健,家,学,脉,职,团,财,献" value="'+myplan[di][2]+'"/><input id="plan_topic" class="FL MT C6M H ALP" value="'+myplan[di][3]+'"/><div class="FL MLT F3 LH2">请输入目标完成程度</div><div class="FR MRT F3 LH2 colorR">'+myplan[di][4]+'%</div><input id="complete_d" type="range" value="'+myplan[di][4]+'" max="100" min="0" step="1" class="FL MLT A11 H bgc33" onInput="getvalue(&quot;%&quot;)" /><div class="FL ML MTH BTN AC bgc16 rad05e" onclick="postlifeplan('+di+',-1)">删除</div><div class="FR MR MTH BTN AC bgc36" onclick="postlifeplan('+di+')">提交</div><P class="FL MT W11 indent" >请滑动滑杆输入当前目标的完成程度，或修改目标的完成时间或修改目标内容，然后点击提交；或点击删除键删除当前目标。</P>';}
+	else{cont+='<div class="FL W11 H AC colorB ffHT">新建生命目标<div class="FL B4M H AC" onclick="hide(&quot;newplan&quot;)"><</div><div class="FR B4M H AC" onclick="postlifeplan();hide(&quot;newplan&quot;)">OK</div></div><input id="date_R" placeholder="实现时间" readonly class="FL MLT A21 H AC"  onClick="creat_date(&quot;012&quot;,&quot;年月日&quot;)" data-finp="cal_age"/><div id="age" class="FL MLT A21 H ARP" ></div><input id="plan_type" class="FL MLT B4M H AC bgc106" readonly data-t="radios" data-s="健,家,学,脉,职,团,财,献" value="职"/><input id="plan_topic" class="FL MT C6M H ALP" placeholder="请输入阶段目标"/><div class="FR MRT BTN AC bgc36" onclick="postlifeplan()">提交</div><P class="FL MT W11 indent" >生命的目标应该是多维度的，平衡的，如"健康、家庭、学识、人脉、职业、团队、财富、社会贡献"等，请先选择目标类型再输入目标名称；若要添加多个目标请先提交当前目标，再新建。</P><img src="../img/adv/car9.jpg" class="W11"/>'};
+	document.getElementById('newplan').innerHTML=cont;
+	show('newplan');
+	_init();
+}
+
+//	console.log(eobj.value+":"+eobj.checked);
+
+/*    <input name="date_S" placeholder="开始时间" readonly class="FL MLT A2T4 H AC border"  onClick="creat_date('01234','// :')"/><div class="FL MT H B1M AC color1">-</div><input name="date_E" placeholder="结束时间"  readonly class="FL MT A2T4 H AC border" onClick="creat_date('01234','// :',1)"/>
+    <input id="plan_rep" class="FL MLT C18MT2 H AC bgc106" value="设置重复"/>
+    <input id="plan_alt" class="FL MLT B8M H AC bgc36" value="设置提醒"/>
+    <input id="plan_imp" class="FL MLT BTN bord_img_select" data-t="radio" data-s="很重要,重要,一般,不重要" value="重要"/>
+    <input id="plan_topic" class="clear FL MLT C6M H ALP" placeholder="计划标题"/>
+    <input id="plan_type" class="FL MT B4M H AC bgc106" data-t="radios" data-s="睡,卫,行,工,学,娱,购,食,健,思" value="工"/>
+    
+    <textarea id="plan_detail" class="FL MLT A11 F4" placeholder="计划详情"></textarea>
+
+
+*/
+</script>
