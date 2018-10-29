@@ -40,9 +40,10 @@
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
             <!--<div class="bgc14 rad05  F1 FL ">置顶</div>-->
 
-            <div class="colorR  PR1M ellips  F3">
-                <img src="../images/icon/top.png" class="B3M" alt="">
-                <marquee behavior=scroll id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
+            <div class="colorR  PR1M ellips F3 W11">
+                <div class="B4M F2 bgc14 FL AC rad03e "> 置顶</div>
+                <!--<img src="../images/icon/top.png" class="B3M" alt="">-->
+                <marquee behavior=scroll class="C8M FL ML"  id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
             </div>
         </div>
         <div class="W11 PL1M PR1M AC PB1M">
@@ -637,7 +638,8 @@
     }
 
     //左右滑动监听事件
-    EventUtil.listenTouchDirection(document, "", "", tou_right, "", tou_left);
+    var ph_touch = document.getElementById("ph_gra");
+    EventUtil.listenTouchDirection(ph_touch, "", "", tou_right, "", tou_left);
     var number = 0;//初始化滑动次数
     var by_photos = ["1.png", "2.png", "3.png"];//存放毕业照
     var ph_index = document.getElementById("ph_index").children;

@@ -43,25 +43,25 @@ var EventUtil = {
                         if (spanX > 30) { //向右
                             if (rightCallback) {
                                 rightCallback();
-                                console.log("right");
+                                // console.log("right");
                             }
 
                         } else if (spanX < -30) { //向左
                             if (leftCallback) {
                                 leftCallback();
-                                console.log("left");
+                                // console.log("left");
                             }
                         }
                     } else { //认定为垂直方向滑动
                         if (spanY > 30) { //向下
                             if (downCallback) {
                                 downCallback();
-                                console.log("down");
+                                // console.log("down");
                             }
                         } else if (spanY < -30) {//向上
                             if (upCallback) {
                                 upCallback();
-                                console.log("up");
+                                // console.log("up");
                             }
                         }
                     }
