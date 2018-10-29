@@ -140,17 +140,9 @@
 <div id="photo" class="W11 AC MTH  none">
     <div class=" H18M ofh relative">
         <ul id="ph_gra" class="absolute">
-            <li><img src="../images/classbg.png" alt="" class="W11  H18M indexN FL"></li>
-            <li><img src="../images/bybg.png" alt="" class="W11  H18M indexN FL"></li>
-            <li><img src="../images/myclass.jpg" alt="" class="W11  H18M indexN FL"></li>
-            <li><img src="../images/bybg.png" alt="" class="W11  H18M indexN FL"></li>
-            <li><img src="../images/classbg.png" alt="" class="W11  H18M indexN FL"></li>
-            <li><img src="../images/1.jpg" alt="" class="W11  H18M indexN FL"></li>
+            <li><img src="" alt="" class="W11  H18M indexN FL" id="by_photo"></li>
         </ul>
         <ul id="ph_index" class="W21 AR absolute rightM bottom0">
-            <li class="color8 radius index9 inlineB F8 "> &#8226</li>
-            <li class="color8 radius index9 inlineB F8 "> &#8226</li>
-
         </ul>
     </div>
 
@@ -521,6 +513,7 @@
         });
     }
 
+    //发布通知
     function Re_notice() {
         var div = document.createElement("div")
         div.className = " W11 index99 fix bgc9 CH";
@@ -541,6 +534,7 @@
 
     function cl_information() {
         daisWH(5, 6);//设置默认座位表
+        //添加通讯录
         var cont = document.getElementById("phone_list");
         cont.innerHTML = "";
         test.forEach(function (v) {
@@ -580,6 +574,7 @@
     }
 
     function cl_photo() {
+        //添加照片
         var ph_img = document.getElementById("ph_img");
         ph_img.innerHTML = "";
         test.forEach(function (v) {
@@ -590,6 +585,8 @@
                 '<div class="F2 ellips A41 PB1M AC">2016年秋游 照片留念</div>';
             ph_img.appendChild(div);
         });
+
+        //添加视频
         var newImgs = document.createElement("div");
         newImgs.className = "FL W41"
         newImgs.innerHTML = '<img class="A41 rad05" src="../images/icon/add_photo.png" alt="">';
@@ -608,6 +605,7 @@
         });
         clear(ph_video);
 
+        //添加文件
         var ph_word = document.getElementById("ph_word");
         ph_word.innerHTML = "";
         test.forEach(function (v) {
@@ -623,37 +621,66 @@
         newWords.innerHTML = '<img class="A41 rad05" src="../images/icon/add_folder.png" alt="">';
         ph_word.appendChild(newWords);
         clear(ph_word);
+        //添加毕业照小白点
+        add_photoindex();
     }
 
     function cl_dynamic() {
 
     }
 
+    //添加清除浮动
     function clear(id) {
         var newDiv = document.createElement("div");
         newDiv.className = "clear";
         id.appendChild(newDiv);
     }
 
+    //左右滑动监听事件
     EventUtil.listenTouchDirection(document, "", "", tou_right, "", tou_left);
-    let number = 0;
-
-    function tou_right() {
-        number++;
-        var ph_list = document.getElementById("ph_gra").children;
-        // console.log(number);
-        if (number < ph_list.length) {
-            document.getElementById("ph_gra").insertBefore(ph_list[i], document.getElementById("ph_gra").firstChild);
-        }else
-        {
-
+    var number = 0;//初始化滑动次数
+    var by_photos = ["1.png", "2.png", "3.png"];//存放毕业照
+    var ph_index = document.getElementById("ph_index").children;
+    var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
+    var ph_white = "color1 radius index9 inlineB F8";//激活状态的样式
+    //向左滑动
+    function tou_left() {
+        for (var i = 0; i < by_photos.length; i++) {
+            ph_index[i].className = ph_gray;
         }
-
-
+        ph_index[number].className = ph_white;
+        document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
+        number++;
+        if (number >= by_photos.length) {
+            number = 0;
+        }
     }
 
-    function tou_left() {
+    //向右滑动
+    function tou_right() {
+        if (number <= 0) {
+            number = by_photos.length;
+        }
+        number--;
+        for (var i = 0; i < by_photos.length; i++) {
+            ph_index[i].className = ph_gray;
+        }
+        ph_index[number].className = ph_white;
+        document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
+    }
 
+    //添加毕业照的小白点
+    function add_photoindex() {
+        var ph_photoindex = document.getElementById("ph_index");
+        ph_photoindex.innerHTML = "";
+        by_photos.forEach(function () {
+            var div = document.createElement("li");
+            div.className = " color8 radius index9 inlineB F8";
+            div.innerHTML = '&#8226';
+            ph_photoindex.appendChild(div);
+        });
+        ph_photoindex.children[0].className = ph_white;//设置初始状态的小白点
+        document.getElementById("by_photo").src = "../images/byz/" + by_photos[0];//设置初始图片
     }
 </script>
 </html>
