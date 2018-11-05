@@ -15,6 +15,7 @@
 <body class="ofa ffWRYH" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
+
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
     <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
@@ -31,19 +32,17 @@
             <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic2.png" alt="">
         </div>
         <div class="FL P1M ffWRYH C10M">
-            <div class=" bold F3 ellips"> xx高级中学高二（10）班 ---2018级</div>
-            <div class="F2 color333 ellips">班主任：张大千</div>
+            <div class=" bold F3 ellips" id="class_name"> xx高级中学高二（10）班 ---2018级</div>
+            <div class="F2 color333 ellips " id="class_master">班主任：张大千</div>
         </div>
         <div class="clear"></div>
     </div>
     <div class="W11 AC ofh bgc9 relative MT">
+        <!--置顶通知-->
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
-            <!--<div class="bgc14 rad05  F1 FL ">置顶</div>-->
-
             <div class="colorR  PR1M ellips F3 W11">
                 <div class="B4M F2 bgc14 FL AC rad03e "> 置顶</div>
-                <!--<img src="../images/icon/top.png" class="B3M" alt="">-->
-                <marquee behavior=scroll class="C8M FL ML"  id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
+                <marquee behavior=scroll class="C8M FL ML" id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
             </div>
         </div>
         <div class="W11 PL1M PR1M AC PB1M">
@@ -107,7 +106,7 @@
         <div class="W11 AC inlineB MT">
             <div class="FL ML AL color8  bold ">座位表</div>
             <div class="FR ">
-                <div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);">
+                <div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);" id="dais_value">
                     调整座位
                 </div>
             </div>
@@ -139,6 +138,8 @@
 </div>
 <!--档案-->
 <div id="photo" class="W11 AC MTH  none">
+    <div id="ph_detail"></div>
+    <!--毕业照-->
     <div class=" H18M ofh relative">
         <ul id="ph_gra" class="absolute">
             <li><img src="" alt="" class="W11  H18M indexN FL" id="by_photo"></li>
@@ -153,7 +154,7 @@
                 <div class="FL color8 P05M AL">照片</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41">上传照片</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto()">添加相册</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_img">
@@ -188,6 +189,29 @@
         </div>
     </div>
     <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+
+    <div id="re_photo" class="none index99 fix bottom0 bgc9 W11 CH callnone">
+        <div class="top0 H W11 AC ffHT" id="ph_name">慧脑校友录
+            <div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>
+            <div class="FR B4M H4M F2 color8" onclick=""></div>
+        </div>
+        <div class="bgc10 W11 P1M">
+            <div class="FL W43 color8 P05M AL ellips" id="ph_title">
+                2016年秋游 照片留念
+            </div>
+            <div class="FR  rad03e bgcff P05M W41 AC" id="ph_item">上传照片</div>
+            <div class="clear">
+            </div>
+        </div>
+        <!--<div class="H1M bgc9 W11"></div>-->
+        <div class="W11 bgc10 PT1M" id="ph_list">
+
+        </div>
+    </div>
+
+    <div id="ph_new" class="none index99 fix bottom0 bgc10 W11 CH callnone">
+
+    </div>
 </div>
 <!--动态-->
 <div id="dynamic" class="W11 AC  CH bgcf4  MTH none">
@@ -236,17 +260,31 @@
 <script src="../js/wittouch_02.js"></script>
 <script src="../js/wit_input0.js"></script>
 <script src="../js/wit_touch.js"></script>
-
+<script src="../js/wit_app.js"></script>
+<script src="../js/wit_data.js"></script>
 <script>
     function loadend() {
         autocss();
         loadimg();
+        class_message();
+    }
+
+    /**
+     * [Show_Hidden 点击控制div显示与隐藏]
+     * @param {[id]} obj [需要显示隐藏div的id]
+     */
+    function Show_Hidden(obj) {
+        var div = document.getElementById(obj);
+        if (div.className.indexOf("none") > -1) {
+            div.classList.remove("none");
+        } else {
+            div.classList.add("none");
+        }
     }
 
     var menu = document.getElementsByClassName("submenu");
     for (var i = 0; i < menu.length; i++) {
         (function (i) {
-            // alert(menu[i])
             console.log(menu[i].id);
             menu[i].onclick = function () {
                 console.log(this.id);
@@ -295,7 +333,7 @@
             H: 0,
             rowx: [],
             rowy: [],
-            d_h: 5,
+            d_h: 6,
             d_w: 6,
             date_sli: []
         },
@@ -325,14 +363,17 @@
             this.C_scrolli(0, this.attr.d_h, this.attr.d_w);
             document.getElementById('wit_date_confirm').addEventListener('click', function () {
                 var o = document.querySelector("#wit_date_opt");
+                var value = document.getElementById("dais_value");
                 console.log(o.innerText);
                 var daiswh = o.innerText.split("");
                 var daish;
                 if (daiswh[12] == "1") {
                     daish = 10;
                     daisWH(daiswh[6], daish);
+                    value.setAttribute("data-value", daiswh[6] + "_" + daish);
                 } else {
                     daisWH(daiswh[6], daiswh[12]);
+                    value.setAttribute("data-value", daiswh[6] + "*" + daiswh[12]);
                 }
                 // console.log(daiswh[6]+"_"+daiswh[12]);
                 $.toggle(p, 0);
@@ -469,29 +510,35 @@
             test_id: 1,
             test_name: "测试1",
             test_time: "2018-08-10",
+            test_value: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
         },
         {
             test_id: 2,
             test_name: "测试2",
             test_time: "2018-08-12",
+            test_value: ""
         },
         {
             test_id: 3,
             test_name: "测试3",
             test_time: "2018-08-13",
+            test_value: ""
+        }, {
+            test_id: 4,
+            test_name: "测试3",
+            test_time: "2018-08-13",
+            test_value: ""
         }, {
             test_id: 5,
             test_name: "测试3",
             test_time: "2018-08-13",
-        }, {
-            test_id: 6,
-            test_name: "测试3",
-            test_time: "2018-08-13",
+            test_value: ""
         },
         {
-            test_id: 4,
+            test_id: 6,
             test_name: "测试4",
             test_time: "2018-08-14",
+            test_value: ""
         }
     ];
 
@@ -501,14 +548,25 @@
         test.forEach(function (v) {
             var div = document.createElement("div");
             div.className = " W11 AL";
+            var id = "notice_" + v.test_id;
+            var n_detail = v.test_value;
+            if (n_detail.length == 0 || typeof(n_detail) == "undefined") {
+                n_detail = "";
+            }
+
+            div.onclick = function () {
+                Show_Hidden(id);
+            };
             // div.dataset.id = para.schooljson.sc_id;
             div.innerHTML = '  <div class="W11 P1M bordBD1">' +
                 '<div class="colorO  F3 FL italic W161 bold">' + v.test_id + '</div>' +
-
                 '<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>' +
                 '<div class="FR F2 colorA">2018/10/25</div>' +
-
+                '<div class="FL P05M none MT05 W11 LH2 rad03e color8 bgcaf5" id="notice_' + v.test_id + '">' + n_detail +
+                '<div class="FR MT05" > 发布人：李伟</div>' +
+                '</div>' +
                 '<div class="clear"></div>' +
+
                 '</div>';
             document.getElementById("cont_notice").appendChild(div);
         });
@@ -520,59 +578,37 @@
         div.className = " W11 index99 fix bgc9 CH";
         div.innerHTML = '<div class="top0 H W11 AC ffHT bgc9 ">发布通知' +
             '    <div  class="FL B4M H4M F2" onclick="dais.toggle(re_notice,0)"> 取消</div>' +
-            '    <div  class="FR B4M H4M F2 color8" onclick=""> 发布</div>' +
+            '    <div  class="FR B4M H4M F2 color8" id="n_release" onclick=""> 发布</div>' +
             '</div><div class="bgc10 W11 F2 AL">' +
-            '    <input type="text" class=" FL H4M W11 F3 ALP  bordBD1" id="re_title" placeholder="标题"/>' +
-            '    <textarea class=" FL  W11 F3 ALP  bordBD1" rows="8"  style="resize:none"  id="re_content" placeholder="发布内容" ></textarea>' +
+            '<div  class="FL W11 F3 H4M LH3   bordBD1  bgcddc  color876 bord_select AC" id="n_tag" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />选择类型标签</div>' +
+            '<input type="text" class=" FL H4M W11  ALP  bordBD1 " id="re_title" placeholder="输入标题"/>' +
+            '<textarea class=" FL  W11  ALP  bordBD1 ffWRYH " rows="8"  style="resize:none"  id="re_content" placeholder="发布我的内容......" ></textarea>' +
             '<div class="W11 FL AR F1 colorA PR1M">最多输入250个字</div>' +
-            '<div  class="FL W11 F3 H4M LH3 color8 ALP bordBD1 bgc10 bord_select" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />请选择通知标签</div>' +
             '</div>';
-
         document.getElementById("re_notice").appendChild(div);
         dais.toggle("re_notice", 1);
         _wit.event.div_UI("s_select");
-    }
 
-    function cl_information() {
-        daisWH(5, 6);//设置默认座位表
-        //添加通讯录
-        var cont = document.getElementById("phone_list");
-        cont.innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " W11 H7M bordBD1";
-            div.innerHTML = '<li class="absolute W11 H7M bordBD1 bgc10 ofh index9">' +
-                '<img class="FL B5M rad0 M" src="../images/pic1.png" alt=""> ' +
-                '<div class="FL  C8M MT05 LH2"> ' +
-                '<div class="FL W21 color876 bold ofh F3">张明明</div> ' +
-                '<div class="FR W21 AR color8 F3 ofh">行政主管</div> ' +
-                '<div class="FL W11 color8 F3 ellips AL">浙江慧脑信息科技有限公司' +
-                '</div></div></li>' +
-                '<div class="absolute left0 B7M H7M F4 AC LH4 bgc36 color1 ">详情</div>' +
-                '<div class="absolute right0 B7M H7M F4 AC LH4 bgc45 color1 ">打电话</div>"';
-            var li = div.querySelector("li");
-            SomeEvent(li, {
-                MOVE_LIMIT_BACK: true
-                , CW: CW
-                , S: M * 6
-                , L: M * 12
-                , MOVE_BACK: {_X: 10, X_: CW - 10}
-                , MOVE_LIMIT: true
-            }, f, {});
-            cont.appendChild(div);
-        });
-        var f = {
-            A_L: function () {
-                this.A_LL();
-            },
-            A_R: function () {
-                this.A_LR();
-            },
-            A_O: function () {
-
+        //输入标题后 发布按钮 改变颜色
+        document.getElementById("re_title").oninput = function () {
+            var div = document.getElementById("n_release");
+            if (this.value.length > 0) {
+                if(  document.getElementById("n_tag").innerText.indexOf("选择类型标签")>-1){
+                    _wd.info("请选择类型标签！","bgc104");
+                }else{
+                    div.classList.remove("color8");
+                    div.classList.add("colorff");
+                }
+            } else {
+                div.classList.remove("colorff");
+                div.classList.add("color8");
             }
-        }
+
+        };
     }
+
+
+
 
     function cl_photo() {
         //添加照片
@@ -581,17 +617,20 @@
         test.forEach(function (v) {
             var div = document.createElement("div");
             div.className = " FL ML";
+            div.onclick = function () {
+                photo_item();
+            };
             div.innerHTML =
                 '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC">2016年秋游 照片留念</div>';
+                '<div class="F2 ellips A41 PB1M AC color8">2016年秋游 照片留念</div>';
             ph_img.appendChild(div);
         });
 
         //添加视频
-        var newImgs = document.createElement("div");
-        newImgs.className = "FL W41"
-        newImgs.innerHTML = '<img class="A41 rad05" src="../images/icon/add_photo.png" alt="">';
-        ph_img.appendChild(newImgs);
+        // var newImgs = document.createElement("div");
+        // newImgs.className = "FL W41"
+        // newImgs.innerHTML = '<img class="A41 rad05" src="../images/icon/add_photo.png" alt="">';
+        // ph_img.appendChild(newImgs);
         clear(ph_img);
 
         var ph_video = document.getElementById("ph_video");
@@ -601,7 +640,7 @@
             div.className = " FL ML";
             div.innerHTML =
                 '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC">2016年秋游 照片留念</div>';
+                '<div class="F2 ellips A41 PB1M AC color8">2016年秋游 照片留念</div>';
             ph_video.appendChild(div);
         });
         clear(ph_video);
@@ -614,16 +653,51 @@
             div.className = " FL ML";
             div.innerHTML =
                 '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC">毕业论文</div>';
+                '<div class="F2 ellips A41 PB1M AC color8">毕业论文</div>';
             ph_word.appendChild(div);
         });
-        var newWords = document.createElement("div");
-        newWords.className = "FL W41"
-        newWords.innerHTML = '<img class="A41 rad05" src="../images/icon/add_folder.png" alt="">';
-        ph_word.appendChild(newWords);
+        // var newWords = document.createElement("div");
+        // newWords.className = "FL W41"
+        // newWords.innerHTML = '<img class="A41 rad05" src="../images/icon/add_folder.png" alt="">';
+        // ph_word.appendChild(newWords);
         clear(ph_word);
         //添加毕业照小白点
         add_photoindex();
+    }
+
+    function newPhoto() {
+        var cont = document.getElementById("ph_new");
+        cont.innerHTML = "";
+        var div = document.createElement("div");
+        div.className = "W11";
+        div.innerHTML = '      <div class="top0 H W11 AC bgc9 ffHT">新建相册' +
+            '            <div class="FL B4M H4M F2" onclick="dais.toggle(ph_new,0)">取消</div>' +
+            '            <div class="FR B4M H4M F2 color8" onclick=""></div>' +
+            '        </div>' +
+            '        <div class="bgc10 W11 P1M AC">' +
+            '            <input type="text" class="AL H5M W11 F4 italic color8 bordBD1" placeholder="输入相册名称"/>' +
+            '            <div class="MT2 W54 ma  AC bgcff rad03e P05M F3">完成创建</div>' +
+            '        </div>';
+        cont.appendChild(div);
+        dais.toggle("ph_new", 1);
+    }
+
+    function photo_item() {
+        var ph_img = document.getElementById("ph_list");
+        ph_img.innerHTML = "";
+        test.forEach(function (v) {
+            var div = document.createElement("div");
+            div.className = " FL ML";
+            div.onclick = function () {
+
+            };
+            div.innerHTML =
+                '<img class="A41 PB1M" src="../images/pic2.png" alt="">';
+            ph_img.appendChild(div);
+        });
+        clear(ph_list);
+        dais.toggle("re_photo", 1);
+        4
     }
 
     function cl_dynamic() {
@@ -637,38 +711,44 @@
         id.appendChild(newDiv);
     }
 
-    //左右滑动监听事件
+    //毕业照左右滑动监听事件
     var ph_touch = document.getElementById("ph_gra");
-    EventUtil.listenTouchDirection(ph_touch, "", "", tou_right, "", tou_left);
+    EventUtil.listenTouchDirection(ph_touch, true, "", tou_right, "", tou_left);
     var number = 0;//初始化滑动次数
     var by_photos = ["1.png", "2.png", "3.png"];//存放毕业照
     var ph_index = document.getElementById("ph_index").children;
     var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
     var ph_white = "color1 radius index9 inlineB F8";//激活状态的样式
-    //向左滑动
-    function tou_left() {
-        for (var i = 0; i < by_photos.length; i++) {
-            ph_index[i].className = ph_gray;
-        }
-        ph_index[number].className = ph_white;
-        document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
-        number++;
-        if (number >= by_photos.length) {
-            number = 0;
+    //向右滑动
+    function tou_right() {
+        number--;
+        if (number < 0) {
+            number = by_photos.length;
+            // document.getElementById("by_photo").src = "../images/byz/" + by_photos[number-1];
+        } else {
+            for (var i = 0; i < by_photos.length; i++) {
+                ph_index[i].className = ph_gray;
+            }
+            ph_index[number].className = ph_white;
+            document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
+            console.log(document.getElementById("by_photo").src);
         }
     }
 
-    //向右滑动
-    function tou_right() {
-        if (number <= 0) {
-            number = by_photos.length;
+    //向左滑动
+    function tou_left() {
+        number++;
+        if (number > by_photos.length) {
+            number = 0;
+            // document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
+        } else {
+            for (var i = 0; i < by_photos.length; i++) {
+                ph_index[i].className = ph_gray;
+            }
+            ph_index[number - 1].className = ph_white;
+            document.getElementById("by_photo").src = "../images/byz/" + by_photos[number - 1];
+            console.log(document.getElementById("by_photo").src);
         }
-        number--;
-        for (var i = 0; i < by_photos.length; i++) {
-            ph_index[i].className = ph_gray;
-        }
-        ph_index[number].className = ph_white;
-        document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
     }
 
     //添加毕业照的小白点

@@ -1,140 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="js/Drag.js"></script>
-    <style> * {
-        margin: 0;
-        padding: 0;
-    }
+    <title></title>
+    <style>
+        div {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            width: 100%;
+            left: 0px;
+            overflow: hidden;
+        }
 
-    #rollImg {
-        width: 980px;
-        height: 320px;
-        position: relative;
-        overflow: hidden;
-    }
+        li {
+            list-style-type: none;
+            height: 35px;
+            background: gainsboro;
+            border-bottom: solid 1px #fff;
+            text-align: left;
+            line-height: 35px;
+            padding-left: 15px;
+        }
 
-    #imgCon {
-        width: 960px;
-        height: 1600px;
-        position: absolute;
-        font-size: 0;
-    }
-
-    #imgCon img {
-        width: 960px;
-        height: 320px;
-    }
-
-    #scroll {
-        width: 20px;
-        background-color: blue;
-        position: absolute;
-    }
-
-    #background {
-        width: 20px;
-        height: 320px;
-        background-color: #cccccc;
-        position: absolute;
-        left: 960px;
-        z-index: -5;
-    }
-
-    #top {
-        width: 20px;
-        height: 20px;
-        background-image: url("img1/11 (2).png");
-        background-size: 100%;
-        position: absolute;
-        left: 960px;
-    }
-
-    #down {
-        width: 20px;
-        height: 20px;
-        background-image: url("img1/11 (1).png");
-        background-size: 100%;
-        position: absolute;
-        left: 960px;
-        top: 300px;
-    } </style>
+        ul {
+            width: 100%;
+            margin-top: 0px;
+            position: absolute;
+            left: 0px;
+            padding: 0px;
+            top: 0px;
+        }
+    </style>
 </head>
 <body>
-<div id="rollImg">
-    <div id="imgCon"><img src="img/a.jpeg"> <img src="img/b.jpeg"> <img src="img/c.jpeg"> <img src="img/d.jpeg"> <img
-            src="img/e.jpeg"></div>
-    <div id="scroll"></div>
-    <div id="background"></div>
-    <button id="top"></button>
-    <button id="down"></button>
+<div class="outerScroller">
+    <ul class='scroll'>
+        <li>朋友圈1</li>
+        <li>朋友圈2</li>
+        <li>朋友圈3</li>
+        <li>朋友圈4</li>
+        <li>朋友圈5</li>
+        <li>朋友圈6</li>
+        <li>朋友圈7</li>
+        <li>朋友圈8</li>
+        <li>朋友圈9</li>
+        <li>朋友圈10</li>
+    </ul>
 </div>
-<script> var rollImg = document.getElementById("rollImg");
-var imgCon = document.getElementById("imgCon");
-var scroll = document.getElementById("scroll");
-var topScroll = document.getElementById("top");
-var downScroll = document.getElementById("down");
-topScroll.addEventListener("click", topHandler); //        topScroll.addEventListener("mousedown",topHandler);
-downScroll.addEventListener("click", downHandler); //        downScroll.addEventListener("mousedown",topHandler);
-scroll.style.left = "960px";
-scroll.style.top = "20px";
-scroll.style.height = (rollImg.offsetHeight - 2 * topScroll.offsetHeight) / (imgCon.offsetHeight / rollImg.offsetHeight) + "px";
-window.addEventListener("DOMMouseScroll", wheelHandler);
-window.addEventListener("mousewheel", wheelHandler);
-rollImg.addEventListener("mousedown", mouseHandler);
-scroll.addEventListener(Drag.ElEM_MOVE_EVENT, dragDivHandler);
-Drag.start(scroll, {left: 960, top: 20, width: 20, height: 280});
+<script>
+    var scroll = document.querySelector('.scroll');
+    var outerScroller = document.querySelector('.outerScroller');
+    var touchStart = 0;
+    var touchDis = 0;
+    outerScroller.addEventListener('touchstart', function (event) {
+        var touch = event.targetTouches[0];
+        // 把元素放在手指所在的位置
+        touchStart = touch.pageY;
+        console.log(touchStart);
+    }, false);
+    outerScroller.addEventListener('touchmove', function (event) {
+        var touch = event.targetTouches[0];
+        console.log(touch.pageY + 'px');
+        scroll.style.top = scroll.offsetTop + touch.pageY - touchStart + 'px';
+        console.log(scroll.style.top);
+        touchStart = touch.pageY;
+        touchDis = touch.pageY - touchStart;
+    }, false);
+    outerScroller.addEventListener('touchend', function (event) {
+        touchStart = 0;
+        var top = scroll.offsetTop;
+        console.log(top);
+        if (top > 70) refresh();
+        if (top > 0) {
+            var time = setInterval(function () {
+                scroll.style.top = scroll.offsetTop - 2 + 'px';
+                if (scroll.offsetTop <= 0) clearInterval(time);
+            }, 1)
+        }
+    }, false);
 
-function dragDivHandler(e) {
-    imgCon.style.top = -(e.point.y - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
-}
-
-function mouseHandler(e) {
-    e.preventDefault();
-}
-
-function topHandler(e) {
-    if (e.type === "click") {
-        scroll.style.top = scroll.offsetTop - 15 + "px";
-        if (scroll.offsetTop < topScroll.offsetHeight) {
-            scroll.style.top = topScroll.offsetHeight + "px";
+    function refresh() {
+        //这里是后台数据
+        for (var i = 3; i > 0; i--) {
+            var node = document.createElement("li");
+            node.innerHTML = "I'm new" + i;
+            scroll.insertBefore(node, scroll.firstChild);
         }
     }
-    /*else if(e.type==="mousedown"){
-                   scroll.style.top=scroll.offsetTop-15+"px"
-               }*/
-    imgCon.style.top = -(scroll.offsetTop - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
-}
-
-function downHandler(e) {
-    if (e.type === "click") {
-        scroll.style.top = scroll.offsetTop + 15 + "px";
-        if (scroll.offsetTop > downScroll.offsetTop - scroll.offsetHeight) {
-            scroll.style.top = downScroll.offsetTop - scroll.offsetHeight + "px";
-        }
-    }
-    /*else if(e.type==="mousedown"){
-                   scroll.style.top=scroll.offsetTop+15+"px";
-               }*/
-    imgCon.style.top = -(scroll.offsetTop - 20) * (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + "px";
-}
-
-function wheelHandler(e) {
-    var delta = 0;
-    if (e.type === "mousewheel") {
-        delta = -e.wheelDelta / 40;
-    } else if (e.type === "DOMMouseScroll") {
-        delta = e.detail;
-    }
-    imgCon.style.top = imgCon.offsetTop - delta * 10 + "px";
-    if (imgCon.offsetTop >= 0) {
-        imgCon.style.top = "0px";
-    } else if (imgCon.offsetTop <= -1280) {
-        imgCon.style.top = "-1280px";
-    }
-    scroll.style.top = -imgCon.offsetTop / (imgCon.offsetHeight / (rollImg.offsetHeight - 2 * topScroll.offsetHeight)) + 20 + "px";
-} </script>
+</script>
 </body>
 </html>

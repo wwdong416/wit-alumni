@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!--<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+    <title>test</title>
+    <style>
+        body { padding: 0; margin: 0 }
+        #list { }
+        #list > div { float: left; width: 25%; height: 50px; text-align: center; line-height: 50px; }
+        #list > div:nth-child(3n) { background-color: aqua; }
+        #list > div:nth-child(3n+1) { background-color: #AA99FF; }
+        #list > div:nth-child(3n+2) { background-color: #005555; }
+    </style>
+</head>
+<body>
+<fieldset>
+    <input type="file" onchange="_fun.previewImage(this,{},'i_file');"/>
+    <img id="i_file" src=""/>
+    <button onclick="submit();">提交</button>
+</fieldset>
+<fieldset>
+    <form method="post" action="http://127.0.0.1:3000/getmember"
+    <!--enctype="multipart/form-data"-->>
+    <input type="text" name="id" value="1"/>
+    <input type="file" name="image"/>
+    <input type="submit" value="form提交"/>
+    </form>
+</fieldset>
+<fieldset>
+    <form method="post" action="http://127.0.0.1:3000/importmemberexcel" enctype="multipart/form-data">
+        <input type="file" name="excel"/>
+        <input type="submit" value="form提交"/>
+    </form>
+</fieldset>
+</body>
+</html>
+<script src="public/javascripts/witconfig.js"></script>
+<script>
+    function ajax_formdata(url, async, para, func, error, file, noloading) {
+        var xmlhttp, $this = this;
+        var form = new FormData();
+        if (para) {
+            for (var i in para) {
+                if (typeof para[i] == "object") {
+                    form.append(i, JSON.stringify(para[i]));
+                    continue;
+                }
+                form.append(i, para[i]);
+            }
+        }
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest()
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+        }
+        xmlhttp.open("post", url, async);
+//        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        if (file)
+            xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
+        xmlhttp.onreadystatechange = function () {
+            //console.log(xmlhttp);
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    var msg = xmlhttp.responseText;
+                    func(msg);
+                }
+                else {
+                    var funerr = error || function () {
+                                console.log("网络异常！", 1500);
+                            };
+                    funerr();
+                }
+            }
+        };
+        xmlhttp.send(form);
+    }
+    function submit() {
+        var para = {
+//            sid: 3330382,
+           guid: 33303822002306,
+//             phone:"",
+//            sDate: 1970
+        };
+        ajax_formdata("http://192.168.10.19:8080/school/queryByGuid.do", true, para, function (msg) {
+            // console.log(msg);
+            console.log(JSON.parse(msg));
+        });
+    }
+
+</script>
+

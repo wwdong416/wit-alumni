@@ -96,10 +96,20 @@ li {
 .bgca04 {
     background: rgba(0, 0, 0, 0.4)
 }
-
+.bgcaf5{
+    background: #f5f3ef;
+}
+.bgcff{
+    background: #ffc437;
+}
+.colorff{
+    color:#ffc437 ;
+}
 .selectnone {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
 }
-
+.ma{
+    margin: 0 auto;
+}
