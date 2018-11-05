@@ -22,7 +22,7 @@
     <img src='../images/icon/setting.png' class="FR ICON P05M"/>
 </div>
 <!--首页-->
-<div id="index" class="MTH">
+<div id="index" class="MTH ">
     <div class="W11 AC ofh relative img-edge-cover">
         <img src="../images/classbg.png" class="W11">
     </div>
@@ -32,8 +32,8 @@
             <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic2.png" alt="">
         </div>
         <div class="FL P1M ffWRYH C10M">
-            <div class=" bold F3 ellips" id="class_name"> xx高级中学高二（10）班 ---2018级</div>
-            <div class="F2 color333 ellips " id="class_master">班主任：张大千</div>
+            <div class=" bold F3 ellips" id="class_name"></div>
+            <div class="F2 color333 ellips " id="class_master"></div>
         </div>
         <div class="clear"></div>
     </div>
@@ -42,7 +42,9 @@
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
             <div class="colorR  PR1M ellips F3 W11">
                 <div class="B4M F2 bgc14 FL AC rad03e "> 置顶</div>
-                <marquee behavior=scroll class="C8M FL ML" id="frist_notice">通知 ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！</marquee>
+                <marquee onMouseOut=start(); onMouseOver=stop(); behavior=scroll  id="frist_notice">通知
+                    ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！
+                </marquee>
             </div>
         </div>
         <div class="W11 PL1M PR1M AC PB1M">
@@ -232,8 +234,8 @@
 <!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
 <div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index90" id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
-        <img class="H2M menuimg" src="../images/icon/index02.png" alt="">
-        <div class="menuname active">首页</div>
+        <img class="H2M menuimg" src="../images/icon/index01.png" alt="">
+        <div class="menuname ">首页</div>
     </div>
     <div class="FL W51 AC submenu" id="cl_notice">
         <img class="H2M menuimg" src="../images/icon/notice01.png" alt="">
@@ -267,63 +269,63 @@
         autocss();
         loadimg();
         class_message();
+        toMenu("cl_index");
     }
 
-    /**
-     * [Show_Hidden 点击控制div显示与隐藏]
-     * @param {[id]} obj [需要显示隐藏div的id]
-     */
-    function Show_Hidden(obj) {
-        var div = document.getElementById(obj);
-        if (div.className.indexOf("none") > -1) {
-            div.classList.remove("none");
-        } else {
-            div.classList.add("none");
+    function ch_menu(id) {
+        switch (id) {
+            case "cl_notice":
+                cl_notice();
+                break;
+            case "cl_index":
+                cl_index();
+                break;
+            case "cl_information":
+                cl_information();
+                break;
+            case "cl_photo":
+                cl_photo();
+                break;
+            case "cl_dynamic":
+                cl_dynamic();
+                break;
         }
     }
 
-    var menu = document.getElementsByClassName("submenu");
-    for (var i = 0; i < menu.length; i++) {
-        (function (i) {
-            console.log(menu[i].id);
-            menu[i].onclick = function () {
-                console.log(this.id);
-                switch (this.id) {
-                    case "cl_notice":
-                        cl_notice();
-                        break;
-                    case "cl_index":
-                        cl_index();
-                        break;
-                    case "cl_information":
-                        cl_information();
-                        break;
-                    case "cl_photo":
-                        cl_photo();
-                        break;
-                    case "cl_dynamic":
-                        cl_dynamic();
-                        break;
+    function toMenu(id) {
+        var menu = document.getElementsByClassName("submenu");
+        var a_id = document.getElementById(id);
+        a_id.lastElementChild.classList.add("active");
+        var a_idimg = "../images/icon/" + id.split("cl_")[1] + "02.png";
+        a_id.firstElementChild.src = a_idimg;
+        document.getElementById(id.split("cl_")[1]).classList.remove("none");
+        ch_menu(id);
+        for (var i = 0; i < menu.length; i++) {
+            (function (i) {
+                menu[i].onclick = function () {
+                    console.log(this.id);
+                    ch_menu(this.id);
+                    var menuname = document.getElementsByClassName("menuname");
+                    for (var j = 0; j < menuname.length; j++) {
+                        menuname[j].classList.remove("active");
+                    }
+                    for (var k = 0; k < menu.length; k++) {
+                        var idnamex = menu[k].id.split("cl_");
+                        menu[k].firstElementChild.src = "../images/icon/" + idnamex[1] + "01.png";
+                        document.getElementById(idnamex[1]).classList.add("none");
+                    }
+                    var tid = document.getElementById(this.id);
+                    var timg = tid.firstElementChild;
+                    var idname = this.id.split("cl_");
+                    var timgsrc = "../images/icon/" + idname[1] + "02.png";
+                    timg.src = timgsrc;
+                    tid.lastElementChild.classList.add("active");
+                    document.getElementById(idname[1]).classList.remove("none");
                 }
-                var menuname = document.getElementsByClassName("menuname");
-                for (var j = 0; j < menuname.length; j++) {
-                    menuname[j].classList.remove("active");
-                }
-                for (var k = 0; k < menu.length; k++) {
-                    var idnamex = menu[k].id.split("cl_");
-                    menu[k].firstElementChild.src = "../images/icon/" + idnamex[1] + "01.png";
-                    document.getElementById(idnamex[1]).classList.add("none");
-                }
-                var tid = document.getElementById(this.id);
-                var timg = tid.firstElementChild;
-                var idname = this.id.split("cl_");
-                var timgsrc = "../images/icon/" + idname[1] + "02.png";
-                timg.src = timgsrc;
-                tid.lastElementChild.classList.add("active");
-                document.getElementById(idname[1]).classList.remove("none");
-            }
-        })(i)
+            })(i)
+        }
     }
+
 
     var dais = {
         attr: {
@@ -541,74 +543,6 @@
             test_value: ""
         }
     ];
-
-    //添加通知消息
-    function cl_notice() {
-        document.getElementById("cont_notice").innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " W11 AL";
-            var id = "notice_" + v.test_id;
-            var n_detail = v.test_value;
-            if (n_detail.length == 0 || typeof(n_detail) == "undefined") {
-                n_detail = "";
-            }
-
-            div.onclick = function () {
-                Show_Hidden(id);
-            };
-            // div.dataset.id = para.schooljson.sc_id;
-            div.innerHTML = '  <div class="W11 P1M bordBD1">' +
-                '<div class="colorO  F3 FL italic W161 bold">' + v.test_id + '</div>' +
-                '<div class="thicker">李伟同学于2018年10月25日荣获浙江省奥林匹克数学竞赛一等奖</div>' +
-                '<div class="FR F2 colorA">2018/10/25</div>' +
-                '<div class="FL P05M none MT05 W11 LH2 rad03e color8 bgcaf5" id="notice_' + v.test_id + '">' + n_detail +
-                '<div class="FR MT05" > 发布人：李伟</div>' +
-                '</div>' +
-                '<div class="clear"></div>' +
-
-                '</div>';
-            document.getElementById("cont_notice").appendChild(div);
-        });
-    }
-
-    //发布通知
-    function Re_notice() {
-        var div = document.createElement("div")
-        div.className = " W11 index99 fix bgc9 CH";
-        div.innerHTML = '<div class="top0 H W11 AC ffHT bgc9 ">发布通知' +
-            '    <div  class="FL B4M H4M F2" onclick="dais.toggle(re_notice,0)"> 取消</div>' +
-            '    <div  class="FR B4M H4M F2 color8" id="n_release" onclick=""> 发布</div>' +
-            '</div><div class="bgc10 W11 F2 AL">' +
-            '<div  class="FL W11 F3 H4M LH3   bordBD1  bgcddc  color876 bord_select AC" id="n_tag" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />选择类型标签</div>' +
-            '<input type="text" class=" FL H4M W11  ALP  bordBD1 " id="re_title" placeholder="输入标题"/>' +
-            '<textarea class=" FL  W11  ALP  bordBD1 ffWRYH " rows="8"  style="resize:none"  id="re_content" placeholder="发布我的内容......" ></textarea>' +
-            '<div class="W11 FL AR F1 colorA PR1M">最多输入250个字</div>' +
-            '</div>';
-        document.getElementById("re_notice").appendChild(div);
-        dais.toggle("re_notice", 1);
-        _wit.event.div_UI("s_select");
-
-        //输入标题后 发布按钮 改变颜色
-        document.getElementById("re_title").oninput = function () {
-            var div = document.getElementById("n_release");
-            if (this.value.length > 0) {
-                if(  document.getElementById("n_tag").innerText.indexOf("选择类型标签")>-1){
-                    _wd.info("请选择类型标签！","bgc104");
-                }else{
-                    div.classList.remove("color8");
-                    div.classList.add("colorff");
-                }
-            } else {
-                div.classList.remove("colorff");
-                div.classList.add("color8");
-            }
-
-        };
-    }
-
-
-
 
     function cl_photo() {
         //添加照片

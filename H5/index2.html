@@ -78,17 +78,45 @@
         xmlhttp.send(form);
     }
     function submit() {
+
         var para = {
-//            sid: 3330382,
-           guid: 33303822002306,
-//             phone:"",
+            json:{
+                sid: 3330382,
+                cid: 33303822002302,
+                phone:"18806097971",
+                type:1,
+                editor:"",
+                title:"测试标题一",
+                notice:"测试内容一",
+                date: new Date().getTime(),
+                replay:""
+            }
+
 //            sDate: 1970
         };
-        ajax_formdata("http://192.168.10.19:8080/school/queryByGuid.do", true, para, function (msg) {
-            // console.log(msg);
+        ajax_formdata("http://192.168.10.19:8080/notice/delete.do", true, para, function (msg) {
+             console.log(msg);
             console.log(JSON.parse(msg));
         });
     }
 
+    // var para = {
+    //     json: {
+    //         guid: 3330382,
+    //         license: 0,
+    //         name: "浙江省乐清中学",
+    //         areacode: 330382,
+    //         type: 3,
+    //         address: "浙江省乐清市宁康东路518号",
+    //         zipcode: 325600,
+    //         phone: "",
+    //         date: new Date().getTime()
+    //     },
+    //     logo: i_file.src.replace(/^data:image\/\w+;base64,/, "")
+    // };
+    // ajax_formdata("http://127.0.0.1:3000/school/insert", true, para, function (msg) {
+    //     console.log(msg);
+    //     console.log(JSON.parse(msg));
+    // });
 </script>
 
