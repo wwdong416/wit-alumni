@@ -109,7 +109,7 @@ function Re_notice() {
         '    <div  class="FL B4M H4M F2" onclick="dais.toggle(re_notice,0)"> 取消</div>' +
         '    <div  class="FR B4M H4M F2 color8" id="n_release" onclick="in_notice()"> 发布</div>' +
         '</div><div class="bgc10 W11 F2 AL">' +
-        '<div  class="FL W11 F3 H4M LH3   bordBD1  bgcddc  color876 bord_select AC" id="n_tag" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />选择类型标签</div>' +
+        '<div  class="FL W11 F3 H4M LH3   bordBD1  bgcddc  color876 bord_select AC" id="n_tag" title="-1" data-t="radio" data-s="班务,探望,游玩,喜报,哀悼" />选择类型标签</div>' +
         '<input type="text" class=" FL H4M W11  ALP  bordBD1 " id="re_title" placeholder="输入标题"/>' +
         '<textarea class=" FL  W11  ALP  bordBD1 ffWRYH " rows="8"  style="resize:none"  id="re_content" placeholder="发布我的内容......" ></textarea>' +
         '<div class="W11 FL AR F1 colorA PR1M">最多输入250个字</div>' +
@@ -131,7 +131,6 @@ function Re_notice() {
             div.classList.remove("colorff");
             div.classList.add("color8");
         }
-
     };
 }
 
@@ -139,8 +138,8 @@ function in_notice() {
     var type = parseInt(document.getElementById("n_tag").title);
     var title = document.getElementById("re_title").value;
     var notice = document.getElementById("re_content").value;
-    console.log(type + "_" + title + "_" + notice);
-    if (type !== NaN && title == "") {
+    console.log(type + "_" + title.length + "_" + notice);
+    if ( type < 0 || title.length <= 0) {
         _wd.info("通知标签、标题不能为空", "bgc44");
     } else {
         var para = {
@@ -192,12 +191,11 @@ function cl_notice() {
                 };
                 // div.dataset.id = para.schooljson.sc_id;
                 div.innerHTML = '  <div class="W11 P1M bordBD1">' +
-                    '<div class="colorO  F3 FL italic W161 bold">' + tag_number++ + '</div>' +
-                    '<div class="thicker">' + v.title + '</div>' +
-                    '<div class="FR F2 colorA">' + _wd.crtTimeFtt(v.date) + '</div>' +
-                    '<div class="FL P05M none MT05 W11  rad03e color8 bgcaf5" id="notice_' + v.id + '">' +
-                    '<div class="LH2">' + n_detail + '</div>' +
-                    '<div class="FR" > 发布人：' + v.editor + '</div>' +
+                    '<div class="thicker F3"><b class="colorO F3 italic MR">'+  tag_number++ +' </b> ' + v.title + '</div>' +
+                    '<div class="FR F2 MT05 colorA">' + _wd.crtTimeFtt(v.date) + '</div>' +
+                    '<div class="FL P1M none MT05 W11  rad03e color8 bgcaf5" id="notice_' + v.id + '">' +
+                    '<div class="LH2 F3">' + n_detail + '</div>' +
+                    '<div class="FR F2" > 发布人：' + v.editor + '</div>' +
                     '</div>' +
                     '<div class="clear"></div>' +
 
@@ -223,6 +221,7 @@ function cl_photo() {
     _wd.ajax_formdata(url + "/record/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg)) {
             var p = JSON.parse(msg).message;
+            console.log(p);
             p.forEach(function (v) {
                 var div = document.createElement("div");
                 div.className = " FL ML";
@@ -316,152 +315,156 @@ function addPhotos($id) {
         id: record_id,
     };
     console.log(para);
-    _wd.ajax_formdata(url + "/record/queryById.do", true, para, function (msg) {
-        var p = JSON.parse(msg);
-        console.log(p);
-    });
-
-    var cont = document.getElementById("re_photo");
-    cont.innerHTML = "";
-    var div = document.createElement("div");
-    div.className = "W11";
-    div.innerHTML = '  <div class="top0 H W11 AC ffHT" id="ph_name">慧脑校友录' +
-        '<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>' +
-        '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
-        '</div>' +
-        '<div class="bgc10 W11 P1M">' +
-        '<div class="FL W43 color8 P05M AL ellips" id="ph_title">' +
-        '2016年秋游 照片留念' +
-        '</div>' +
-        '<div  class="FR  rad03e bgcff P05M W41 AC relative" id="add_photo" >上传照片' +
-        '</div>' +
-        '<input type="file" id="up_photo" multiple="multiple" accept="image/*" class="none" capture="camera" >' +
-        '<div class="clear">' +
-        '</div>' +
-        '</div>' +
-        '<div class="W11 bgc10 PT1M" id="ph_list">' +
-        '<img id="imgshow" src="" alt=""/>' +
-        '</div>';
-    cont.appendChild(div);
-    dais.toggle("re_photo", 1);
-
-    var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
-    var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
-    if (isIos) {
-        document.getElementById("up_photo").removeAttribute("capture");
-    }
-    var ph_img = document.getElementById("ph_list");
-    ph_img.innerHTML = "";
-    test.forEach(function (v) {
-        var div = document.createElement("div");
-        div.className = " FL ML";
-        div.onclick = function () {
-        };
-        div.innerHTML =
-            '<img class="A41 PB1M" src="../images/pic2.png" alt="">';
-        ph_img.appendChild(div);
-    });
-    _wd.clear(ph_list);
-
-    var input = document.getElementById("up_photo");
-    input.value = "";
-    var result;
-    var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
-    var fd;  //FormData方式发送请求
-    var oSelect = document.getElementById("add_photo");
-    // var oAdd = document.getElementById("add");
-    var oSubmit = document.getElementById("submit");
-    var oInput = document.getElementById("up_photo");
-    if (typeof FileReader === 'undefined') {
-        alert("抱歉，你的浏览器不支持 FileReader");
-        input.setAttribute('disabled', 'disabled');
-    } else {
-        input.addEventListener('change', readFile, false);
-    }　　　　　//handler
-    function readFile() {
-        fd = new FormData();
-        var iLen = this.files.length;
-        var index = 0;
-        var cont = document.getElementById("ph_upload");
-        cont.innerHTML = "";
-        var div = document.createElement("div");
-        div.className = "W11";
-        div.innerHTML = '  <div class="top0 H W11 AC ffHT bgc9">' +
-            '<div class="FL B4M H4M F2" onclick="dais.toggle(ph_upload,0)">&lt;&nbsp;返回</div>' +
-            '<div class="FR B4M H4M F2 color8" onclick="">上传</div>' +
-            '</div>' +
-            '<div class="bgc10 W11 P05M" id="ch_list">' +
-            '</div>';
-        cont.appendChild(div);
-        dais.toggle("ph_upload", 1);
-        for (var i = 0; i < iLen; i++) {
-            if (!input['value'].match(/.jpg|.gif|.png|.jpeg|.bmp/i)) {　　//判断上传文件格式
-                return alert("上传的图片格式不正确，请重新选择");
+    _wd.ajax_formdata(lo_url + "/record/queryById.do", true, para, function (msg) {
+        if (m_Error(msg)) {
+            var p = JSON.parse(msg);
+            console.log(p);
+            console.log(p.message);
+            var ph_name = p.message.name;
+            console.log(ph_name.length);
+            if (ph_name.length > 10) {
+                ph_name = ph_name.substring(0, 10) + "…";
             }
-            var reader = new FileReader();
-            reader.index = i;
-            fd.append(i, this.files[i]);
-            reader.readAsDataURL(this.files[i]);  //转成base64
-            reader.fileName = this.files[i].name;
-            reader.onload = function (e) {
-                var imgMsg = {
-                    name: this.fileName,//获取文件名
-                    base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
+            var cont = document.getElementById("re_photo");
+            cont.innerHTML = "";
+            var div = document.createElement("div");
+            div.className = "W11";
+            div.innerHTML = '  <div class="top0 H W11 AC ffHT " id="ph_name">' + ph_name +
+                '<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>' +
+                '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
+                '</div>' +
+                '<div class="bgc10 W11 P1M">' +
+                '<div class="FL W43 color8 P05M AL ellips" id="ph_title">' + p.message.name +
+                '</div>' +
+                '<div  class="FR  rad03e bgcff P05M W41 AC relative" id="add_photo" >上传照片' +
+                '</div>' +
+                '<input type="file" id="up_photo" multiple="multiple" accept="image/*" class="none" capture="camera" >' +
+                '<div class="clear">' +
+                '</div>' +
+                '</div>' +
+                '<div class="W11 bgc10 PT1M" id="ph_list">' +
+
+                '</div>';
+            cont.appendChild(div);
+            dais.toggle("re_photo", 1);
+            var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
+            var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+            if (isIos) {
+                document.getElementById("up_photo").removeAttribute("capture");
+            }
+            var ph_img = document.getElementById("ph_list");
+            ph_img.innerHTML = "";
+            test.forEach(function (v) {
+                var div = document.createElement("div");
+                div.className = " FL ML";
+                div.onclick = function () {
                 };
-                dataArr.push(imgMsg);
-                console.log(imgMsg);
-                result = '<div class="pic44 AC"> <img class="relative" src="' + this.result + '" alt=""/></div>   ';
-                var div1 = document.createElement('div');
-                div1.innerHTML = result;
-                div1.className = "FL border M05 pic44 ofh";
-                document.getElementById("ch_list").appendChild(div1)
-                // document.getElementsByTagName('body')[0].appendChild(div1);  　　//插入dom树
-                var img = div1.getElementsByTagName('img')[0];
-                img.onload = function () {
-                    var nowHeight = ReSizePic(this); //设置图片大小
-                    this.parentNode.style.display = 'block';
-                    var oParent = this.parentNode;
-                    if (nowHeight) {
-                        oParent.style.paddingTop = (oParent.offsetHeight - nowHeight) / 2 + 'px';
+                div.innerHTML =
+                    '<img class="A41 PB1M" src="../images/pic2.png" alt="">';
+                ph_img.appendChild(div);
+            });
+            _wd.clear(ph_list);
+            var input = document.getElementById("up_photo");
+            input.value = "";
+            var result;
+            var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
+            var fd;  //FormData方式发送请求
+            var oSelect = document.getElementById("add_photo");
+            // var oAdd = document.getElementById("add");
+            var oSubmit = document.getElementById("submit");
+            var oInput = document.getElementById("up_photo");
+            if (typeof FileReader === 'undefined') {
+                alert("抱歉，你的浏览器不支持 FileReader");
+                input.setAttribute('disabled', 'disabled');
+            } else {
+                input.addEventListener('change', readFile, false);
+            }　　　　　//handler
+            function readFile() {
+                fd = new FormData();
+                var iLen = this.files.length;
+                var index = 0;
+                var cont = document.getElementById("ph_upload");
+                cont.innerHTML = "";
+                var div = document.createElement("div");
+                div.className = "W11";
+                div.innerHTML = '  <div class="top0 H W11 AC ffHT bgc9">' +
+                    '<div class="FL B4M H4M F2" onclick="dais.toggle(ph_upload,0)">&lt;&nbsp;返回</div>' +
+                    '<div class="FR B4M H4M F2 color8" onclick="">上传</div>' +
+                    '</div>' +
+                    '<div class="bgc10 W11 P05M" id="ch_list">' +
+                    '</div>';
+                cont.appendChild(div);
+                dais.toggle("ph_upload", 1);
+                for (var i = 0; i < iLen; i++) {
+                    if (!input['value'].match(/.jpg|.gif|.png|.jpeg|.bmp/i)) {　　//判断上传文件格式
+                        return alert("上传的图片格式不正确，请重新选择");
                     }
-                };
-                div1.onclick = function () {
-                    var r = confirm("确认删除？");
-                    if (r == true) {
-                        this.remove();                  // 在页面中删除该图片元素
-                        delete dataArr[this.index];  // 删除dataArr对应的数据
+                    var reader = new FileReader();
+                    reader.index = i;
+                    fd.append(i, this.files[i]);
+                    reader.readAsDataURL(this.files[i]);  //转成base64
+                    reader.fileName = this.files[i].name;
+                    reader.onload = function (e) {
+                        var imgMsg = {
+                            name: this.fileName,//获取文件名
+                            base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
+                        };
+                        dataArr.push(imgMsg);
+                        console.log(imgMsg);
+                        result = '<div class="pic44 AC"> <img class="relative" src="' + this.result + '" alt=""/></div>   ';
+                        var div1 = document.createElement('div');
+                        div1.innerHTML = result;
+                        div1.className = "FL border M05 pic44 ofh";
+                        document.getElementById("ch_list").appendChild(div1)
+                        // document.getElementsByTagName('body')[0].appendChild(div1);  　　//插入dom树
+                        var img = div1.getElementsByTagName('img')[0];
+                        img.onload = function () {
+                            var nowHeight = ReSizePic(this); //设置图片大小
+                            this.parentNode.style.display = 'block';
+                            var oParent = this.parentNode;
+                            if (nowHeight) {
+                                oParent.style.paddingTop = (oParent.offsetHeight - nowHeight) / 2 + 'px';
+                            }
+                        };
+                        div1.onclick = function () {
+                            var r = confirm("确认删除？");
+                            if (r == true) {
+                                this.remove();                  // 在页面中删除该图片元素
+                                delete dataArr[this.index];  // 删除dataArr对应的数据
+                            }
+                        };
+                        index++;
                     }
-                };
-                index++;
+                }
+            }
+
+            oSelect.onclick = function () {
+                oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
+                //清空已选图片
+                dataArr = [];
+                index = 0;
+                oInput.click();
+            };
+
+            function ReSizePic(ThisPic) {
+                var RePicWidth = D41; //这里修改为您想显示的宽度值
+                var TrueWidth = ThisPic.width; //图片实际宽度
+                var TrueHeight = ThisPic.height; //图片实际高度
+                if (TrueWidth > TrueHeight) {
+                    //宽大于高
+                    var reWidth = RePicWidth;
+                    ThisPic.width = reWidth;
+                    //垂直居中
+                    var nowHeight = TrueHeight * (reWidth / TrueWidth);
+                    return nowHeight;  //将图片修改后的高度返回，供垂直居中用
+                } else {
+                    //宽小于高
+                    var reHeight = RePicWidth;
+                    ThisPic.height = reHeight;
+                }
             }
         }
-    }
-
-    oSelect.onclick = function () {
-        oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
-        //清空已选图片
-        dataArr = [];
-        index = 0;
-        oInput.click();
-    };
-
-    function ReSizePic(ThisPic) {
-        var RePicWidth = D41; //这里修改为您想显示的宽度值
-        var TrueWidth = ThisPic.width; //图片实际宽度
-        var TrueHeight = ThisPic.height; //图片实际高度
-        if (TrueWidth > TrueHeight) {
-            //宽大于高
-            var reWidth = RePicWidth;
-            ThisPic.width = reWidth;
-            //垂直居中
-            var nowHeight = TrueHeight * (reWidth / TrueWidth);
-            return nowHeight;  //将图片修改后的高度返回，供垂直居中用
-        } else {
-            //宽小于高
-            var reHeight = RePicWidth;
-            ThisPic.height = reHeight;
-        }
-    }
+    });
 
     //
     //

@@ -79,10 +79,11 @@
     }
     function submit() {
         var para = {
-           guid: 33303822002302,
+          id: 2,
 //            sDate: 1970
         };
-        ajax_formdata("http://121.43.233.185/alumnicloudweb/class/queryByGuid.do", true, para, function (msg) {
+        //http://121.43.233.185/alumnicloudweb
+        ajax_formdata("http://121.43.233.185/alumnicloudweb/record/queryById.do", true, para, function (msg) {
             // console.log(msg);
             console.log(JSON.parse(msg));
         });

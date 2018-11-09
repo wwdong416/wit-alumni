@@ -118,7 +118,7 @@ var _wd = {
         var crtTime = new Date(value);
         //直接调用公共JS里面的时间类处理的办法
         //yyyy-MM-dd hh:mm:ss
-        return _wd.dateFtt("yyyy-MM-dd hh:mm:ss", crtTime);
+        return _wd.dateFtt("yyyy-MM-dd hh:mm ", crtTime);
     },
     /**
      * [Show_Hidden 点击控制div显示与隐藏]
