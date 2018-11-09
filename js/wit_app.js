@@ -77,6 +77,7 @@ var _wd = {
         };
         xmlhttp.send(form);
     },
+
     //获取url中"?"符后的字串
     getUrl: function () {
         var url = location.search;
@@ -91,7 +92,8 @@ var _wd = {
         return theRequest;
     },
     /**时间格式化处理
-     *
+     *@fmt 格式要求
+     * @date 时间
      * */
     dateFtt: function (fmt, date) {
         var o = {
@@ -110,6 +112,7 @@ var _wd = {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     },
+
     //创建时间格式化显示
     crtTimeFtt: function (value) {
         var crtTime = new Date(value);
@@ -128,5 +131,15 @@ var _wd = {
         } else {
             div.classList.add("none");
         }
+    },
+    /**
+     * //添加清除浮动
+     * @id 目标id
+     * */
+    clear: function (id) {
+        var newDiv = document.createElement("div");
+        newDiv.className = "clear";
+        id.appendChild(newDiv);
     }
+
 };

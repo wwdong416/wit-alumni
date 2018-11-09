@@ -42,7 +42,7 @@
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
             <div class="colorR  PR1M ellips F3 W11">
                 <div class="B4M F2 bgc14 FL AC rad03e "> 置顶</div>
-                <marquee onMouseOut=start(); onMouseOver=stop(); behavior=scroll  id="frist_notice">通知
+                <marquee onMouseOut=start(); onMouseOver=stop(); behavior=scroll id="frist_notice">通知
                     ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！
                 </marquee>
             </div>
@@ -156,7 +156,7 @@
                 <div class="FL color8 P05M AL">照片</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto()">添加相册</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">添加相册</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_img">
@@ -169,7 +169,7 @@
                 <div class="FL color8 P05M AL">视频</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41">上传视频</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">上传视频</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_video">
@@ -183,7 +183,7 @@
                 <div class="FL color8 P05M AL">文件</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41">上传文件</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">上传文件</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_word">
@@ -193,24 +193,25 @@
     <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
 
     <div id="re_photo" class="none index99 fix bottom0 bgc9 W11 CH callnone">
-        <div class="top0 H W11 AC ffHT" id="ph_name">慧脑校友录
-            <div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>
-            <div class="FR B4M H4M F2 color8" onclick=""></div>
-        </div>
-        <div class="bgc10 W11 P1M">
-            <div class="FL W43 color8 P05M AL ellips" id="ph_title">
-                2016年秋游 照片留念
-            </div>
-            <div class="FR  rad03e bgcff P05M W41 AC" id="ph_item">上传照片</div>
-            <div class="clear">
-            </div>
-        </div>
-        <!--<div class="H1M bgc9 W11"></div>-->
-        <div class="W11 bgc10 PT1M" id="ph_list">
+        <!--<div class="top0 H W11 AC ffHT" id="ph_name">慧脑校友录-->
+        <!--<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>-->
+        <!--<div class="FR B4M H4M F2 color8" onclick=""></div>-->
+        <!--</div>-->
+        <!--<div class="bgc10 W11 P1M">-->
+        <!--<div class="FL W43 color8 P05M AL ellips" id="ph_title">-->
+        <!--2016年秋游 照片留念-->
+        <!--</div>-->
+        <!--<div class="FR  rad03e bgcff P05M W41 AC" id="ph_item">上传照片</div>-->
+        <!--<div class="clear">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="W11 bgc10 PT1M" id="ph_list">-->
 
-        </div>
+        <!--</div>-->
     </div>
+    <div id="ph_upload" class="none index99 fix bottom0 bgc10 W11 CH callnone">
 
+    </div>
     <div id="ph_new" class="none index99 fix bottom0 bgc10 W11 CH callnone">
 
     </div>
@@ -544,106 +545,16 @@
         }
     ];
 
-    function cl_photo() {
-        //添加照片
-        var ph_img = document.getElementById("ph_img");
-        ph_img.innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " FL ML";
-            div.onclick = function () {
-                photo_item();
-            };
-            div.innerHTML =
-                '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC color8">2016年秋游 照片留念</div>';
-            ph_img.appendChild(div);
-        });
 
-        //添加视频
-        // var newImgs = document.createElement("div");
-        // newImgs.className = "FL W41"
-        // newImgs.innerHTML = '<img class="A41 rad05" src="../images/icon/add_photo.png" alt="">';
-        // ph_img.appendChild(newImgs);
-        clear(ph_img);
 
-        var ph_video = document.getElementById("ph_video");
-        ph_video.innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " FL ML";
-            div.innerHTML =
-                '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC color8">2016年秋游 照片留念</div>';
-            ph_video.appendChild(div);
-        });
-        clear(ph_video);
 
-        //添加文件
-        var ph_word = document.getElementById("ph_word");
-        ph_word.innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " FL ML";
-            div.innerHTML =
-                '<img class="A41 rad05" src="../images/port03.jpg" alt="">' +
-                '<div class="F2 ellips A41 PB1M AC color8">毕业论文</div>';
-            ph_word.appendChild(div);
-        });
-        // var newWords = document.createElement("div");
-        // newWords.className = "FL W41"
-        // newWords.innerHTML = '<img class="A41 rad05" src="../images/icon/add_folder.png" alt="">';
-        // ph_word.appendChild(newWords);
-        clear(ph_word);
-        //添加毕业照小白点
-        add_photoindex();
-    }
 
-    function newPhoto() {
-        var cont = document.getElementById("ph_new");
-        cont.innerHTML = "";
-        var div = document.createElement("div");
-        div.className = "W11";
-        div.innerHTML = '      <div class="top0 H W11 AC bgc9 ffHT">新建相册' +
-            '            <div class="FL B4M H4M F2" onclick="dais.toggle(ph_new,0)">取消</div>' +
-            '            <div class="FR B4M H4M F2 color8" onclick=""></div>' +
-            '        </div>' +
-            '        <div class="bgc10 W11 P1M AC">' +
-            '            <input type="text" class="AL H5M W11 F4 italic color8 bordBD1" placeholder="输入相册名称"/>' +
-            '            <div class="MT2 W54 ma  AC bgcff rad03e P05M F3">完成创建</div>' +
-            '        </div>';
-        cont.appendChild(div);
-        dais.toggle("ph_new", 1);
-    }
-
-    function photo_item() {
-        var ph_img = document.getElementById("ph_list");
-        ph_img.innerHTML = "";
-        test.forEach(function (v) {
-            var div = document.createElement("div");
-            div.className = " FL ML";
-            div.onclick = function () {
-
-            };
-            div.innerHTML =
-                '<img class="A41 PB1M" src="../images/pic2.png" alt="">';
-            ph_img.appendChild(div);
-        });
-        clear(ph_list);
-        dais.toggle("re_photo", 1);
-        4
-    }
 
     function cl_dynamic() {
 
     }
 
-    //添加清除浮动
-    function clear(id) {
-        var newDiv = document.createElement("div");
-        newDiv.className = "clear";
-        id.appendChild(newDiv);
-    }
+
 
     //毕业照左右滑动监听事件
     var ph_touch = document.getElementById("ph_gra");
