@@ -6,7 +6,7 @@
 var url = "http://121.43.233.185/alumnicloudweb";
 var lo_url = "http://192.168.10.19:8080";
 //获取地址栏中cid的值
-var id = "33303822003301";
+var id = "33303822009303";
 // if (_wd.getUrl()){
 //     id = _wd.getUrl().Cid;
 // }
@@ -39,9 +39,9 @@ function class_message() {
             _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
                 if (m_Error(msg)) {
                     var p = JSON.parse(msg);
+                    console.log(p);
                     classname = p.message[0].name;
                     master = p.message[0].master;
-
                     document.getElementById("class_name").innerText = schoolname + classname + "班";
                     document.getElementById("class_master").innerText = "班主任：" + master;
                 }
@@ -171,7 +171,7 @@ function in_notice() {
 function cl_notice() {
     document.getElementById("cont_notice").innerHTML = "";
     var para = {
-        cid: s_guid,
+        cid: id,
         phone: "18806097971",
     };
     var tag_number = 1;
@@ -315,7 +315,7 @@ function addPhotos($id) {
         id: record_id,
     };
     console.log(para);
-    _wd.ajax_formdata(lo_url + "/record/queryById.do", true, para, function (msg) {
+    _wd.ajax_formdata(url + "/record/queryById.do", true, para, function (msg) {
         if (m_Error(msg)) {
             var p = JSON.parse(msg);
             console.log(p);
@@ -330,7 +330,7 @@ function addPhotos($id) {
             var div = document.createElement("div");
             div.className = "W11";
             div.innerHTML = '  <div class="top0 H W11 AC ffHT " id="ph_name">' + ph_name +
-                '<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>' +
+                '<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)"><b class="F3 ">&lt;</b>返回</div>' +
                 '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
                 '</div>' +
                 '<div class="bgc10 W11 P1M">' +

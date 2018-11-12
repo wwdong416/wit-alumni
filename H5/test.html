@@ -35,19 +35,25 @@
             border-color: #666666;
             background-color: #dedede;
         }
-        .t_h{
+
+        .th {
             border-width: 1px;
             padding: 8px;
+            font-weight: bold;
             border-style: solid;
             border-color: #666666;
             background-color: #dedede;
         }
-        table.gridtable td {
+
+        .td {
             border-width: 1px;
             padding: 8px;
             border-style: solid;
             border-color: #666666;
             background-color: #ffffff;
+        }
+        .td input{
+            width: 50px;
         }
     </style>
 </head>
@@ -69,20 +75,24 @@
 <div id="show">
     <table class="gridtable" id="table">
         <tr id="head">
-            <th>价格</th>
-            <th>库存</th>
-            <th>编号</th>
+            <td class="th">价格</td>
+            <td class="th">库存</td>
+            <td class="th">编号</td>
         </tr>
-        <tr id="body">
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-        </tr>
+        <!--<tr id="body">-->
+        <!--<td><input type="text"></td>-->
+        <!--<td><input type="text"></td>-->
+        <!--<td><input type="text"></td>-->
+        <!--</tr>-->
     </table>
 </div>
 </body>
 <script>
+    var number = 0;
     function addTable(name) {
+
+        number++;
+        console.log(number);
         var from = document.getElementsByName(name);
         var check = [];
         for (i in from) {
@@ -90,24 +100,51 @@
                 check.push(from[i].value);
             }
         }
+        console.log(check);
+        var c = document.getElementById('table');//获取表格信息
+        var z = c.rows[0].cells;//首先获得表格有多少列，先获取再插入新行
 
-        var head = document.getElementById("head");
-        var h_first = head.firstChild;
-        var body = document.getElementById("body");
-        console.log(check[0]);
-        console.log(name);
-        var div = document.createElement("th");
-        div.className = "t_h";
+            for (var j = 0 ; j< check.length; j++) {
+
+                var x = c.insertRow(c.rows.length);
+                for (var i = 0; i < z.length; i++) {//依次向新行插入表格列数的单元格
+                    var y = x.insertCell(i);
+                    y.className = "td";
+                    y.innerHTML = " <input type=\"text\">";
+                }
+
+        }
+
+
+        var t_head = "";
         switch (name) {
             case "color":
-                div.innerHTML = '颜色';
+                t_head = "颜色";
                 break;
             case "size":
-                div.innerHTML = '尺寸';
+                t_head = "尺寸";
                 break;
         }
-        head.insertBefore(div,h_first);
+
+        var len = c.rows.length;//获得行数
+        var ro = c.rows[0].cells;
+        var len2 = ro.length;//获得列数
+        // for (var i = 0; i < len; i++) {
+        //
+        //     var x = c.rows[i].deleteCell(len2);//删除每一行末尾的单元格
+        // }
+        console.log(ro);
+        var x0 = c.rows[0].insertCell(len2-3);
+        x0.className = "th";
+        x0.innerHTML = t_head;
+        for (var i = 1; i < len; i++) {
+            var x1 = c.rows[i].insertCell(len2-3);
+            x1.className = "td";
+            x1.innerHTML = check[i-1];
+        }
+
 
     }
+
 </script>
 </html>
