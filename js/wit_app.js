@@ -41,11 +41,11 @@ var _wd = {
         var form = new FormData();
         if (para) {
             for (var i in para) {
-                if (typeof para[i] == "object") {
+                if (para[i] instanceof File) {
+                    form.append(i, para[i]);
+                } else if (typeof para[i] == "object") {
                     form.append(i, JSON.stringify(para[i]));
-                    continue;
-                }
-                form.append(i, para[i]);
+                } else form.append(i, para[i]);
             }
         }
         if (window.XMLHttpRequest) {
@@ -54,9 +54,7 @@ var _wd = {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
         }
         xmlhttp.open("post", url, async);
-//        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        if (file)
-            xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
+        if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
         xmlhttp.onreadystatechange = function () {
             //console.log(xmlhttp);
             if (xmlhttp.readyState == 4) {
@@ -66,10 +64,7 @@ var _wd = {
                 }
                 else {
                     var funerr = error || function () {
-
                         _wd.info("服务器异常！", "bgc24");
-
-                        console.log("服务器异常！", 1500);
                     };
                     funerr();
                 }

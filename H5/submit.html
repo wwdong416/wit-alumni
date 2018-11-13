@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link href="../css/witcs.css" rel="stylesheet"/>
+    <script src="../js/witjs.js"></script>
+</head>
+<body onload="init();" class="bgc2 ofa" onresize="autocss();">
+<div class="W11 clear ">
+    <fieldset style="padding:0;margin:0;">
+        <form id="form" action="http://127.0.0.1:3000/importfile" method="post" enctype="multipart/form-data">
+            <p class="FL W11 F3 LH15 P05"><span class="colorR">提示：</span>默认首字为姓，复姓请在姓后输入空格，不输姓请在名前输入空格。身份证号用于保护信息归属权。</p>
+
+            <img id="per_portrait" data-id="IMAGE" class="clear FL M B9M H9M AC LH3 rad bgc108" alt="头像" src="img/port/port02.jpg" onclick="nextElementSibling.click();"/>
+            <input id="ipt_file1" name="per_portrait" type="file" multiple="multiple" name="imgUpload" class="none"
+                   onchange="previewImage(this,{},'per_portrait');"/>
+
+            <div class="FL C12M H MT">
+                <input name="per_full_name" data-id="per_full_name" class="FL W21 H AC rad" placeholder="姓 名"/>
+                <input name="per_nick_name" data-id="per_nick_name" class="FL W21 H AC rad" placeholder="昵 称"/>
+            </div>
+
+            <ul id="per_sex" name="per_sex" data-id="per_sex" class="FR MT C24M H ACP">
+                <li class="FL W21 H AC bgc5 radM">先生</li>
+                <li class="FR W21 H AC bgc5 radM">女士</li>
+            </ul>
+            <div class="H1M clear"></div>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">userguid</div>
+            <input name="userguid" data-id="userguid" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入电话号码"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">token</div>
+            <input name="token" data-id="token" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="token"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">per_motto</div>
+            <input name="per_motto" data-id="per_motto" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入备注"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">per_address</div>
+            <input name="per_address" data-id="per_address" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入地址"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">per_zodiac</div>
+            <input name="per_zodiac" data-id="per_zodiac" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入生肖"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">per_constellation</div>
+            <input name="per_constellation" data-id="per_constellation" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入星座"/>
+
+            <div class=" FL MLT B13M H F4 AC bgc108 ">per_birthday</div>
+            <input name="per_birthday" data-id="per_birthday" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入出生日期"/>
+
+            <input type="submit" class="MLT MA A21 H bgc16 rad" value="form提交"/>
+        </form>
+        <button class="MLT MA A21 H bgc16 rad" onclick="ajax();">ajax提交</button>
+    </fieldset>
+    <fieldset>
+        <form action="http://192.168.1.129:8080/school/fileupload.do" method="post" enctype="multipart/form-data">
+            <input type="text" name="json"
+                   value=‘{"cid":33303822001303,"sid":3330382,"phone":"15158677106","type":1,"name":"测试图片","src":"","memo":"测试备注","date":1541748419705,"replay":""}’/>
+            <input id="ipt_file2" type="file" name="file"/>
+            <input type="submit" class="MLT MA A21 H bgc16 rad" value="form提交"/>
+        </form>
+        <button class="MLT MA A21 H bgc16 rad" onclick="ajax();">ajax提交</button>
+    </fieldset>
+</div>
+</body>
+</html>
+<script src="../js/witconfig.js"></script>
+<script>
+    "use strict";
+    autocss();
+    function previewImage(file, para, id, callback, loading) {
+        if (file.files && file.files[0]) {
+            loading && this.toLoading();
+            var img = id;
+            if (typeof id == "string") img = document.querySelector("#" + id);
+            img.onload = function () {
+                loading && this.toLoading(-1);
+                img.width = para.width ? para.width : 320;
+                img.height = para.height ? para.height : 240;
+                callback && callback(file.files[0], img, para);
+            }.bind(this);
+//            var reader = new FileReader();
+//            reader.onloadend = function (e) {
+//                console.log(img, e, reader, this);
+//                var base64 = reader.result;
+//                //var blob = this.base64ToBlob(base64);
+//                //img.src = URL.createObjectURL(blob);
+//                img.src = base64;
+//            }.bind(this);
+            img.src = URL.createObjectURL(file.files[0]);
+            window.files = file.files;
+//            reader.readAsDataURL(file.files[0]);
+        }
+    }
+    function ajax_formdata(url, async, para, func, error, file, noloading) {
+        var xmlhttp, $this = this;
+        var form = new FormData();
+        if (para) {
+            for (var i in para) {
+                if (para[i] instanceof File) {
+                    form.append(i, para[i]);
+                } else if (typeof para[i] == "object") {
+                    form.append(i, JSON.stringify(para[i]));
+                } else form.append(i, para[i]);
+            }
+        }
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest()
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+        }
+        xmlhttp.open("post", url, async);
+        if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
+        xmlhttp.onreadystatechange = function () {
+            //console.log(xmlhttp);
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    var msg = xmlhttp.responseText;
+                    func(msg);
+                }
+                else {
+                    var funerr = error || function () {
+                                $this.toAlert("网络异常！", 1500);
+                            };
+                    funerr();
+                }
+            }
+        };
+        xmlhttp.send(form);
+    }
+    var per = {
+        per_portrait: "",
+        per_full_name: "刘晶晶",
+        per_nick_name: "觅雪莹",
+        per_sex: 1,
+        userguid: 15158677106,
+        token: "32509b97dc0fac8979f3fff917bb925b",
+        per_motto: "备注",
+        per_address: "浙江-杭州-西湖区",
+        per_zodiac: "兔",
+        per_constellation: "巨蟹",
+        per_birthday: "1987-06-27"
+    };
+    function init() {
+        bind();
+        fill(per);
+    }
+    function bind() {
+        _fun.radioClick("per_sex", [{className: {on: "FL W21 H AC bgc58 radM", off: "FL W21 H AC bgc5 radM"}}
+            , {className: {on: "FR W21 H AC bgc68 radM", off: "FR W21 H AC bgc5 radM"}}], true);
+    }
+    function fill(o) {
+        var t = document.querySelector("#form");
+        for (var i in o) {
+            var d = t.querySelector("[name=" + i + "]"), v = o[i];
+            if (!d || !v) continue;
+            switch (d.tagName) {
+                case "DIV":
+                case "UL":
+                    v > 0 && d.children[v - 1].click();
+                    break;
+                case "IMG":
+                    d.src = v;
+                    break;
+                case "INPUT":
+                    d.value = v;
+                    break;
+                default :
+                    break;
+            }
+        }
+    }
+    function toPara() {
+        var d = document.querySelector("#form"), dl = d.querySelectorAll("[data-id]"), p = {};
+        Array.prototype.forEach.call(dl, function (v) {
+            var k = v.dataset.id, tag = v.tagName;
+            switch (tag) {
+                case "DIV":
+                    p[k] = (v.dataset.radio >> 0) + 1;
+                    break;
+                case "UL":
+                    p[k] = (v.dataset.radio >> 0) + 1;
+                    break;
+                case "IMG":
+                    p[k] = v.src.replace(/data:image\/.*?;base64,/, "");
+                    break;
+                case "INPUT":
+                    p[k] = v.value.trim();
+                    break;
+            }
+        });
+        return p;
+    }
+    function ajax() {
+        var para = {
+            json: {
+                cid: 33303822001303,
+                sid: 3330382,
+                phone: "15158677106",
+                type: 1,
+                name: "测试图片",
+                src: "",
+                memo: "测试备注",
+                date: 1541748419705,
+                replay: ""
+            }
+        };
+        para.file = ipt_file1.files[0];
+        console.log(para);
+//        _fun.ajax_formdata("http://127.0.0.1:8080/c/servlet/demo/FormUploadServlet", true, toPara(), function (msg) {
+        ajax_formdata("http://192.168.10.5:8080/record/insert.do", true, para, function (msg) {
+            console.log(msg);
+        }, function (msg) {
+            console.log(msg);
+        });
+    }
+</script>

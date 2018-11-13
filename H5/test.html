@@ -52,7 +52,8 @@
             border-color: #666666;
             background-color: #ffffff;
         }
-        .td input{
+
+        .td input {
             width: 50px;
         }
     </style>
@@ -62,14 +63,19 @@
     <h2>颜色</h2>
     <input type="checkbox" value="红色" title="red" name="color"/> 红色
     <input type="checkbox" value="蓝色" title="blue" name="color"/> 蓝色
-    <p><input type="button" value="提交" onclick="addTable('color')"></p>
+    <p><input type="button" value="提交" onclick="drawTable('color')"></p>
 </form>
 <form class="item" id="2">
     <h2>尺寸</h2>
     <input type="checkbox" value="S" title="s" name="size"/> S
     <input type="checkbox" value="M" title="m" name="size"/>M
     <input type="checkbox" value="L" title="l" name="size"/>L
-    <p><input type="button" value="提交" onclick="addTable('size')"></p>
+    <p><input type="button" value="提交" onclick="drawTable('size')"></p>
+</form>
+<form class="item" id="3">
+    <h2>风格</h2>
+    <input type="checkbox" value="sp" title="sp" name="style"/>运动
+    <p><input type="button" value="提交" onclick="drawTable('style')"></p>
 </form>
 <h2>表单</h2><br>
 <div id="show">
@@ -88,9 +94,109 @@
 </div>
 </body>
 <script>
-    var number = 0;
-    function addTable(name) {
+    var row = 1;
+    var click_number = 0;
 
+    function drawTable(name) {
+        click_number++;
+        var from = document.getElementsByName(name);
+        var check = [];
+        for (i in from) {
+            if (from[i].checked) {
+                check.push(from[i].value);
+            }
+        }
+        var t_head = "";
+        switch (name) {
+            case "color":
+                t_head = "颜色";
+                break;
+            case "size":
+                t_head = "尺寸";
+                break;
+            case "style":
+                t_head = "风格";
+                break;
+        }
+        var c = document.getElementById('table');//获取表格信息
+        if (click_number == 1) {
+            var z = c.rows[0].cells;//首先获得表格有多少列，先获取再插入新行
+            for (var j = 0; j < check.length; j++) {
+                var x = c.insertRow(c.rows.length);
+                for (var i = 0; i < z.length; i++) {//依次向新行插入表格列数的单元格
+                    var y = x.insertCell(i);
+                    y.className = "td";
+                    y.innerHTML = " <input type=\"text\">";
+                }
+            }
+            var len = c.rows.length;//获得行数
+            var ro = c.rows[0].cells;
+            var len2 = ro.length;//获得列数
+            var x0 = c.rows[0].insertCell(len2 - 3);
+            x0.className = "th";
+            // x0.rowSpan = row*check.length;
+            x0.innerHTML = t_head;
+            for (var i = 1; i < len; i++) {
+                var x1 = c.rows[i].insertCell(len2 - 3);
+                x1.className = "td " + "t_d1";
+                x1.innerHTML = check[i - 1];
+            }
+            row = check.length;
+        }
+        else if (click_number == 2) {
+
+            var z = c.rows[0].cells;//首先获得表格有多少列，先获取再插入新行
+            for (var j = 0; j < check.length * row - row; j++) {
+                var x = c.insertRow(c.rows.length);
+                console.log(z.length);
+                for (var i = 0; i < z.length; i++) {//依次向新行插入表格列数的单元格
+                    var y = x.insertCell(i);
+                    y.className = "td";
+                    if (i == 0) {
+                        y.innerHTML = "";
+                    }else {
+                        y.innerHTML = " <input type=\"text\">";
+                    }
+
+
+                }
+            }
+            var len = c.rows.length;//获得行数
+            var ro = c.rows[0].cells;
+            var len2 = ro.length;//获得列数
+            var x0 = c.rows[0].insertCell(len2 - 3);
+            x0.className = "th";
+            x0.innerHTML = t_head;
+            console.log(len);
+            for (var i = 1; i < len; i++) {
+                var x1 = c.rows[i].insertCell(len2 - 3);
+                x1.className = "td " + "t_d2 ";
+                if (i > check.length) {
+                    x1.innerHTML = check[i - check.length - 1]
+                } else {
+                    x1.innerHTML = check[i - 1];
+                }
+
+            }
+
+            var pre_table = document.getElementsByClassName("t_d1");
+            // for (var i = 0; i < pre_table.length; i++) {
+            //     c.rows[i*check.length+1].cells[0].rowSpan = check.length;
+            //     c.rows[i*check.length+1].cells[0].innerHTML = pre_table[i].innerHTML;
+            //
+            // }
+
+
+            row = check.length;
+        }
+
+
+    }
+
+
+    var number = 0;
+
+    function addTable(name) {
         number++;
         console.log(number);
         var from = document.getElementsByName(name);
@@ -104,14 +210,14 @@
         var c = document.getElementById('table');//获取表格信息
         var z = c.rows[0].cells;//首先获得表格有多少列，先获取再插入新行
 
-            for (var j = 0 ; j< check.length; j++) {
+        for (var j = 0; j < check.length; j++) {
 
-                var x = c.insertRow(c.rows.length);
-                for (var i = 0; i < z.length; i++) {//依次向新行插入表格列数的单元格
-                    var y = x.insertCell(i);
-                    y.className = "td";
-                    y.innerHTML = " <input type=\"text\">";
-                }
+            var x = c.insertRow(c.rows.length);
+            for (var i = 0; i < z.length; i++) {//依次向新行插入表格列数的单元格
+                var y = x.insertCell(i);
+                y.className = "td";
+                y.innerHTML = " <input type=\"text\">";
+            }
 
         }
 
@@ -125,22 +231,17 @@
                 t_head = "尺寸";
                 break;
         }
-
         var len = c.rows.length;//获得行数
         var ro = c.rows[0].cells;
         var len2 = ro.length;//获得列数
-        // for (var i = 0; i < len; i++) {
-        //
-        //     var x = c.rows[i].deleteCell(len2);//删除每一行末尾的单元格
-        // }
         console.log(ro);
-        var x0 = c.rows[0].insertCell(len2-3);
+        var x0 = c.rows[0].insertCell(len2 - 3);
         x0.className = "th";
         x0.innerHTML = t_head;
         for (var i = 1; i < len; i++) {
-            var x1 = c.rows[i].insertCell(len2-3);
+            var x1 = c.rows[i].insertCell(len2 - 3);
             x1.className = "td";
-            x1.innerHTML = check[i-1];
+            x1.innerHTML = check[i - 1];
         }
 
 

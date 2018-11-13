@@ -102,16 +102,17 @@
 
     function submit() {
         var para = {
-            sid: 3330382,
+            // sid: 3330382,
             // cid:33303822009303,
-            page:2,
-            pagesize:10
+            guid: 33303822003301,
+            page:1,
+            pagesize:5
 
 //            sDate: 1970
         };
         //http://121.43.233.185/alumnicloudweb
         //var lo_url = "http://192.168.10.19:8080";
-        ajax_formdata("http://192.168.10.5:8080/member/queryBySid.do", true, para, function (msg) {
+        ajax_formdata("http://192.168.10.5:8080/school/queryByGuid.do", true, para, function (msg) {
              console.log(msg);
             console.log(JSON.parse(msg));
         });

@@ -3,10 +3,13 @@
  * @date 2018/11/2
  * @Description:数据交互接口
  */
-var url = "http://121.43.233.185/alumnicloudweb";
-var lo_url = "http://192.168.10.19:8080";
+var url = "http://192.168.10.5:8080";
+//http://121.43.233.185/alumnicloudweb
+var lo_url = "http://192.168.10.5:8080";
 //获取地址栏中cid的值
-var id = "33303822009303";
+var id = "33303822003301";
+//33303822003301
+//33303822009303
 // if (_wd.getUrl()){
 //     id = _wd.getUrl().Cid;
 // }
@@ -28,6 +31,8 @@ function m_Error(msg) {
 function class_message() {
     var para = {
         guid: s_guid,
+        page:1,
+        pagesize:5
     };
     _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
         if (m_Error(msg)) {
@@ -35,6 +40,8 @@ function class_message() {
             schoolname = p.message[0].name;
             var para = {
                 guid: id,
+                page:1,
+                pagesize:5
             };
             _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
                 if (m_Error(msg)) {
@@ -57,6 +64,8 @@ function cl_information() {
     cont.innerHTML = "";
     var para = {
         cid: id,
+        page:1,
+        pagesize:50
     };
     _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg)) {
@@ -139,7 +148,7 @@ function in_notice() {
     var title = document.getElementById("re_title").value;
     var notice = document.getElementById("re_content").value;
     console.log(type + "_" + title.length + "_" + notice);
-    if ( type < 0 || title.length <= 0) {
+    if (type < 0 || title.length <= 0) {
         _wd.info("通知标签、标题不能为空", "bgc44");
     } else {
         var para = {
@@ -171,13 +180,16 @@ function in_notice() {
 function cl_notice() {
     document.getElementById("cont_notice").innerHTML = "";
     var para = {
-        cid: id,
+        cid: s_guid,
         phone: "18806097971",
+        page:1,
+        pagesize:10
     };
     var tag_number = 1;
     _wd.ajax_formdata(url + "/notice/queryByGuid.do", true, para, function (msg) {
         if (m_Error(msg)) {
             var p = JSON.parse(msg).message;
+            console.log( JSON.parse(msg));
             p.forEach(function (v) {
                 var div = document.createElement("div");
                 div.className = " W11 AL";
@@ -191,7 +203,7 @@ function cl_notice() {
                 };
                 // div.dataset.id = para.schooljson.sc_id;
                 div.innerHTML = '  <div class="W11 P1M bordBD1">' +
-                    '<div class="thicker F3"><b class="colorO F3 italic MR">'+  tag_number++ +' </b> ' + v.title + '</div>' +
+                    '<div class="thicker F3"><b class="colorO F3 italic MR">' + tag_number++ + ' </b> ' + v.title + '</div>' +
                     '<div class="FR F2 MT05 colorA">' + _wd.crtTimeFtt(v.date) + '</div>' +
                     '<div class="FL P1M none MT05 W11  rad03e color8 bgcaf5" id="notice_' + v.id + '">' +
                     '<div class="LH2 F3">' + n_detail + '</div>' +
@@ -217,6 +229,8 @@ function cl_photo() {
     ph_word.innerHTML = "";
     var para = {
         cid: id,
+        page:1,
+        pagesize:5
     };
     _wd.ajax_formdata(url + "/record/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg)) {
@@ -313,6 +327,8 @@ function addPhotos($id) {
     console.log(record_id);
     var para = {
         id: record_id,
+        page:1,
+        pagesize:20
     };
     console.log(para);
     _wd.ajax_formdata(url + "/record/queryById.do", true, para, function (msg) {
@@ -389,7 +405,7 @@ function addPhotos($id) {
                 div.className = "W11";
                 div.innerHTML = '  <div class="top0 H W11 AC ffHT bgc9">' +
                     '<div class="FL B4M H4M F2" onclick="dais.toggle(ph_upload,0)">&lt;&nbsp;返回</div>' +
-                    '<div class="FR B4M H4M F2 color8" onclick="">上传</div>' +
+                    '<div class="FR B4M H4M F2 color8" onclick="Re_insert(1,up_photo)">上传</div>' +
                     '</div>' +
                     '<div class="bgc10 W11 P05M" id="ch_list">' +
                     '</div>';
@@ -436,6 +452,31 @@ function addPhotos($id) {
                         index++;
                     }
                 }
+            }
+
+            function Re_insert(type, ipt_id) {
+                var ipt_file = document.getElementById(ipt_id);
+                var para = {
+                    json: {
+                        cid: id,
+                        sid: s_guid,
+                        phone: "18806097971",
+                        type: type,
+                        name: "测试图片",
+                        src: "",
+                        memo: "测试备注",
+                        date: new Date().getTime(),
+                        replay: ""
+                    }
+                };
+                para.file = ipt_file.files[0];
+                console.log(para);
+//        _fun.ajax_formdata("http://127.0.0.1:8080/c/servlet/demo/FormUploadServlet", true, toPara(), function (msg) {
+                _wd.ajax_formdata(url + "/record/insert.do", true, para, function (msg) {
+                    console.log(msg);
+                }, function (msg) {
+                    console.log(msg);
+                });
             }
 
             oSelect.onclick = function () {
