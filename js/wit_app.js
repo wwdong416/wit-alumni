@@ -27,7 +27,7 @@ var _wd = {
         setTimeout(function () {
             if (d) d.classList.add("none");
             else document.querySelector("#toAlert").classList.add("none");
-        }, 3000);
+        }, 2000);
     },
     /*
     * ajax数据交互
@@ -36,42 +36,49 @@ var _wd = {
     * @para：传输数据
     * @func：成功返回值方法
     * */
-    ajax_formdata: function (url, async, para, func, error, file, noloading) {
-        var xmlhttp, $this = this;
-        var form = new FormData();
-        if (para) {
-            for (var i in para) {
-                if (para[i] instanceof File) {
-                    form.append(i, para[i]);
-                } else if (typeof para[i] == "object") {
-                    form.append(i, JSON.stringify(para[i]));
-                } else form.append(i, para[i]);
-            }
-        }
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest()
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-        }
-        xmlhttp.open("post", url, async);
-        if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
-        xmlhttp.onreadystatechange = function () {
-            //console.log(xmlhttp);
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
-                    var msg = xmlhttp.responseText;
-                    func(msg);
-                }
-                else {
-                    var funerr = error || function () {
-                        _wd.info("服务器异常！", "bgc24");
-                    };
-                    funerr();
+        ajax_formdata: function (url, async, para, func, error, file, noloading) {
+            var xmlhttp, $this = this;
+            if (!para) return;
+            var form = new FormData();
+            if (para instanceof FormData) {
+                form = para;
+            } else {
+                for (var i in para) {
+                    if (para[i] instanceof File) {
+                        form.append(i, para[i]);
+                    } else if (typeof para[i] == "object") {
+                        form.append(i, JSON.stringify(para[i]));
+                    } else form.append(i, para[i]);
                 }
             }
-        };
-        xmlhttp.send(form);
-    },
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest()
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+            }
+            // !noloading && $this.toLoading(5000);
+            xmlhttp.open("post", url, async);
+            if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
+            xmlhttp.onreadystatechange = function () {
+                //console.log(xmlhttp);
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        // !noloading && $this.toLoading(0);
+                        var msg = xmlhttp.responseText;
+                        func(msg);
+                    }
+                    else {
+                        // !noloading && $this.toLoading(0);
+                        var funerr = error || function () {
+                            _wd.info("服务器异常！", "bgc24");
+                        };
+                        funerr();
+                    }
+                }
+            };
+            xmlhttp.send(form);
+        },
+
 
     //获取url中"?"符后的字串
     getUrl: function () {
@@ -86,6 +93,7 @@ var _wd = {
         }
         return theRequest;
     },
+    //--------------更改时间格式---------------
     /**时间格式化处理
      *@fmt 格式要求
      * @date 时间
@@ -108,33 +116,102 @@ var _wd = {
         return fmt;
     },
 
-    //创建时间格式化显示
+    //创建时间显示年月日时分
     crtTimeFtt: function (value) {
         var crtTime = new Date(value);
         //直接调用公共JS里面的时间类处理的办法
         //yyyy-MM-dd hh:mm:ss
         return _wd.dateFtt("yyyy-MM-dd hh:mm ", crtTime);
     },
-    /**
-     * [Show_Hidden 点击控制div显示与隐藏]
-     * @param {[id]} obj [需要显示隐藏div的id]
-     */
-    Show_Hidden: function (obj) {
-        var div = document.getElementById(obj);
-        if (div.className.indexOf("none") > -1) {
-            div.classList.remove("none");
-        } else {
-            div.classList.add("none");
-        }
+    //创建时间显示时分
+    crtTimeHM: function (value) {
+        var crtTime = new Date(value);
+        //直接调用公共JS里面的时间类处理的办法
+        //yyyy-MM-dd hh:mm:ss
+        return _wd.dateFtt("hh:mm ", crtTime);
     },
-    /**
-     * //添加清除浮动
-     * @id 目标id
-     * */
-    clear: function (id) {
-        var newDiv = document.createElement("div");
-        newDiv.className = "clear";
-        id.appendChild(newDiv);
-    }
+    //两个时间相差天数
+    getDateDF: function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
+        var dateSpan,
+            iDays;
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+        return iDays
+    },
 
-};
+
+/**
+ * [Show_Hidden 点击控制div显示与隐藏]
+ * @param {[id]} obj [需要显示隐藏div的id]
+ */
+Show_Hidden: function (obj) {
+    var div = document.getElementById(obj);
+    if (div.className.indexOf("none") > -1) {
+        div.classList.remove("none");
+    } else {
+        div.classList.add("none");
+    }
+}
+,
+/**
+ * 添加清除浮动
+ * @id 目标id
+ * */
+clear: function (id) {
+    var newDiv = document.createElement("div");
+    newDiv.className = "clear";
+    id.appendChild(newDiv);
+}
+,
+/**
+ * 使用正则替换所有中文字符,然后再计算字符个数
+ */
+getBLen: function (str) {
+    if (str == null) return 0;
+    if (typeof str != "string") {
+        str += "";
+    }
+    return str.replace(/[^\x00-\xff]/g, "ab").length;
+}
+,
+//--------------上拉加载更多---------------
+//获取滚动条当前的位置
+getScrollTop: function () {
+    var scrollTop = 0;
+    if (document.documentElement && document.documentElement.scrollTop) {
+        scrollTop = document.documentElement.scrollTop;
+    } else if (document.body) {
+        scrollTop = document.body.scrollTop;
+    }
+    return scrollTop;
+}
+,
+
+//获取当前可视范围的高度
+getClientHeight: function () {
+    var clientHeight = 0;
+    if (document.body.clientHeight && document.documentElement.clientHeight) {
+        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+    } else {
+        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+    }
+    return clientHeight;
+}
+,
+
+//获取文档完整的高度
+getScrollHeight: function () {
+    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+}
+,
+// //滚动事件触发
+// window.onscroll = function () {
+//     if (_wd.getScrollTop() + _wd.getClientHeight() == _wd.getScrollHeight()) {
+
+//     }
+// }
+}
+;

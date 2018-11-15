@@ -22,7 +22,7 @@
     <img src='../images/icon/setting.png' class="FR ICON P05M"/>
 </div>
 <!--首页-->
-<div id="index" class="MTH ">
+<div id="index" class="MTH F3">
     <div class="W11 AC ofh relative img-edge-cover">
         <img src="../images/classbg.png" class="W11">
     </div>
@@ -41,52 +41,19 @@
         <!--置顶通知-->
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
             <div class="colorR  PR1M ellips F3 W11">
-                <div class="B4M F2 bgc14 FL AC rad03e "> 置顶</div>
-                <marquee onMouseOut=start(); onMouseOver=stop(); behavior=scroll id="frist_notice">通知
-                    ：本周二晚8:00全体在XX餐厅聚餐，请相互通知，按时到场！
+                <div class="B4M F2 bgc14 FL AC rad03e ">置顶</div>
+                <marquee id="first_notice" onMouseOut=start(); onMouseOver=stop(); behavior=scroll >
                 </marquee>
             </div>
         </div>
-        <div class="W11 PL1M PR1M AC PB1M">
-            <div class="AC colorA PB1M PT1M flexbox">
-                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
-                <div class="W51 FL">今天</div>
-                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
-            </div>
-            <div class=" bgc10 rad05  MB">
-                <div class="P1M W11 AL ">
-                    <div class="ellips ">通知：上传了一组照片</div>
-                    <div class="MT05 FR F2 colorA">12:01</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class=" bgc10 rad05  MB">
-                <div class="P1M W11 AL ">
-                    <div class="ellips ">通知：上传了一组照片</div>
-                    <div class="MT05 FR F2 colorA">12:01</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-
-            <div class="AC colorA PB1M PT1M flexbox">
-                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
-                <div class="W51 FL">昨天</div>
-                <img class="W31 FL" src="../images/icon/line-min.png" alt="">
-            </div>
-            <div class=" bgc10 rad05  MB">
-                <div class="P1M W11 AL ">
-                    <div class="ellips ">通知：上传了一组照片</div>
-                    <div class="MT05 FR F2 colorA">12:01</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
+        <div class="W11 PL1M PR1M AC PB1M" id="index_notice">
+            <!--首页通知-->
         </div>
     </div>
-    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+    <div class="W11 H8M AC F2 color8 PT1M">—————— END ——————</div>
 </div>
-
 <!--通知-->
-<div id="notice" class="W11 AC ofh MTH  none">
+<div id="notice" class="W11 AC ofh MTH  none F3">
     <div class=" PT2M PB1M  PL1M PR1M W11 bgcddc">
         <div class="FL W43">
             <div class="FL  P05M AL color876 bold">通告榜</div>
@@ -94,16 +61,14 @@
         </div>
         <div class="FR  rad03e bgc104 P05M W41" onclick="Re_notice()">发布通知</div>
         <div class="clear PT1M"></div>
-
     </div>
-
     <div id="cont_notice">
-
+        <!--通知-->
     </div>
-    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+    <div class="W11 H9M AC color8 F2 PT1M" id="more_notice">点击加载更多</div>
 </div>
 <!--同学录-->
-<div id="information" class="W11  MTH none">
+<div id="information" class="W11  MTH F3 none">
     <div class="W11">
         <div class="W11 AC inlineB MT">
             <div class="FL ML AL color8  bold ">座位表</div>
@@ -113,7 +78,6 @@
                 </div>
             </div>
             <div class="clear H3M"></div>
-            <!--<img src="../images/icon/dais.png" alt="" class="clear  W11 AC">-->
         </div>
         <img src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
         <div id="dais" class="MT">
@@ -136,40 +100,40 @@
         </div>
 
     </div>
-    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+    <div class="W11 H8M AC F2 color8 PT1M">—————— END ——————</div>
 </div>
 <!--档案-->
-<div id="photo" class="W11 AC MTH  none">
-    <div id="ph_detail"></div>
-    <!--毕业照-->
-    <div class=" H18M ofh relative">
-        <ul id="ph_gra" class="absolute">
-            <li><img src="" alt="" class="W11 indexN FL" id="by_photo"></li>
-        </ul>
-        <ul id="ph_index" class="W21 AR absolute rightM bottom0">
-        </ul>
+<div id="photo" class="W11 AC MTH  none F3">
+    <div class="W11 ">
+        <!--毕业照-->
+        <div class=" H18M ofh relative">
+            <ul id="ph_gra" class="absolute">
+                <li><img src="" alt="" class="W11 indexN FL" id="by_photo"></li>
+            </ul>
+            <ul id="ph_index" class="W21 AR absolute rightM bottom0">
+            </ul>
+        </div>
     </div>
-
-    <div class="W11">
+    <div class="W11 FL">
         <div class="P1M  W11">
             <div class="FL W43">
-                <div class="FL color8 P05M AL">照片</div>
+                <div class="FL color8 P05M   AL">照片</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">添加相册</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">新建相册</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_img">
             <!--照片-->
         </div>
     </div>
-    <div class="W11">
+    <div class="W11 FL">
         <div class="P1M  W11">
             <div class="FL W43">
                 <div class="FL color8 P05M AL">视频</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">上传视频</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">新建视频</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_video">
@@ -177,37 +141,23 @@
         </div>
     </div>
 
-    <div class="W11">
+    <div class="W11 FL">
         <div class="P1M  W11">
             <div class="FL W43">
                 <div class="FL color8 P05M AL">文件</div>
                 <img class="W43 " src="../images/icon/line.png" alt="">
             </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">上传文件</div>
+            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">新建文件</div>
             <div class="clear"></div>
         </div>
         <div class="W11" id="ph_word">
             <!--文件-->
         </div>
     </div>
-    <div class="W11 H8M AC color8 PT1M">—————— END ——————</div>
+    <div class="W11 FL H10M AC F2 color8 PT1M">—————— END ——————</div>
 
     <div id="re_photo" class="none index99 fix bottom0 bgc9 W11 CH callnone">
-        <!--<div class="top0 H W11 AC ffHT" id="ph_name">慧脑校友录-->
-        <!--<div class="FL B4M H4M F2" onclick="dais.toggle(re_photo,0)">&lt;&nbsp;返回</div>-->
-        <!--<div class="FR B4M H4M F2 color8" onclick=""></div>-->
-        <!--</div>-->
-        <!--<div class="bgc10 W11 P1M">-->
-        <!--<div class="FL W43 color8 P05M AL ellips" id="ph_title">-->
-        <!--2016年秋游 照片留念-->
-        <!--</div>-->
-        <!--<div class="FR  rad03e bgcff P05M W41 AC" id="ph_item">上传照片</div>-->
-        <!--<div class="clear">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="W11 bgc10 PT1M" id="ph_list">-->
 
-        <!--</div>-->
     </div>
     <div id="ph_upload" class="none index99 fix bottom0 bgc10 W11 CH callnone">
 
@@ -292,7 +242,7 @@
                 break;
         }
     }
-
+//菜单栏
     function toMenu(id) {
         var menu = document.getElementsByClassName("submenu");
         var a_id = document.getElementById(id);
@@ -326,8 +276,7 @@
             })(i)
         }
     }
-
-
+    //调整座位表
     var dais = {
         attr: {
             outtype: "",
@@ -503,59 +452,9 @@
             bq_open.src = "../images/icon/open.png";
         }
     }
-
-    function cl_index() {
-
-    }
-
-    var test = [
-        {
-            test_id: 1,
-            test_name: "测试1",
-            test_time: "2018-08-10",
-            test_value: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
-        },
-        {
-            test_id: 2,
-            test_name: "测试2",
-            test_time: "2018-08-12",
-            test_value: ""
-        },
-        {
-            test_id: 3,
-            test_name: "测试3",
-            test_time: "2018-08-13",
-            test_value: ""
-        }, {
-            test_id: 4,
-            test_name: "测试3",
-            test_time: "2018-08-13",
-            test_value: ""
-        }, {
-            test_id: 5,
-            test_name: "测试3",
-            test_time: "2018-08-13",
-            test_value: ""
-        },
-        {
-            test_id: 6,
-            test_name: "测试4",
-            test_time: "2018-08-14",
-            test_value: ""
-        }
-    ];
-
-
-
-
-
-
     function cl_dynamic() {
 
     }
-
-
-
     //毕业照左右滑动监听事件
     var ph_touch = document.getElementById("ph_gra");
     EventUtil.listenTouchDirection(ph_touch, true, "", tou_right, "", tou_left);
