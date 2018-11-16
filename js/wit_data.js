@@ -345,6 +345,11 @@ function get_cl_Photo(type) {
         if (m_Error(msg)) {
             var p = JSON.parse(msg).message;
             console.log(JSON.parse(msg));
+            var more_div = document.createElement("div");
+            more_div.className = " FL ML";
+
+            more_div.innerHTML =
+                "<img class='A41  bgc8 P2M'  src='../images/icon/more.png' >" ;
             p.forEach(function (v) {
                 var div = document.createElement("div");
                 div.className = " FL ML";
@@ -367,6 +372,17 @@ function get_cl_Photo(type) {
                         break;
                 }
             });
+            switch (type) {
+                case 1:
+                    ph_img.appendChild(more_div);
+                    break;
+                // case 2:
+                //     ph_video.appendChild(div);
+                //     break;
+                // case 4:
+                //     ph_word.appendChild(div);
+                //     break;
+            }
         }
     });
     _wd.clear(ph_img);
@@ -488,7 +504,7 @@ function addPhotos($id, $name, $phone, $date) {
             }
             var ph_img = document.getElementById("ph_list");
             if (p.length == 0){
-                ph_img.innerHTML ='<img class="PB1M MT" src="../images/pic2.png" alt="">';
+                ph_img.innerHTML ='';
             }else{
                 ph_img.innerHTML = "";
                 p.forEach(function (v) {
