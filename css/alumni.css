@@ -12,9 +12,11 @@ li {
 
 .bghsla {
     background: hsla(0, 0, 100%, .5);
-);
 }
-
+.showSchool{
+    width: 100%;
+    background: url(../images/muban1.png) no-repeat center;
+}
 .add {
     background: url(../images/icon/add.png) no-repeat center;
     background-size: contain

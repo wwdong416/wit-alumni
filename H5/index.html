@@ -25,12 +25,12 @@
 </div>
 <img data-src="../images/caodi.png" class="W11  AC fix indexN bottom0">
 <!-- 登录注册开始 -->
-<div id="form" class="none MT2H">
-    <input id="userphone" type="text" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入账号"/>
-    <div class="FL MLT BTN bgc73 alpha8" onclick="">注册</div>
-    <input id="userpassword" type="password" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入密码"/>
-    <div class="FL MLT BTN bgc16" onClick="login();">登录</div>
-</div>
+<!--<div id="form" class="none MT2H">-->
+<!--<input id="userphone" type="text" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入账号"/>-->
+<!--<div class="FL MLT BTN bgc73 alpha8" onclick="">注册</div>-->
+<!--<input id="userpassword" type="password" class="FL MLT C9MT2 H F4 ALP bord0 alpha8" placeholder="请输入密码"/>-->
+<!--<div class="FL MLT BTN bgc16" onClick="login();">登录</div>-->
+<!--</div>-->
 <!-- 登录注册结束 -->
 <div class="W11 pb150 AC" id="mymsg">
     <div class="W11 AC F3">
@@ -121,7 +121,6 @@
 </div>
 
 
-
 <!-- 添加班级开始 -->
 <div id="d_add" class="none W11 CH fix index100 top0 bgca8b">
     <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
@@ -171,15 +170,51 @@
 
 
     function C_schoolcata(d, c) {
-        var cont = "";
-        try {
-            for (var i = 0; i < c.length; i++) {
-                cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="location.href=&quot;w1.html?id=' + i + '&quot;)" >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
+        console.log(c);
+        document.getElementById(d).innerHTML = "";
+        c.forEach(function (v) {
+            var adm_code = getCut("||", 0, v.adm_div_code);
+            var indus_code = "";
+            console.log(v.industry_code);
+            switch (v.industry_code) {
+                case "高中":
+                    indus_code = "3";
+                    break;
+                case "初中":
+                    indus_code = "2";
+                    break;
+                case "小学":
+                    indus_code = "1";
+                    break;
+                // case "大学":
+                //     indus_code = 3;
             }
-            document.getElementById(d).innerHTML = cont;
-        } catch (e) {
-            console.log(e);
-        }
+            var date_end =  getCut("-", 0, v.date_end);
+            var class_name = getCut("||", 1, v.class_name);
+            if (class_name<10){
+                class_name = "0"+class_name;
+            }
+            console.log(indus_code+adm_code+"001"+date_end+indus_code+class_name);
+            var div = document.createElement("li");
+            div.className = "MT W11 F3 LH3 AC shadow0 bg_contain ";
+            div.style = "background-image:url(../images/muban1.png)";
+            div.onclick = function () {
+                window.location.href = "Classmates.html?Cid="+indus_code+adm_code+"001"+date_end+indus_code+class_name;
+            };
+            div.innerHTML =
+                v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name)+"班";
+            document.getElementById(d).appendChild(div);
+        });
+
+        // var cont = "";
+        // try {
+        //     for (var i = 0; i < c.length; i++) {
+        //         cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="window." >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
+        //     }
+        //     document.getElementById(d).innerHTML = cont;
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
     function C_mydetails(c) {
@@ -289,6 +324,7 @@
             position_name: "",
             relation_tag: "",
             unit_name: "",
+            unit_id:"",
             per_user_guid: _userguid,
             exptype: 1
         };
@@ -313,23 +349,10 @@
         }
 
     }
-
-    function fill(pd, o) {
-        var dl = pd.querySelectorAll("input,textarea"),
-            dc = pd.querySelector("input[name='admdivcode']"),
-            dcl = pd.querySelector("[name=group]");
-        console.log(dl);
-        Array.prototype.forEach.call(dl, function (v) {
-            o[v.dataset.id] = v.dataset.d === "title" ? v.title : v.value.trim();
-        });
-        o.class_name = dcl.title + "||" + dcl.value;
-        o.adm_div_code += "||" + dc.value;
-        delete o.undefined;
-        return o;
-    } //填充数据
     function refill(pd, o) {
         var dl = pd.querySelectorAll("input,textarea"),
             dc = pd.querySelector("input[name='admdivcode']"),
+            ds = pd.querySelector("input[name='schoolname']"),
             dcl = pd.querySelector("[name=group]");
         Array.prototype.forEach.call(dl, function (v) {
             for (var i in o) {
@@ -339,6 +362,7 @@
                 }
             }
         });
+        o.unit_id =ds.title;
         o.class_name = dcl.title + "||" + dcl.value;
         o.adm_div_code += "||" + dc.value;
         return o;

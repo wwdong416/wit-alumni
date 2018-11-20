@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" type="text/css" href="../css/witcs.css">
+    <link rel="stylesheet" href="../css/psy_test.css">
+    <script src="../js/witjs.js"></script>
+    <title>校友录</title>
+</head>
+<body class="ofa ffWRYH bgc10" onload="loadend()" onresize="autocss()">
+<div class=" W54 FL">
+    <!--top-->
+    <div class="W11 P1M H4M ">
+        <div class="W54 MA">
+            <div class="FL">
+                <h1>心理测试</h1>
+            </div>
+            <div class="FR">
+                联系我们:123456789
+            </div>
+        </div>
+    </div>
+    <!--main-->
+    <div class="W11 color_c" id="main">
+
+    </div>
+    <div class="W54 fix bottom0  color_e" id="bottom"></div>
+</div>
+<div class="PL1M W51 FL">
+    <div class="color_c W11  item"></div>
+    <div class="color_b W11  MT05  item"></div>
+    <div class="color_a W11  MT05  item"></div>
+    <div class="color_d W11  MT05  item"></div>
+
+</div>
+</body>
+<script src="../js/witconfig.js"></script>
+<script>
+    function loadend() {
+        autocss();
+        loadimg();
+        document.getElementById("main").style.height = CH - 4 * M - (CH - 0.5 * M * 3) / 4 + "px";
+        document.getElementById("bottom").style.height = (CH - 0.5 * M * 3) / 4 + "px";
+        var items = document.getElementsByClassName("item");
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            item.style.height = (CH - 0.5 * M * 3) / 4 + "px";
+            item.addEventListener("click", function () {
+                var color = this.className.substring(0, 7);
+                console.log(color);
+                var main = document.getElementById("main");
+                switch (color) {
+                    case "color_a":
+                        main.style.backgroundColor = "#DAE3E0";
+                        break;
+                    case "color_b":
+                        main.style.backgroundColor = "#407D94";
+                        break;
+                    case "color_c":
+                        main.style.backgroundColor = "#7B7687";
+                        break;
+                    case "color_d":
+                        main.style.backgroundColor = "#ACADAC";
+                        break;
+
+                }
+            })
+        }
+    }
+
+</script>
+</html>

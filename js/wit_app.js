@@ -130,6 +130,13 @@ var _wd = {
         //yyyy-MM-dd hh:mm:ss
         return _wd.dateFtt("hh:mm ", crtTime);
     },
+    //创建时间显示时分
+    crtTimeYMD: function (value) {
+        var crtTime = new Date(value);
+        //直接调用公共JS里面的时间类处理的办法
+        //yyyy-MM-dd hh:mm:ss
+        return _wd.dateFtt("yyyy-MM-dd ", crtTime);
+    },
     //两个时间相差天数
     getDateDF: function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
         var dateSpan,
@@ -141,7 +148,37 @@ var _wd = {
         iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
         return iDays
     },
-
+    /**
+     *获取当前时间
+     *format=1精确到天
+     *format=2精确到分
+     */
+    getCurrentDate: function (format) {
+        var now = new Date();
+        var year = now.getFullYear(); //得到年份
+        var month = now.getMonth();//得到月份
+        var date = now.getDate();//得到日期
+        var day = now.getDay();//得到周几
+        var hour = now.getHours();//得到小时
+        var minu = now.getMinutes();//得到分钟
+        var sec = now.getSeconds();//得到秒
+        month = month + 1;
+        if (month < 10) month = "0" + month;
+        if (date < 10) date = "0" + date;
+        if (hour < 10) hour = "0" + hour;
+        if (minu < 10) minu = "0" + minu;
+        if (sec < 10) sec = "0" + sec;
+        var time = "";
+        //精确到天
+        if (format == 1) {
+            time = year + "-" + month + "-" + date;
+        }
+        //精确到分
+        else if (format == 2) {
+            time = year + "-" + month + "-" + date + " " + hour + ":" + minu + ":" + sec;
+        }
+        return time;
+    },
 
     /**
      * [Show_Hidden 点击控制div显示与隐藏]
@@ -218,9 +255,39 @@ var _wd = {
     },
     noFind_Pic: function (img) {
         img.src = "../images/nofindpic.png";
-        img.alt="加载失败";
+        img.alt = "加载失败";
         img.classList.add("P2M");
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
-    }
-
+    },
+    insertAfter: function (newElement, targetElement) {
+        var parent = targetElement.parentNode;
+        if (parent.lastChild == targetElement) {
+            parent.appendChild(newElement);
+        }
+        else {
+            parent.insertBefore(newElement, targetElement.nextSibling);
+        }
+    },
+    deleteChild: function ($p, $s) {
+        var p = document.getElementById($p);
+        var s = document.getElementById($s);
+        console.log(p);
+        console.log(s);
+        p.removeChild(s);
+        // document.getElementById(p).removeChild(document.getElementById(s));
+    },
+    show: function ($obj) {
+        var obj = $obj;
+        if (typeof obj == "string") obj = document.querySelector("#" + obj);
+        if (obj.classList.contains("none")) obj.classList.remove("none");
+        if (obj.style.display == "none") obj.style.display = "";
+        return this;
+    },                        //对象显示（display）
+    hide: function ($obj) {
+        var obj = $obj;
+        if (typeof obj == "string") obj = document.querySelector("#" + obj);
+        obj.classList.add("none");
+        obj.style.display = "none";
+        return this;
+    },
 };
