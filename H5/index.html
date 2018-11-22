@@ -173,33 +173,12 @@
         console.log(c);
         document.getElementById(d).innerHTML = "";
         c.forEach(function (v) {
-            var adm_code = getCut("||", 0, v.adm_div_code);
-            var indus_code = "";
-            console.log(v.industry_code);
-            switch (v.industry_code) {
-                case "高中":
-                    indus_code = "3";
-                    break;
-                case "初中":
-                    indus_code = "2";
-                    break;
-                case "小学":
-                    indus_code = "1";
-                    break;
-                // case "大学":
-                //     indus_code = 3;
-            }
-            var date_end =  getCut("-", 0, v.date_end);
-            var class_name = getCut("||", 1, v.class_name);
-            if (class_name<10){
-                class_name = "0"+class_name;
-            }
-            console.log(indus_code+adm_code+"001"+date_end+indus_code+class_name);
+            console.log(v.unit_id);
             var div = document.createElement("li");
             div.className = "MT W11 F3 LH3 AC shadow0 bg_contain ";
             div.style = "background-image:url(../images/muban1.png)";
             div.onclick = function () {
-                window.location.href = "Classmates.html?Cid="+indus_code+adm_code+"001"+date_end+indus_code+class_name;
+                window.location.href = "Classmates.html?Cid="+v.unit_id;
             };
             div.innerHTML =
                 v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name)+"班";

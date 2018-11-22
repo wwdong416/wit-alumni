@@ -1,5 +1,5 @@
 .color_a{
-    background: #DAE3E0;
+    background: #52606f;
 }
 .color_b{
     background: #407D94;
@@ -12,4 +12,10 @@
 }
 .color_e{
     background: #CCC4C2;
+}
+
+.flexbox {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction:column;
 }

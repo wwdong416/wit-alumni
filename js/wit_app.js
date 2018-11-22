@@ -271,8 +271,6 @@ var _wd = {
     deleteChild: function ($p, $s) {
         var p = document.getElementById($p);
         var s = document.getElementById($s);
-        console.log(p);
-        console.log(s);
         p.removeChild(s);
         // document.getElementById(p).removeChild(document.getElementById(s));
     },
@@ -290,4 +288,5 @@ var _wd = {
         obj.style.display = "none";
         return this;
     },
+
 };

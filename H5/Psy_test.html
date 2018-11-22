@@ -16,7 +16,7 @@
     <div class="W11 P1M H4M ">
         <div class="W54 MA">
             <div class="FL">
-                <h1>心理测试</h1>
+                <div class="F4">心理测试</div>
             </div>
             <div class="FR">
                 联系我们:123456789
@@ -24,8 +24,14 @@
         </div>
     </div>
     <!--main-->
-    <div class="W11 color_c" id="main">
-
+    <div class="W11 color_c AC F3 color1 P1M flexbox" id="main">
+        <div class="F5 MA" id="title_test">
+            经典人格心理测试
+        </div>
+        <div class="F1 W54 MA" id="notice_test">
+            本测试一共10题，请根据事实作答，以免影响答案的准确性。
+        </div>
+        <div class="P05M bgc10 color333 bold B10M F4 MA  ">开始测试</div>
     </div>
     <div class="W54 fix bottom0  color_e" id="bottom"></div>
 </div>
@@ -34,10 +40,8 @@
     <div class="color_b W11  MT05  item"></div>
     <div class="color_a W11  MT05  item"></div>
     <div class="color_d W11  MT05  item"></div>
-
 </div>
 </body>
-<script src="../js/witconfig.js"></script>
 <script>
     function loadend() {
         autocss();
@@ -54,7 +58,7 @@
                 var main = document.getElementById("main");
                 switch (color) {
                     case "color_a":
-                        main.style.backgroundColor = "#DAE3E0";
+                        main.style.backgroundColor = "#52606f";
                         break;
                     case "color_b":
                         main.style.backgroundColor = "#407D94";
@@ -69,6 +73,7 @@
                 }
             })
         }
+
     }
 
 </script>

@@ -115,3 +115,6 @@ li {
 .ma{
     margin: 0 auto;
 }
+.OFC{
+    object-fit: cover;
+}
