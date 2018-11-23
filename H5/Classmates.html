@@ -42,7 +42,7 @@
         <div class=" W11  F2 H3M AC  MT PL1M PR1M">
             <div class="colorR  PR1M ellips F3 W11" id="top_notice">
                 <div class="B4M F2 bgc14 FL AC rad03e ">置顶</div>
-                <marquee id="first_notice" onMouseOut=start(); onMouseOver=stop(); behavior=scroll >
+                <marquee id="first_notice" onMouseOut=start(); onMouseOver=stop(); behavior=scroll>
                 </marquee>
             </div>
         </div>
@@ -158,10 +158,10 @@
     <div class="W11 FL H10M AC F2 color8 PT1M ">—————— END ——————</div>
 </div>
 <div id="re_photo" class="ofh">
-<!--相册详细页面-->
+    <!--相册详细页面-->
 </div>
-<div id="ph_upload" >
-<!--上传页面-->
+<div id="ph_upload">
+    <!--上传页面-->
 </div>
 <div id="ph_new" class="none index99 fix bottom0 bgc10 W11 CH callnone">
 
@@ -220,7 +220,7 @@
         autocss();
         loadimg();
         class_message();
-         toMenu("cl_index");
+        toMenu("cl_index");
     }
 
     function ch_menu(id) {
@@ -242,7 +242,8 @@
                 break;
         }
     }
-//菜单栏
+
+    //菜单栏
     function toMenu(id) {
         var menu = document.getElementsByClassName("submenu");
         var a_id = document.getElementById(id);
@@ -254,7 +255,7 @@
         for (var i = 0; i < menu.length; i++) {
             (function (i) {
                 menu[i].onclick = function () {
-                    console.log(this.id);
+                    // console.log(this.id);
                     ch_menu(this.id);
                     var menuname = document.getElementsByClassName("menuname");
                     for (var j = 0; j < menuname.length; j++) {
@@ -276,8 +277,10 @@
             })(i)
         }
     }
+
     //调整座位表
     var dais = {
+
         attr: {
             outtype: "",
             outtext: "",
@@ -285,11 +288,13 @@
             H: 0,
             rowx: [],
             rowy: [],
-            d_h: 6,
-            d_w: 6,
+            d_h: 0,
+            d_w: 0,
             date_sli: []
         },
         init: function ($d, $p, $gs) {
+            var dais_wh =document.getElementById("dais_value").getAttribute("wh");
+           // console.log(dais_wh.split("*"));
             var n = "01";
             var d = $d, p = $p || "s_select", $ = this, gs = $gs;
             this.attr.outtype = n;
@@ -297,6 +302,8 @@
             this.attr.rowx = [4, 5, 6, 7, 8];
             this.attr.rowy = [4, 5, 6, 7, 8, 9, 10];
             this.attr.H = (M ? M : 10) * 4;
+            this.attr.d_h = dais_wh.split("*")[0];
+            this.attr.d_w = dais_wh.split("*")[1];
             var cont = '<div id="UI_bk" class="W11 H11 bgca04"></div>' +
                 '<div id="UI_content" class="index99 fix bottom0 FL W11 H35M bgc7 AC" >' +
                 '<div id="wit_date_opt" class="FL MLT A54 H AC bgc10 bord0" ></div>' +
@@ -316,7 +323,7 @@
             document.getElementById('wit_date_confirm').addEventListener('click', function () {
                 var o = document.querySelector("#wit_date_opt");
                 var value = document.getElementById("dais_value");
-                console.log(o.innerText);
+               // console.log(o.innerText);
                 var daiswh = o.innerText.split("");
                 var daish;
                 if (daiswh[12] == "1") {
@@ -355,14 +362,14 @@
                     var num = parseInt(x1);
                     len = this.attr.rowx.indexOf(num);
                 }
-                console.log(x1, this.attr.rowx, len);
+                // console.log(x1, this.attr.rowx, len);
             } else if (k == 1) {
                 x = this.attr.rowy;
                 if (y1) {
                     var num1 = parseInt(y1);
                     len = this.attr.rowy.indexOf(num1);
                 }
-                console.log(y1, this.attr.rowy, len);
+                // console.log(y1, this.attr.rowy, len);
             }
             var content = "<ul class='FL W11 color333 bold'><li class='W11 H' ></li><li class='W11 H' ></li><li class='W11 H' ></li>";
             for (var i in x) {
@@ -379,12 +386,12 @@
             }
             if (k < this.attr.outtype.length - 1) {
                 this.attr.rowx = this.attr.d_h;
-                console.log(this.attr.rowx);
+                // console.log(this.attr.rowx);
                 this.C_scrolli(k + 1, x1, y1);
-                console.log(x1, y1);
+                // console.log(x1, y1);
             } else {
                 this.attr.rowy = this.attr.d_w;
-                console.log(this.attr.rowy);
+                // console.log(this.attr.rowy);
                 this.displaydate();
             }
         },  //生成滚轮
@@ -429,6 +436,8 @@
      * 座位表的图片
      * */
     function daisWH(value_w, value_h) {
+        var daisBtn = document.getElementById("dais_value");
+        daisBtn.setAttribute("wh", value_w + "*" + value_h);
         // console.log("座位表：列" + value_w + " 行" + value_h);
         var cont = "";
         for (var i = 0; i < value_h * value_w; i++) {
@@ -452,13 +461,15 @@
             bq_open.src = "../images/icon/open.png";
         }
     }
+
     function cl_dynamic() {
 
     }
+
     //毕业照左右滑动监听事件
     var ph_touch = document.getElementById("ph_gra");
     EventUtil.listenTouchDirection(ph_touch, true, "", tou_right, "", tou_left);
-    var number = 0;//初始化滑动次数
+    var number = 1;//初始化滑动次数
     var by_photos = ["1.png", "2.png", "3.png"];//存放毕业照
     var ph_index = document.getElementById("ph_index").children;
     var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
@@ -467,15 +478,13 @@
     function tou_right() {
         number--;
         if (number < 0) {
-            number = by_photos.length;
-            // document.getElementById("by_photo").src = "../images/byz/" + by_photos[number-1];
+            number = 1;
         } else {
             for (var i = 0; i < by_photos.length; i++) {
                 ph_index[i].className = ph_gray;
             }
             ph_index[number].className = ph_white;
             document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
-            console.log(document.getElementById("by_photo").src);
         }
     }
 
@@ -483,30 +492,14 @@
     function tou_left() {
         number++;
         if (number > by_photos.length) {
-            number = 0;
-            // document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
+            number = by_photos.length - 1;
         } else {
             for (var i = 0; i < by_photos.length; i++) {
                 ph_index[i].className = ph_gray;
             }
             ph_index[number - 1].className = ph_white;
             document.getElementById("by_photo").src = "../images/byz/" + by_photos[number - 1];
-            console.log(document.getElementById("by_photo").src);
         }
-    }
-
-    //添加毕业照的小白点
-    function add_photoindex() {
-        var ph_photoindex = document.getElementById("ph_index");
-        ph_photoindex.innerHTML = "";
-        by_photos.forEach(function () {
-            var div = document.createElement("li");
-            div.className = " color8 radius index9 inlineB F8";
-            div.innerHTML = '&#8226';
-            ph_photoindex.appendChild(div);
-        });
-        ph_photoindex.children[0].className = ph_white;//设置初始状态的小白点
-        document.getElementById("by_photo").src = "../images/byz/" + by_photos[0];//设置初始图片
     }
 </script>
 </html>
