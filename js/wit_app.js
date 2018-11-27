@@ -81,7 +81,7 @@ var _wd = {
 
 
     //获取url中"?"符后的字串
-    getUrl: function () {
+    getUrl_sid: function () {
         var url = location.search;
         var theRequest = new Object();
         if (url.indexOf("?") != -1) {
@@ -93,6 +93,7 @@ var _wd = {
         }
         return theRequest;
     },
+
     //--------------更改时间格式---------------
     /**时间格式化处理
      *@fmt 格式要求
@@ -138,7 +139,7 @@ var _wd = {
         return _wd.dateFtt("yyyy-MM-dd ", crtTime);
     },
     //两个时间相差天数
-    getDateDF: function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
+    getDateSUB: function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
         var dateSpan,
             iDays;
         sDate1 = Date.parse(sDate1);
@@ -211,6 +212,18 @@ var _wd = {
         }
         return str.replace(/[^\x00-\xff]/g, "ab").length;
     },
+    /**
+     * [getCut 截取字符串]
+     * @param   reg [截取的字符]
+     * @param   num [获取的第几位的字符]
+     * @param   msg [字符串]
+     * @return      [返回截取后第num个的字符]
+     */
+    getCut: function (reg, num, msg) {
+        var name = msg.split(reg);
+        // console.log(name[num]);
+        return name[num];
+    },
     //--------------上拉加载更多---------------
     //获取滚动条当前的位置
     getScrollTop: function () {
@@ -255,7 +268,7 @@ var _wd = {
     },
     noFind_Pic: function (img) {
         img.src = "../images/nofindpic.png";
-        img.alt = "加载失败";
+        img.alt = "图片加载失败";
         img.classList.add("P2M");
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },

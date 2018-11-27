@@ -13,12 +13,12 @@
 </head>
 
 <body class="ofa ffWRYH" onload="loadend()" onresize="autocss()">
-<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgca8b"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
 
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
-    <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
+    <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
     <img src='../images/icon/setting.png' class="FR ICON P05M"/>
 </div>
 <!--首页-->
@@ -27,7 +27,7 @@
         <img src="../images/classbg.png" class="W11">
     </div>
     <div class="W11 bgc9 MT">
-        <div class="FL B9M H9M bgc4 rad05e MTNMH ML">
+        <div class="FL B9M H9M bgc4 rad05e MTNMH ML" >
             <!--班级头像-->
             <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic2.png" alt="">
         </div>
@@ -216,11 +216,11 @@
 <script src="../js/wit_app.js"></script>
 <script src="../js/wit_data.js"></script>
 <script>
+    toMenu("cl_index");
     function loadend() {
         autocss();
         loadimg();
         class_message();
-        toMenu("cl_index");
     }
 
     function ch_menu(id) {

@@ -1,217 +1,400 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
-    <link href="../css/witcs.css" rel="stylesheet"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/witcs.css">
     <script src="../js/witjs.js"></script>
 </head>
-<body onload="init();" class="bgc2 ofa" onresize="autocss();">
-<div class="W11 clear ">
-    <fieldset style="padding:0;margin:0;">
-        <form id="form" action="http://127.0.0.1:3000/importfile" method="post" enctype="multipart/form-data">
-            <p class="FL W11 F3 LH15 P05"><span class="colorR">提示：</span>默认首字为姓，复姓请在姓后输入空格，不输姓请在名前输入空格。身份证号用于保护信息归属权。</p>
+<body class="bgc2 ofa" onload="_wit.postmessage({functionname: 'getuser',callback: 'init'});" onresize="autocss();">
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<header class="fix top0 W11 H F5 AC bgc72 color1">
+    <span>校庆校友登记表</span>
 
-            <img id="per_portrait" data-id="IMAGE" class="clear FL M B9M H9M AC LH3 rad bgc108" alt="头像" src="img/port/port02.jpg" onclick="nextElementSibling.click();"/>
-            <input id="ipt_file1" name="per_portrait" type="file" multiple="multiple" name="imgUpload" class="none"
-                   onchange="previewImage(this,{},'per_portrait');"/>
+    <div class="FL B4M H AC " onclick="window.close()"><</div>
+    <div class="FR B4M H" onclick="window.open('../w/w3.html')">
+        <img class="POT" data-src="../../img/a/help.png" lazy/>
+    </div>
+</header>
+<div id="content" class="MTH CW CHNH AC bg_cover bgpB ofa">
+    <div id="form">
+        <p class="FL W11 F2 LH15 P05 AL"><span class="colorR">说明：
+        </span>本次收集信息将用于完善校史档案、展示校友成就，还用于为各班级、各地域、各行业校友建立互助性社交云平台，加强联络与合作，创建温暖共赢的校友环境；为保证信息的真实性，还需输入手机验证码；完成登记后可登录校友云APP查看其它校友的工作信息或同班校友的通讯信息</p>
 
-            <div class="FL C12M H MT">
-                <input name="per_full_name" data-id="per_full_name" class="FL W21 H AC rad" placeholder="姓 名"/>
-                <input name="per_nick_name" data-id="per_nick_name" class="FL W21 H AC rad" placeholder="昵 称"/>
+        <div class="FL MLT B10M H AC bgc73">毕业年届</div>
+        <div id="d_year" class="FL MT C12MT2 H ALP bgc10 bord_select" onclick="wit_date.init(this,0, '0','年');" title="2001">2001年</div>
+        <div class="FL MLT B10M H AC bgc73">学部</div>
+        <div id="d_type" class="FL MT C12MT2 H ALP bgc10 bord_select" data-t="radio" data-s="小学,初中,高中" title="2">高中</div>
+        <div class="FL MLT B10M H AC bgc73">班级</div>
+        <div id="d_class" data-id="cid" class="FL MT C12MT2 H ALP bgc10 bord_select" data-in="title" required onclick="selectClass();">一班</div>
+        <img id="per_portrait" class="clear FL MLT B9M H9M AC LH3 rad bgc108" alt="商务头像" data-src="../../img/port/port02.jpg"
+             src="" onerror="this.src = '../../img/port/port02.jpg';" onclick="nextElementSibling.click();" lazy/>
+        <input id="f_per_portrait" data-img="per_portrait" type="file" name="imgUpload" accept="image/*" class="none"
+               onchange="_fun.previewImage(this,{},'per_portrait');"/>
+        <input id="per_full_name" data-id="name" class="FL MLT C12M H AC rad" placeholder="姓 名"/>
+        <input id="ipt_id" data-id="id" class="none"/>
+        <ul id="per_sex" data-id="sex" data-in="data-radio" class="FL MT MR C12M H ACP">
+            <li class="inlineB ML W31 H AC bgc5 radM">先生</li>
+            <li class="inlineB ML W31 H AC bgc5 radM">女士</li>
+        </ul>
+        <div class="clear"></div>
+        <div class="FL MLT B10M H F4 AC bgc65">当前住址</div>
+        <div id="per_address0" data-id="acode" required data-in="title" class="FL MT C12MT2 H ALP bgc10 bord0 bord_select" onclick="creat_addr(4,0)">请选择所在区域</div>
+
+        <input id="per_address1" data-id="addr" class="FL MLT A1T2 H F4 ALP bord0 " data-t="clear" placeholder="请输入详细地址"/>
+
+        <div data-id="ret" data-in="title" class="FL MLT B9M H AC bgc10 bord_select" data-t="radio" data-s="工作单位,退休单位" title="0">工作单位</div>
+        <input id="per_unit_name" data-id="comp" type="text" class="FL MLT C12M H ALP bgc10" data-t="clear" placeholder="请输入单位名称"/>
+
+        <div id="per_dept" data-id="dept" class="FL MLT A21 F3 H3M LH2 AC radM bgc10 bord_select" data-t="check" placeholder="请选择部门"
+             data-s="生产部,销售部,财务部,技术部,品质部,采购部,行政部,人事部,物流部,企划部,外贸部,市场部,设备部,总经办">请选择部门
+        </div>
+        <div id="per_position" data-id="job" class="FL MLT A21 F3 H3M LH2 AC radM bgc10 bord_select" data-t="check" placeholder="请选择职务"
+             data-s="董事长,总经理,经理,主任,部长,局长,处长,科长,队长,组长,助理,科员,办事员,院长,书记,主席,总监,监理,总编,主编,主治">请选择职务
+        </div>
+        <div id="per_industry" data-id="industry" class="FL MLT A31 F3 H3M LH2 AC radM bgc10 bord_select" data-t="check" placeholder="请选择行业"
+             data-arr="indusclass0">请选择行业
+        </div>
+        <div id="per_job_title" data-id="career" class="FL MLT A31 F3 H3M LH2 AC radM bgc10 bord_select" data-t="check" placeholder="请选择职称"
+             data-s="教授,副教授,高级讲师,讲师,特级教师,高级教师,一级教师,研究员,副研究员,教授级高工,高级工程师,工程师,主任医师,副主任医师,主治医师,主管护师,高级经济师,经济师,高级会计师,会计师">请选择职称
+        </div>
+        <div id="per_education" data-id="education" class="FL MLT A31 F3 H3M LH2 AC radM bgc10 bord_select" data-t="check" placeholder="请选择最高学历"
+             data-s="无,小学,初中,高中,中专,大专,本科,学士,硕士,博士">请选择最高学历
+        </div>
+        <div class="FL MLT B10M H AC bgc73">手机号码*</div>
+        <input id="user_phone" data-id="phone" type="text" class="FL MT C12M H ALP alpha9" placeholder="请输入手机号" data-tt="number" required/>
+
+        <details class="clear W11 H bordB color1">
+            <summary class="W11 ALP">输入更多信息</summary>
+            <div>
+                <div class="FL MLT B10M H AC bgc73">邮编</div>
+                <input type="text" data-id="zcode" class="FL MT C12MT2 H ALP bgc10" data-t="clear" placeholder="请输入邮编"/>
+
+                <div class="FL MLT B10M H AC bgc73">邮箱</div>
+                <input id="per_email" type="text" data-id="mail" class="FL MT C12MT2 H ALP bgc10" data-t="clear" placeholder="请输入邮箱"/>
+
+                <div class="FL MLT B10M H AC bgc73">QQ</div>
+                <input id="per_qq" type="text" data-id="qq" class="FL MT C12MT2 H ALP bgc10" data-t="clear" placeholder="请输入QQ"/>
+
+                <div class="FL MLT B10M H AC bgc73">微信</div>
+                <input id="per_webchat" type="text" data-id="wx" class="FL MT C12MT2 H ALP bgc10" data-t="clear" placeholder="请输入微信"/>
+
+                <div class="FL MLT B10M H AC bgc73">生日</div>
+                <div id="per_birth_date" data-id="birthday" data-in="title" class="FL MT C12MT2 H ALP bgc10 bord_select" onclick="wit_date.init(this,0, '012','年月日');">请选择生日</div>
             </div>
-
-            <ul id="per_sex" name="per_sex" data-id="per_sex" class="FR MT C24M H ACP">
-                <li class="FL W21 H AC bgc5 radM">先生</li>
-                <li class="FR W21 H AC bgc5 radM">女士</li>
-            </ul>
-            <div class="H1M clear"></div>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">userguid</div>
-            <input name="userguid" data-id="userguid" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入电话号码"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">token</div>
-            <input name="token" data-id="token" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="token"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">per_motto</div>
-            <input name="per_motto" data-id="per_motto" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入备注"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">per_address</div>
-            <input name="per_address" data-id="per_address" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入地址"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">per_zodiac</div>
-            <input name="per_zodiac" data-id="per_zodiac" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入生肖"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">per_constellation</div>
-            <input name="per_constellation" data-id="per_constellation" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入星座"/>
-
-            <div class=" FL MLT B13M H F4 AC bgc108 ">per_birthday</div>
-            <input name="per_birthday" data-id="per_birthday" class="FL MT C15MT2 H F4 ALP bord0" type="text" placeholder="请输入出生日期"/>
-
-            <input type="submit" class="MLT MA A21 H bgc16 rad" value="form提交"/>
-        </form>
-        <button class="MLT MA A21 H bgc16 rad" onclick="ajax();">ajax提交</button>
-    </fieldset>
-    <fieldset>
-        <form action="http://192.168.1.129:8080/school/fileupload.do" method="post" enctype="multipart/form-data">
-            <input type="text" name="json"
-                   value=‘{"cid":33303822001303,"sid":3330382,"phone":"15158677106","type":1,"name":"测试图片","src":"","memo":"测试备注","date":1541748419705,"replay":""}’/>
-            <input id="ipt_file2" type="file" name="file"/>
-            <input type="submit" class="MLT MA A21 H bgc16 rad" value="form提交"/>
-        </form>
-        <button class="MLT MA A21 H bgc16 rad" onclick="ajax();">ajax提交</button>
-    </fieldset>
+        </details>
+        <div id="act_submit" class="FL MLT MA A11 H bgc16 rad" onclick="submit();">提交</div>
+    </div>
+    <div class="clear W11 H24M "></div>
 </div>
+<footer></footer>
 </body>
 </html>
 <script src="../js/witconfig.js"></script>
+<script src="../plug/witjsdate.js"></script>
+<script src="../js/industryclass.js"></script>
+<script src="../js/associating.js"></script>
+<script src="../plug/witjsaddr.js"></script>
+<script src="../js/lib/base64.js"></script>
+<script src="../js/lib/MD5.js"></script>
 <script>
     "use strict";
     autocss();
-    function previewImage(file, para, id, callback, loading) {
-        if (file.files && file.files[0]) {
-            loading && this.toLoading();
-            var img = id;
-            if (typeof id == "string") img = document.querySelector("#" + id);
-            img.onload = function () {
-                loading && this.toLoading(-1);
-                img.width = para.width ? para.width : 320;
-                img.height = para.height ? para.height : 240;
-                callback && callback(file.files[0], img, para);
-            }.bind(this);
-//            var reader = new FileReader();
-//            reader.onloadend = function (e) {
-//                console.log(img, e, reader, this);
-//                var base64 = reader.result;
-//                //var blob = this.base64ToBlob(base64);
-//                //img.src = URL.createObjectURL(blob);
-//                img.src = base64;
-//            }.bind(this);
-            img.src = URL.createObjectURL(file.files[0]);
-            window.files = file.files;
-//            reader.readAsDataURL(file.files[0]);
-        }
-    }
-    function ajax_formdata(url, async, para, func, error, file, noloading) {
-        var xmlhttp, $this = this;
-        var form = new FormData();
-        if (para) {
-            for (var i in para) {
-                if (para[i] instanceof File) {
-                    form.append(i, para[i]);
-                } else if (typeof para[i] == "object") {
-                    form.append(i, JSON.stringify(para[i]));
-                } else form.append(i, para[i]);
-            }
-        }
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest()
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-        }
-        xmlhttp.open("post", url, async);
-        if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
-        xmlhttp.onreadystatechange = function () {
-            //console.log(xmlhttp);
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
-                    var msg = xmlhttp.responseText;
-                    func(msg);
-                }
-                else {
-                    var funerr = error || function () {
-                                $this.toAlert("网络异常！", 1500);
-                            };
-                    funerr();
-                }
-            }
-        };
-        xmlhttp.send(form);
-    }
-    var per = {
-        per_portrait: "",
-        per_full_name: "刘晶晶",
-        per_nick_name: "觅雪莹",
-        per_sex: 1,
-        userguid: 15158677106,
-        token: "32509b97dc0fac8979f3fff917bb925b",
-        per_motto: "备注",
-        per_address: "浙江-杭州-西湖区",
-        per_zodiac: "兔",
-        per_constellation: "巨蟹",
-        per_birthday: "1987-06-27"
-    };
-    function init() {
-        bind();
-        fill(per);
-    }
-    function bind() {
-        _fun.radioClick("per_sex", [{className: {on: "FL W21 H AC bgc58 radM", off: "FL W21 H AC bgc5 radM"}}
-            , {className: {on: "FR W21 H AC bgc68 radM", off: "FR W21 H AC bgc5 radM"}}], true);
-    }
-    function fill(o) {
-        var t = document.querySelector("#form");
-        for (var i in o) {
-            var d = t.querySelector("[name=" + i + "]"), v = o[i];
-            if (!d || !v) continue;
-            switch (d.tagName) {
-                case "DIV":
-                case "UL":
-                    v > 0 && d.children[v - 1].click();
-                    break;
-                case "IMG":
-                    d.src = v;
-                    break;
-                case "INPUT":
-                    d.value = v;
-                    break;
-                default :
-                    break;
-            }
-        }
-    }
-    function toPara() {
-        var d = document.querySelector("#form"), dl = d.querySelectorAll("[data-id]"), p = {};
-        Array.prototype.forEach.call(dl, function (v) {
-            var k = v.dataset.id, tag = v.tagName;
-            switch (tag) {
-                case "DIV":
-                    p[k] = (v.dataset.radio >> 0) + 1;
-                    break;
-                case "UL":
-                    p[k] = (v.dataset.radio >> 0) + 1;
-                    break;
-                case "IMG":
-                    p[k] = v.src.replace(/data:image\/.*?;base64,/, "");
-                    break;
-                case "INPUT":
-                    p[k] = v.value.trim();
-                    break;
+    let _info;
+    const _path = {server: "http://121.43.233.185/alumnicloudweb/", local: "http://192.168.1.129:8080/"},
+        _p = location.search.params();
+    if (!_p.sid) location.href = location.href + "?sid=3330382";
+    function init(msg) {
+        console.log(msg);
+        _fun.lazyload();
+        _wit.event.input_del();
+        _wit.event.input_limit();
+        _wit.event.div_UI("s_select", function (i, v, d) {
+            if (d && d.id == "d_type") {
+                const dc = document.querySelector("#d_class");
+                dc.innerHTML = "";
+                dc.title = "";
             }
         });
-        return p;
-    }
-    function ajax() {
-        var para = {
-            json: {
-                cid: 33303822001303,
-                sid: 3330382,
-                phone: "15158677106",
-                type: 1,
-                name: "测试图片",
-                src: "",
-                memo: "测试备注",
-                date: 1541748419705,
-                replay: ""
+        wit_date.call_back = function (d, o) {
+            d.title = o.std;
+            d.innerHTML = o.opt;
+            if (d && d.id == "d_year") {
+                const dc = document.querySelector("#d_class");
+                dc.innerHTML = "";
+                dc.title = "";
             }
         };
-        para.file = ipt_file1.files[0];
+        _fun.radioClick("per_sex", [{className: {on: "inlineB ML W31 H AC bgc58 radM", off: "inlineB ML W31 H AC bgc5 radM"}}
+            , {className: {on: "inlineB ML W31 H AC bgc68 radM", off: "inlineB ML W31 H AC bgc5 radM"}}], true, 0);
+//        code && toInfo(code);
+        _p.sid && toSchool();
+        if (msg.result >= 0) {
+            _info = msg.perinfo;
+            toMember();
+//            license && toCloud(license);
+        }
+    }                    //init
+    function toPara() {
+        const d = document.querySelector("#form"), dl = d.querySelectorAll("[data-id]"), p = {};
+        for (let i in dl) {
+            if (i == "length") break;
+            let v = dl[i], di = v.dataset.in, rd = v.getAttribute("required") != null, rp = v.getAttribute("placeholder");
+            let value = di ? v.getAttribute(di) : v.value || v.innerHTML.replace(rp, "");
+            if (rd && !value) {
+                v.focus();
+                v.click();
+                return false;
+            }
+            p[v.dataset.id] = value;
+        }
+        console.log(p);
+        return p;
+    }                     //生成提交参数
+    function submit() {
+        const p = toPara(), d = document.querySelector("#per_address0"), para = {};
+        if (!p) return;
+        p.sex++;
+        p.cid = Number(p.cid);
+        p.sid = Number(_p.sid);
+        p.ret = p.ret | 0;
+        p.graduation = "";
+        p.honor = "";
+        p.site = 0;
+        p.date = new Date().getTime();
+        p.checkmember = p.checkrank = p.checkdate = 0;
+        p.addr += "@@" + d.innerHTML;
+        p.acode = Number(p.acode);
+        p.id = p.id | 0;
+        para.json = p;
+        para.logo = per_portrait.src.replace(/^data:image\/\w+;base64,/, "");
         console.log(para);
-//        _fun.ajax_formdata("http://127.0.0.1:8080/c/servlet/demo/FormUploadServlet", true, toPara(), function (msg) {
-        ajax_formdata("http://192.168.10.5:8080/record/insert.do", true, para, function (msg) {
+        _fun.ajax_formdata(_path.server + "member/insert.do", true, para, function (msg) {
             console.log(msg);
+            var j = JSON.parse(msg);
+            if (j.result >= 0) {
+                _fun.toAlert("登记成功！");
+            } else _fun.toAlert("登记失败！");
+        });
+    }                     //提交信息到校友录
+    function fill(o) {
+        for (const i in o) {
+            if (Array.isArray(o[i])) continue;
+            if (typeof o[i] == "object") fill(o[i]);
+            else {
+                const d = document.querySelector("#" + i);
+                if (i == "per_address") {
+                    const d0 = document.querySelector("#per_address0"), d1 = document.querySelector("#per_address1"), vl = o[i].split("@@");
+//                    d0.innerHTML = vl[0];
+//                    d0.title =
+                    d1.value = vl[1] || "";
+                } else if (i == "per_industry") {
+                    const ix = o[i] / 100 | 0, v = indusclass0[ix];
+                    d.innerHTML = v;
+                } else if (d) {
+                    switch (d.tagName.toUpperCase()) {
+                        case "DIV":
+                            d.innerHTML = o[i];
+                            break;
+                        case "INPUT":
+                            d.value = o[i];
+                            break;
+                        case "IMG":
+                            const img = new Image();
+                            img.src = _imgpath + o[i];
+                            img.onload = function () {
+                                const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
+                                cvs.width = img.width;
+                                cvs.height = img.height;
+                                ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+                                d.src = cvs.toDataURL();
+                            };
+                            break;
+                        case "UL":
+                            o[i] > 0 && d.children[--o[i]].click();
+                            break;
+                        default :
+                            break;
+                    }
+                }
+            }
+        }
+    }                      //慧联系数据填充
+    function fillMember(o, path) {
+        for (let i in o) {
+            const d = document.querySelector("[data-id=" + i + "]");
+            if (i == "phone") {
+                d.value = o[i];
+                const img = new Image();
+                img.src = path + MD5(o[i]) + ".jpg";
+//                document.body.appendChild(img);
+                img.onload = function () {
+                    const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
+                    cvs.width = img.width;
+                    cvs.height = img.height;
+                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+                    per_portrait.src = cvs.toDataURL();
+                };
+            } else if (i == "cid") {
+                d.title = o[i];
+                toClassInfo(o[i], d);
+            } else if (i == "addr") {
+                const d0 = document.querySelector("#per_address0"), d1 = document.querySelector("#per_address1"), vl = o[i].split("@@");
+                d0.innerHTML = vl[0];
+                d1.value = vl[1] || "";
+            } else if (i == "birthday") {
+                d.title = new Date(o[i]).Format("yyyy-MM-dd");
+                d.innerHTML = new Date(o[i]).Format("yyyy-MM-dd");
+            } else if (d) {
+                switch (d.tagName.toUpperCase()) {
+                    case "DIV":
+                        const attr = d.dataset.in;
+                        attr ? d[attr] = o[i] : d.innerHTML = o[i];
+                        break;
+                    case "INPUT":
+                        d.value = o[i];
+                        break;
+                    case "IMG":
+                        break;
+                    case "UL":
+                        o[i] > 0 && d.children[--o[i]].click();
+                        break;
+                    default :
+                        break;
+                }
+            }
+        }
+    }          //校友录数据填充
+    function selectClass() {
+        let dy = document.querySelector("#d_year"), dt = document.querySelector("#d_type");
+        if ((dy.title >= 0 || dy.click()) && (dt.title >= 0 || dt.click())) {
+            toClass(dy.title, (dt.title | 0) + 1, event.target);
+        }
+    }                //班级 选择
+
+    function toSchool() {
+        const para = {
+            guid: _p.sid
+        };
+        _fun.ajax_formdata(_path.server + "school/queryByGuid.do", true, para, function (msg) {
+            console.log(msg);
+            const j = JSON.parse(msg);
+            if (j.result >= 0) {
+                const o = j.message[0];
+                document.querySelector("header>span").innerHTML = o.name + " 校友登记";
+            }
+        }, function (msg) {
+            console.log(msg)
+        });
+    }                   //学校 关联信息
+    function toClass(y, t, d) {
+        const para = {
+            sid: _p.sid,
+            type: t,
+            sDate: y
+        };
+        console.log(para);
+        _fun.ajax_formdata(_path.server + "class/queryBySTD.do", true, para, function (msg) {
+            console.log(msg);
+            const j = JSON.parse(msg);
+            if (j.result >= 0 && j.message.length > 0) {
+                _fun.toDownList(document.querySelector("#d_class"), function (a, p) {
+//                    console.log(a, p);
+                    const dd = document.createElement("div"), df = document.createDocumentFragment();
+                    dd.className = "relative HN4M HX36M ML A11 ofa";
+                    dd.id = "d_classList";
+                    a.innerHTML = '';
+                    j.message.forEach(function (v) {
+                        const div = document.createElement("div");
+                        div.className = "relative W11 ALP H bgc18 ellips index10";
+                        div.innerHTML = v.name + ":班主任（" + v.master + "）";
+                        div.onclick = function () {
+                            _fun.hide(p);
+                            console.log(this);
+                            d.innerHTML = v.name + ":班主任（" + v.master + "）";
+                            d.title = v.guid;
+                        };
+                        df.appendChild(div);
+                    });
+                    dd.appendChild(df);
+                    a.appendChild(dd);
+//                    a.style.bottom = "";
+//                    a.style.top = d.offsetTop + H + "px";
+                })
+            } else _fun.toAlert("无此班级信息！");
+        });
+    }             //班级 关联信息
+    function toMember() {
+        const para = {
+            phone: _info.perobjectjson.user_phone
+        };
+        _fun.ajax_formdata(_path.server + "member/queryByGuid.do", true, para, function (msg) {
+            console.log(msg);
+            const j = JSON.parse(msg);
+            if (j.result >= 0) {
+                fillMember(j.message[0], j.logoPath);
+            } else fill(_info);
         }, function (msg) {
             console.log(msg);
+            fill(_info);
         });
-    }
+    }                   //成员 已有成员填充
+    function toClassInfo(cid, td) {
+        const para = {
+            guid: cid
+        };
+        _fun.ajax_formdata(_path.server + "class/queryByGuid.do", true, para, function (msg) {
+            const j = JSON.parse(msg);
+            console.log(j);
+            if (j.result >= 0 && j.message.length > 0) {
+                const o = j.message.find(function (v) {
+                    return v.guid == cid;
+                });
+                td.innerHTML = o.name + ":班主任（" + o.master + "）";
+            } else fill(_info);
+        }, function (msg) {
+        });
+    }         //班级 查询详情
+
+    function toCloud(lincese) {
+        const para = {};
+        para.token = _info.token;
+        para.userguid = _info.user_guid;
+        para.companylicense = lincese;
+        console.log(para);
+        _fun.ajax_formdata(_wit.path.server + "mavenwitlinkweb/school/retrievebycompanylicense.do", true, para, function (msg) {
+            const j = JSON.parse(msg);
+            console.log(j);
+            console.log(JSON.parse(Base64.decode(j.message.contactlist)));
+
+//            create();
+//            update(j.message);
+//            j.message.msga = "S9@15158677106@刘晶晶";
+//            updatemsga({token: j.message.token, userguid: j.message.userguid, unitid: j.message.unit_id, msga: j.message.msga});
+        }, function (msg) {
+            console.log(msg)
+        });
+    }             //关联校友云信息
+    function toInfo(code) {
+        const para = {
+            CODE: code
+        };
+        _fun.ajax_formdata(_path.java + "/c/servlet/wechat/web/AccessTokenServlet?CODE=" + code, true, para, function (msg) {
+            content.children[1].innerHTML = msg;
+            const j = JSON.parse(msg);
+            if (j.openid && j.access_token) {
+                _fun.ajax_formdata(_path.java + "/c/servlet/wechat/web/UserInfoServlet?ACCESS_TOKEN=" + j.access_token + "&OPENID=" + j.openid, true, para, function (msg) {
+                    content.children[2].innerHTML = msg;
+                }, function (msg) {
+                    _fun.toAlert(msg);
+                });
+            }
+        }, function (msg) {
+//            _fun.toAlert("用户验证失败！请退出后再次进入！");
+        });
+    }                 //关联wechat
+
 </script>

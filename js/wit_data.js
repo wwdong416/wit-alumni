@@ -8,15 +8,12 @@ var _editor = "W.Dong";
 var url = "http://121.43.233.185/alumnicloudweb";
 //http://121.43.233.185/alumnicloudweb
 // var url = "http://192.168.10.5:8888";
-var id = "";
-//33303820012003301
-//33303822009303
 //获取学校id
-if (_wd.getUrl()) {
-    var s_guid = _wd.getUrl().Cid;
-}
-//获取班级id
-id = s_guid + "2003301";
+    var s_guid = _wd.getUrl_sid().sid;
+
+    var id=_wd.getUrl_sid().cid;
+
+
 console.log(s_guid);
 
 //返回值失败的情况
@@ -49,7 +46,7 @@ function class_message() {
             _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
                 if (m_Error(msg)) {
                     var p = JSON.parse(msg);
-                    // console.log(p);
+                    console.log(p);
                     //获取班级和班主任
                     classname = p.message[0].name;
                     master = p.message[0].master;
@@ -83,7 +80,7 @@ function cl_index() {
                     var nowTime = _wd.getCurrentDate(1);//获取当前时间
                     var YMD = date.substring(0, 10);//获取数据中时间的年月日
                     var HM = date.substring(11, date.length);//获取数据中时间的时分
-                    var DF_time = _wd.getDateDF(nowTime, YMD);//计算两者时间差天数
+                    var DF_time = _wd.getDateSUB(nowTime, YMD);//计算两者时间差天数
                     switch (DF_time) {
                         case 0:
                             YMD = "今天";
@@ -269,14 +266,16 @@ function getNoticeList(page) {
 
 //点击更多加载下一页列表
 var moreNotice = document.getElementById("more_notice");
-moreNotice.onclick = function () {
-    more_btn++;
-    getNoticeList(more_btn);
-};
+if (moreNotice) {
+    moreNotice.onclick = function () {
+        more_btn++;
+        getNoticeList(more_btn);
+    };
+}
 
 //添加通讯录
 function cl_information() {
-    daisWH(6,7);//设置默认座位表
+    daisWH(6, 7);//设置默认座位表
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
     var para = {
@@ -324,10 +323,13 @@ function cl_information() {
         }
     }
 }
+
 function classmatesMember() {
 
 }
+
 var ph_more_btn = 1;
+
 //档案
 function cl_photo() {
     console.log("cl_photo");
@@ -412,12 +414,13 @@ function get_cl_Photo(page, type) {
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para, function (msg) {
                     if (m_Error(msg)) {
                         var p = JSON.parse(msg);
+                        console.log(p);
                         var imgSrc = "";
                         var imgHtml = "";
                         imgurl = p.logoPath;
                         if (p.message.length > 0) {//相册中含有图片的使用相册首张作为封面
                             imgSrc = imgurl + p.message[0].src;
-                            imgHtml =  '<img class="W11 H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
+                            imgHtml = '<img class="W11 H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
                         } else {//若为空相册则用默认封面，根据type值区分，并且样式上添加P1M
                             switch (type) {
                                 case 1:
@@ -430,9 +433,9 @@ function get_cl_Photo(page, type) {
                                     imgSrc = "../images/icon/null_flw.png";
                                     break;
                             }
-                            imgHtml =  '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
+                            imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
                         }
-                        div.innerHTML = '<div class="pic44  bgc9 AC ofh">'+imgHtml+
+                        div.innerHTML = '<div class="pic44  bgc9 AC ofh">' + imgHtml +
                             '</div>' +
                             '<div class="F2 ellips A41 PB1M AC color8">' + v.name + '</div>';
                         switch (type) {
@@ -552,7 +555,7 @@ function ph_addMore($id, $page) {
         if (m_Error(msg)) {
             var imgurl = JSON.parse(msg).logoPath;
             var p = JSON.parse(msg).message;
-            console.log(p);
+            // console.log(p);
             var ph_img = document.getElementById("ph_list");
             var ph_more = document.getElementById("ph_addMore");
             if (p.length == 0) {
@@ -565,16 +568,36 @@ function ph_addMore($id, $page) {
                 p.forEach(function (v) {
                     var div = document.createElement("div");
                     div.className = "pic33 FL ML ofh AC";
-                    div.onclick = function () {
-                    };
                     div.innerHTML =
-                        '<img class=" W11 H11 P05M OFC"  src="' + imgurl + v.src + '" alt="" onerror="_wd.noFind_Pic(this)">';
+                        '<img class=" W11 H11 P05M OFC"  src="' + imgurl + v.src + '" alt="" onerror="_wd.noFind_Pic(this)" onclick="toFull_img(this)">';
                     ph_img.appendChild(div);
                 });
             }
             _wd.clear(ph_img);
         }
     });
+}
+
+function toFull_img(pic) {
+    var s = document.getElementById("s_select");
+    s.innerHTML = "";
+    s.classList.remove("none");
+    _wd.show(s);
+    var div = document.createElement("div");
+    div.className="fix   W11 CHmax bgc0  ofa";
+    div.id = "full_img";
+    div.innerHTML ='<img src="' + pic.src + '" style="width: 100%;height: 100%">';
+    s.appendChild(div);
+    s.onclick = function () {
+        _wd.hide(s);
+    }
+    var img = document.querySelector("#full_img>img");
+    console.log(img.clientHeight+"_"+CH);
+    console.log(document.getElementById("full_img").height);
+    if (CH - img.clientHeight >0){
+        img.style.paddingTop = (CH - img.clientHeight) / 2 + "px";
+    }
+
 }
 
 function addPhotos($id, $name, $phone, $date, $type) {
@@ -613,6 +636,12 @@ function addPhotos($id, $name, $phone, $date, $type) {
         _wd.deleteChild("re_photo", "detail_ph");
         document.getElementById("photo").classList.remove("CHNH");
     };
+    if ($type == 2) {
+        document.getElementById("up_photo").setAttribute("accept", "video/*");
+    }
+    if ($type == 4) {
+        document.getElementById("up_photo").removeAttribute("accept");
+    }
     var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
     var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
     if (isIos) {
@@ -625,7 +654,6 @@ function addPhotos($id, $name, $phone, $date, $type) {
         ph_more_number++;
         ph_addMore(record_id, ph_more_number);
     };
-
     var input = document.getElementById("up_photo");
     input.value = "";
     var result;
@@ -666,47 +694,73 @@ function addPhotos($id, $name, $phone, $date, $type) {
             document.getElementById("detail_ph").classList.remove("H1M");
         };
         // dais.toggle("ph_upload", 1);
+
         for (var i = 0; i < iLen; i++) {
-            if (!input['value'].match(/.jpg|.gif|.png|.jpeg|.bmp/i)) {　　//判断上传文件格式
-                return alert("上传的图片格式不正确，请重新选择");
-            }
+            // if (!input['value'].match(/.jpg|.gif|.png|.jpeg|.bmp/i)) {　　//判断上传文件格式
+            //     return alert("上传的图片格式不正确，请重新选择");
+            // }
             var reader = new FileReader();
             reader.index = i;
             fd.append("files", this.files[i]);
             console.log(this.files[i]);
-            reader.readAsDataURL(this.files[i]);  //转成base64
-            reader.fileName = this.files[i].name;
-            reader.onload = function (e) {
-                var imgMsg = {
-                    name: this.fileName,//获取文件名
-                    base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
-                };
-                dataArr.push(imgMsg);
-                result = '<img class=" index99 relative H1M B1M topM" src="../images/icon/delete.png" id="delete_ph' + imgMsg.name + '" alt=""> <img class=" W11 H11 P05M OFC" src="' + this.result + '" alt=""/> ';
+            if ($type == 1 || $type == 2) {
+                reader.readAsDataURL(this.files[i]);  //转成base64
+                reader.fileName = this.files[i].name;
+                reader.onload = function (e) {
+                    var imgMsg = {
+                        name: this.fileName,//获取文件名
+                        base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
+                    };
+                    dataArr.push(imgMsg);
+                    result = ' <img class=" W11 H11 P05M OFC" src="' + this.result + '" onclick="toFull_img(this)"/> ';
+                    // '<img class=" index99 relative H1M B1M topM" src="../images/icon/delete.png" id="delete_ph' + imgMsg.name + '" alt="">' +
+                    var div1 = document.createElement('div');
+                    // div1.index = index;
+                    div1.innerHTML = result;
+                    var upload_btn = document.getElementById("ph_upload_btn");
+                    if (div1.innerHTML.length > 0) {
+                        // document.getElementById("dbclick_delete").innerText = "长按图片删除！";
+                        upload_btn.classList.add("colorff");
+                        upload_btn.classList.remove("color8");
+                    } else {
+                        upload_btn.classList.add("color8");
+                        upload_btn.classList.remove("colorff");
+                    }
+                    div1.className = "FL M05 pic33 ofh";
+                    // div1.id = "delete_p" + imgMsg.name;
+                    document.getElementById("ch_list").appendChild(div1);
+                    // var deletePicId = "delete_ph" + imgMsg.name;
+                    // var deletePic = document.getElementById(deletePicId);
+                    // deletePic.onclick = function () {
+                    //     this.parentNode.remove();                  // 在页面中删除该图片元素
+                    //     delete dataArr[this.index];  // 删除dataArr对应的数据
+                    //     fd.delete(index);
+                    // console.log(oInput.value);
+                    // };
+                    // index++;
+                }
+            } else if ($type == 4) {
+                var fileSize = 0;
+                if (this.files[i].size > 1024 * 1024) {
+                    fileSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                }
+                else {
+                    fileSize = (Math.round(this.files[i].size * 100 / 1024) / 100).toString() + 'KB';
+                }
+                result = ' <li class=" W11" >' + this.files[i].name + '</li> ' +
+                    '<li class="W11 F2 AL color8">' + fileSize + '</li>';
                 var div1 = document.createElement('div');
-                div1.index = index;
                 div1.innerHTML = result;
                 var upload_btn = document.getElementById("ph_upload_btn");
                 if (div1.innerHTML.length > 0) {
-                    // document.getElementById("dbclick_delete").innerText = "长按图片删除！";
                     upload_btn.classList.add("colorff");
                     upload_btn.classList.remove("color8");
                 } else {
                     upload_btn.classList.add("color8");
                     upload_btn.classList.remove("colorff");
                 }
-                div1.className = "FL M05 pic33 ofh";
-                div1.id = "delete_p" + imgMsg.name;
+                div1.className = "FL  W11 ellips bordBD1";
                 document.getElementById("ch_list").appendChild(div1);
-                var deletePicId = "delete_ph" + imgMsg.name;
-                var deletePic = document.getElementById(deletePicId);
-                deletePic.onclick = function () {
-                    this.parentNode.remove();                  // 在页面中删除该图片元素
-                    delete dataArr[this.index];  // 删除dataArr对应的数据
-                    fd.delete(index);
-                    // console.log(oInput.value);
-                };
-                index++;
             }
         }
         document.getElementById("ph_upload_btn").onclick = function () {
@@ -749,38 +803,3 @@ function addPhotos($id, $name, $phone, $date, $type) {
     };
 }
 
-/**
- * 上传图片
- * @type:类型
- * @ipt_id:input上传控件id
- * @gid:相册id
- * */
-function Re_insert(type, ipt_id, gid) {
-    var fd = new FormData();
-    fd.append("json", JSON.stringify({
-        cid: id,
-        sid: s_guid,
-        gid: gid,
-        phone: _phone,
-        type: type,
-        name: "测试图片",
-        src: "",
-        memo: "测试备注",
-        date: new Date().getTime(),
-        replay: ""
-    }));
-    Array.prototype.forEach.call(ipt_id.files, function (v) {
-        // console.log(ipt_id.files);
-        console.log(v);
-        fd.append("files", v);
-    });
-    console.log(fd);
-    _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
-        _wd.hide("ph_upload");
-        _wd.hide("re_photo");
-        toMenu("cl_photo");
-        console.log(msg);
-    }, function (msg) {
-        _wd.info("无法上传，请重试！", "bgc24");
-    });
-}
