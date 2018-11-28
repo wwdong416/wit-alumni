@@ -9,24 +9,24 @@ var _wd = {
      * @$c:提示框颜色
      */
     info: function ($t, $c) {
-        var t = $t, c = $c, d = document.querySelector("#toAlert");
-        var className = "AC fix F2 ma rad03e P05M MTH  LSP " + " " + c;
+        var t = $t, c = $c, d = document.querySelector("#toInfo");
+        var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + c;
         if (d) {
             var div = d.querySelector("div");
             d.classList.remove("none");
             if (div.style.display == "none") div.style.display = "";
-            div.innerHTML = '<div class="' + className + '" style="width:40%;top:50%;left:0; right: 0">' + t + '</div>';
+            div.innerHTML = '<div class="' + className + '" style="width:50%;top:50%;left:0; right: 0">' + t + '</div>';
         } else {
 
             var div = document.createElement("div");
             div.className = "CW CH fix index999";
-            div.id = "toAlert";
-            div.innerHTML = '<div class="' + className + '" style="width:40%;top:50%;left:0; right: 0">' + t + '</div>';
+            div.id = "toInfo";
+            div.innerHTML = '<div class="' + className + '" style="width:50%;top:50%;left:0; right: 0">' + t + '</div>';
             document.body.appendChild(div);
         }
         setTimeout(function () {
             if (d) d.classList.add("none");
-            else document.querySelector("#toAlert").classList.add("none");
+            else document.querySelector("#toInfo").classList.add("none");
         }, 2000);
     },
     /*

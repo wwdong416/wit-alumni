@@ -58,13 +58,12 @@
                         <div id="classNumber" class="FR W32 AR ">3</div>
                         <div class="clear"></div>
                     </div> -->
-                <div class="P1M bordBD1 ">
+                <div class="P1M bordBD1 " onClick="Show_Hidden(myAllClass)">
                     <div class="FL W31 AL">已加班级</div>
-                    <div class="FR  AR ">
+                    <div class="FR  AR " >
                         <!-- <div class=""> -->
                         <span id="myClass1" class="PR1 MR"></span>
-                        <span class="" id="moreclass"
-                              onClick="Show_Hidden(myAllClass)">&nbsp;&gt;&nbsp;</span>
+                        <span class="F3" id="moreclass" >&nbsp;&#62</span>
                         <!-- </div> -->
                         <div id="myAllClass" class="none MT animation_sh"></div>
                     </div>
@@ -115,28 +114,28 @@
 
 
 <!-- 添加班级开始 -->
-<div id="d_add" class="none W11 CH fix index100 top0 bgca8b">
+<div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
     <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
     <li class="relative W11 MT2H  rad05e LSP">
         <input name="industrycode" data-id="industry_code" placeholder="学校类别"
-               class="clear FL MLT B9M H AL bgc107 bord_select" readonly="" data-t="radio" data-finp="clearschoolname"
+               class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio" data-finp="clearschoolname"
                data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
         <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
-               class="FL MLT C12MT2 H ALP bgc10 bord0 bord_select" value="" title="" onmousedown="creat_addr(3,0);"/>
+               class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title="" onmousedown="creat_addr(3,0);"/>
         <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
-               class="FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
+               class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
                data-uid="undefined" readonly/>
         <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
         <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
-               class="FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+               class=" rad05e FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
         <div class="FL MT B1M H AC color1">-</div>
         <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
-               class="FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+               class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
         <!--<input name="classdate" placeholder="入学年级" readonly class="FL MLT B9M H AC border bord_select"-->
         <!--onclick="wit_date.init(this,0, '0');"/>-->
         <!--<input name="group" data-id="class_name" id="d_class" placeholder="输入班级" class="FL MLT A1T2 H ALP bord_select" value=""-->
         <!--onclick="selectClass();"/>-->
-        <div name="group" data-id="class_name" id="d_class" class="bgc10 FL MLT A1T2 H ALP bord_select" data-in="title"
+        <div name="group" data-id="class_name" id="d_class" class="color75 rad05e  FL MLT A1T2 H ALP bord_select" data-in="title"
              required onclick="selectClass();">选择班级
         </div>
         <!--<div class="FR B6M MT H">班</div>-->
@@ -147,8 +146,8 @@
         <!--<div class="FL MLNH B4M H ofa alpha MT none" title="quick">-->
         <!--<img title="del" src="../images/icon/del.png" class="FL B4M H"></div>-->
         <!--<textarea data-id="honors" class="FL MLT A1T2 HN4M F4 ALP bord0" placeholder="请输入成绩和荣誉"></textarea>-->
-        <div class="FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
-        <div name="submit" class="FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">添加</div>
+        <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
+        <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">添加</div>
     </li>
 </div>
 <!-- 添加班级结束 -->
@@ -178,9 +177,9 @@
     function C_schoolcata(d, c) {
         document.getElementById(d).innerHTML = "";
         c.forEach(function (v) {
-            var div = document.createElement("li");
+            var div = document.createElement("div");
             var cid = getCut("||", 2, v.class_name);
-            div.className = "MT W11 F3 LH3 AC shadow0 bg_contain";
+            div.className = "MT MA C9M F3 LH3 AC ellips PL1M PR1M shadow0 bg_contain";
             div.style = "background-image:url(../images/muban1.png)";
             div.onclick = function () {
                 window.location.href = "Classmates.html?sid=" + v.unit_id + "&cid=" + cid;
@@ -189,16 +188,6 @@
                 v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name) + "班";
             document.getElementById(d).appendChild(div);
         });
-
-        // var cont = "";
-        // try {
-        //     for (var i = 0; i < c.length; i++) {
-        //         cont += '<li class="MT W11 F3 LH3 AC shadow0 bg_contain" style="background-image:url(../images/muban1.png)" onclick="window." >' + c[i].unit_name + " " + c[i].dept + " " + getCut("-", 0, c[i].date_end) + "届" + " " + getCut("||", 1, c[i].class_name) + '</li>'
-        //     }
-        //     document.getElementById(d).innerHTML = cont;
-        // } catch (e) {
-        //     console.log(e);
-        // }
     }
 
     function C_mydetails(c) {
@@ -207,7 +196,7 @@
             var div = document.createElement("p");
             div.className = " ";
             div.innerHTML =
-                v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name) + "班";
+                v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end||"") + "届" + " " + getCut("||", 1, v.class_name) + "班";
             document.getElementById("myAllClass").appendChild(div);
         });
     }
@@ -221,11 +210,16 @@
 
         }
     }
-
+// console.log(getCut(".",0,""));
     function getCut(reg, num, msg) {
-        var name = msg.split(reg);
-        // console.log(name[num]);
-        return name[num];
+        if (msg){
+            var name = msg.split(reg);
+            // console.log(name[num]);
+            if (name){
+                return name[num] || "";
+            }
+        }
+      return "";
     }
 
     function callback(msg) {
@@ -288,7 +282,7 @@
         console.log(o.date_end.length);
         if (o.adm_div_code == "||" || o.date_start.length == 0 || o.date_end.length == 0 || o.unit_name.length == 0) {
             // _fun.toAlert("请将数据填写完整再添加！");
-            _wd.info("请将数据填写完整再添加！", "bgc44");
+            _wd.info("请将数据填写完整再添加！", "bgc5e");
         } else {
             _wit.postmessage({
                 functionname: "addExp",
@@ -338,7 +332,7 @@
         var date = new Date(de.getAttribute("data-yl"));
         console.log(ds + " " + date.getFullYear() + " " + dt);
         if (ds == "undefined" || dt < 0) {
-            _wd.info("请将数据填写完整再添加！", "bgc44");
+            _wd.info("请将数据填写完整再添加！", "bgc5e");
         }else {
             toClassmates(ds, date.getFullYear(), dt, event.target)
         }
@@ -403,10 +397,10 @@
                 _fun.toLoading(-1);
                 var j = JSON.parse(msg);
                 if (j.result >= 0) {
-                    _wd.info("添加经历成功！", "bgc44");
+                    _wd.info("添加经历成功！", "bgc5e");
                     document.location.reload(); //当前页面
                 } else {
-                    _wd.info("请选择学校类别！", "bgc24");
+                    _wd.info("请选择学校类别！", "bgc5e");
                 }
             }, JSON.stringify(o), 0);
         }
@@ -423,12 +417,12 @@
             type = dt.title,
             area = da.title;
         if (!type || type < 0) {
-            _wd.info("请选择学校类别！", "bgc44");
+            _wd.info("请选择学校类别！", "bgc5e");
             dt.click();
             return;
         }
         if (!area) {
-            _wd.info("请选择学校所在地址！", "bgc44");
+            _wd.info("请选择学校所在地址！", "bgc5e");
             da.click();
             return;
         }
@@ -466,7 +460,7 @@
                         return v.sc_name == dv;
                     });
                     if (ix >= 0) {
-                        _wd.info("该学校已经存在！", "bgc44");
+                        _wd.info("该学校已经存在！", "bgc5e");
                         ds.scrollTop = ds.children[ix + 1].offsetTop;
                         return;
                     }
@@ -488,7 +482,7 @@
                         var j = JSON.parse(msg);
                         if (j.result >= 0) {
                             // _fun.toAlert("添加成功！");
-                            _wd.info("添加成功！", "bgc44");
+                            _wd.info("添加成功！", "bgc5e");
                             div = document.createElement("div");
                             div.className = "relative W11 ALP H bgc18 ellips index10";
                             div.setAttribute("readonly", "true");
@@ -539,12 +533,12 @@
             code = dt.title,
             time = da.value.slice(0, 4);
         if (!code) {
-            _wd.info("请选择学校！", "bgc44");
+            _wd.info("请选择学校！", "bgc5e");
             dt.click();
             return;
         }
         if (!time) {
-            _wd.info("请选择入学年级！", "bgc44");
+            _wd.info("请选择入学年级！", "bgc5e");
             da.click();
             return;
         }

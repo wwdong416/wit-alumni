@@ -13,10 +13,12 @@ li {
 .bghsla {
     background: hsla(0, 0, 100%, .5);
 }
-.showSchool{
+
+.showSchool {
     width: 100%;
     background: url(../images/muban1.png) no-repeat center;
 }
+
 .add {
     background: url(../images/icon/add.png) no-repeat center;
     background-size: contain
@@ -79,6 +81,11 @@ li {
     border-bottom: 1px solid #d1d1d1;
 }
 
+.bgca8b {
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFF
+}
+
 .bgcd1 {
     background: #d1d1d1;
 }
@@ -86,7 +93,9 @@ li {
 .bgcddc {
     background: #d4d5c7;
 }
-
+.bgc5e{
+    background:rgba(94, 94, 94, 0.95);
+}
 .bgcf4 {
     background: #f4f4f4;
 }
@@ -98,23 +107,32 @@ li {
 .bgca04 {
     background: rgba(0, 0, 0, 0.4)
 }
-.bgcaf5{
+
+.bgcaf5 {
     background: #f5f3ef;
 }
-.bgcff{
+
+.bgcff {
     background: #ffc437;
 }
-.colorff{
-    color:#ffc437 ;
+
+.colorff {
+    color: #ffc437;
+}
+.color75{
+    color: #757575;
+    background: #ffffff;
 }
 .selectnone {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
 }
-.ma{
+
+.ma {
     margin: 0 auto;
 }
-.OFC{
+
+.OFC {
     object-fit: cover;
 }
