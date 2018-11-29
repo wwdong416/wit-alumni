@@ -20,11 +20,14 @@ console.log(s_guid);
 function m_Error(msg) {
     var p = JSON.parse(msg);
     if (p.result < 0) {
+        _wd.toError();
         _wd.info("服务器异常！", "bgc24");
         return false;
     }
     return true;
 }
+
+
 
 //班级信息
 function class_message() {
@@ -54,6 +57,8 @@ function class_message() {
                     document.getElementById("class_master").innerText = "班主任：" + master;
                 }
             });
+        } else {
+            error_Refresh("index");
         }
     });
 }
@@ -292,9 +297,9 @@ function cl_information() {
             var p = JSON.parse(msg).message;
             p.forEach(function (v) {
                 var div = document.createElement("div");
-                div.className = " W11 H7M bordBD1";
+                div.className = " W11 H7M ofh bordBD1";
                 div.innerHTML = '<li class="absolute W11 H7M bordBD1 bgc10 ofh index9">' +
-                    '<img class="FL B5M rad0 M" src="../images/pic1.png" alt=""> ' +
+                    '<img class="FL B5M rad0 M" src="../images/pic2.png" alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
                     '<div class="FL W21 color876 bold ofh F3">' + v.name + '</div> ' +
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +
@@ -393,7 +398,7 @@ function get_cl_Photo(page, type) {
                 };
                 var pa_idx = "ph_more_type" + type;
                 if (document.getElementById(pa_idx)) {
-                    document.getElementById(pa_idx).innerHTML="";
+                    document.getElementById(pa_idx).innerHTML = "";
                 }
                 more_div.innerHTML = "<div class='pic44  bgc9 AC ofh' id='more_btn_img" + type + "'>" +
                     "<img class='A41  bgc8 P2M' src='../images/icon/more.png' >" +
@@ -416,12 +421,12 @@ function get_cl_Photo(page, type) {
             } else {
                 var pa_id = "ph_more_type" + type;
                 if (document.getElementById(pa_id)) {
-                    console.log(type+"__111");
+                    console.log(type + "__111");
                     var more_img = "more_btn_img" + type;
                     if (document.getElementById(more_img)) {
                         document.getElementById(pa_id).removeChild(document.getElementById(more_img));
                     }
-                }else {
+                } else {
                     console.log(1);
                 }
             }
@@ -562,7 +567,7 @@ function addFolder(type) {
     });
 }
 
-function ph_addMore($id, $page,$type) {
+function ph_addMore($id, $page, $type) {
     var para = {
         cid: id,
         gid: $id,
@@ -573,7 +578,7 @@ function ph_addMore($id, $page,$type) {
         if (m_Error(msg)) {
             var imgurl = JSON.parse(msg).logoPath;
             var p = JSON.parse(msg).message;
-             console.log(p);
+            console.log(p);
             // document.getElementById("builder").classList.remove("none");
             var ph_img = document.getElementById("ph_list");
             var ph_more = document.getElementById("ph_addMore");
@@ -602,9 +607,9 @@ function ph_addMore($id, $page,$type) {
                             div.className = "FL  W11 ellips bordBD1 P1M";
                             div.innerHTML =
                                 ' <li class=" W11" >' + v.name + '</li> ' +
-                                '<li class="W11 F2 AL color8"> '  +
-                                '<div class="FL">上传者：' +v.phone+'</div>' +
-                                '<div class="FR">日期：' +_wd.crtTimeFtt(v.date)+'</div>'+
+                                '<li class="W11 F2 AL color8"> ' +
+                                '<div class="FL">上传者：' + v.phone + '</div>' +
+                                '<div class="FR">日期：' + _wd.crtTimeFtt(v.date) + '</div>' +
                                 '</li>';
                             break;
                     }
@@ -687,12 +692,12 @@ function addPhotos($id, $name, $phone, $date, $type) {
     if (isIos) {
         document.getElementById("up_photo").removeAttribute("capture");
     }
-    ph_addMore(record_id, 1,$type);
+    ph_addMore(record_id, 1, $type);
     var ph_more = document.getElementById("ph_addMore");
     var ph_more_number = 1;
     ph_more.onclick = function () {
         ph_more_number++;
-        ph_addMore(record_id, ph_more_number,$type);
+        ph_addMore(record_id, ph_more_number, $type);
     };
     var input = document.getElementById("up_photo");
     input.value = "";
@@ -743,7 +748,7 @@ function addPhotos($id, $name, $phone, $date, $type) {
             reader.index = i;
             fd.append("files", this.files[i]);
             console.log(this.files[i]);
-            if ($type == 1 ) {
+            if ($type == 1) {
                 reader.readAsDataURL(this.files[i]);  //转成base64
                 reader.fileName = this.files[i].name;
                 reader.onload = function (e) {
@@ -779,7 +784,7 @@ function addPhotos($id, $name, $phone, $date, $type) {
                     // };
                     // index++;
                 }
-            }else if ($type == 2){
+            } else if ($type == 2) {
                 var videoSize = 0;
                 if (this.files[i].size > 1024 * 1024) {
                     videoSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -801,7 +806,7 @@ function addPhotos($id, $name, $phone, $date, $type) {
                 }
                 div1.className = "FL  W11 ellips bordBD1";
                 document.getElementById("ch_list").appendChild(div1);
-            }else if ($type == 4) {
+            } else if ($type == 4) {
                 var fileSize = 0;
                 if (this.files[i].size > 1024 * 1024) {
                     fileSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';

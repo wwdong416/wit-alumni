@@ -48,51 +48,28 @@
                 <div class="clear"></div>
             </div>
             <div id="mymsg1" class=" bgc10">
-                <div class="bordBD1 P1M">
+                <div class="bordBD1 P1M H4M">
                     <div class="FL W31 AL">姓名</div>
                     <div id="myName" class="FR W32 AR "></div>
                     <div class="clear"></div>
                 </div>
-                <!--     <div class="PT1M PB1M bordB TEXT">
-                        <div class="FL W31 ">班级数量</div>
-                        <div id="classNumber" class="FR W32 AR ">3</div>
-                        <div class="clear"></div>
-                    </div> -->
-                <div class="P1M bordBD1 " onClick="Show_Hidden(myAllClass)">
-                    <div class="FL W31 AL">已加班级</div>
-                    <div class="FR  AR " >
-                        <!-- <div class=""> -->
-                        <span id="myClass1" class="PR1 MR"></span>
-                        <span class="F3" id="moreclass" >&nbsp;&#62</span>
-                        <!-- </div> -->
-                        <div id="myAllClass" class="none MT animation_sh"></div>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                <!--<div class="P1M bordBD1 " onClick="Show_Hidden(myAllClass)">-->
+                    <!--<div class="FL W31 AL">已加班级</div>-->
+                    <!--<div class="FR  AR " >-->
+                        <!--<span id="myClass1" class="PR1 MR"></span>-->
+                        <!--<span class="F3" id="moreclass" >&nbsp;&#62</span>-->
+                        <!--<div id="myAllClass" class="none MT animation_sh"></div>-->
+                    <!--</div>-->
+                    <!--<div class="clear"></div>-->
+                <!--</div>-->
+
+                <details open>
+                    <summary class="FL AL W11 P1M bordBD1 ">已加班级</summary>
+                    <div id="myAllClass"></div>
+                </details>
+                <div class="clear"></div>
             </div>
         </div>
-        <!--<div id="findclass" class="P2 W11 flexbox bordB PT1M PB1M">-->
-        <!--<div class=" W41 bgc118 radius  pic44">-->
-        <!--</div>-->
-        <!--<ul class="W21  ffHT ML">-->
-        <!--<li class=" F5 bold">查找班级</li>-->
-        <!--<li class=" F1">您有3个好友关注的班级</li>-->
-        <!--</ul>-->
-        <!--<div class="W41 PL4 AR PR1">-->
-        <!--<span class="MR bgc14 radius">&nbsp;3&nbsp;</span><span>&gt;</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div id="notify" class="P2 W11 flexbox PT1M PB1M">-->
-        <!--<div class=" W41 bgc24 radius  pic44">-->
-        <!--</div>-->
-        <!--<ul class="W21  ffHT ML">-->
-        <!--<li class=" F5 bold">消息通知</li>-->
-        <!--<li class=" F1">您有2条未读消息</li>-->
-        <!--</ul>-->
-        <!--<div class="W41 PL4 AR PR1">-->
-        <!--<span class="MR bgc14 radius">&nbsp;2&nbsp;</span><span>&gt;</span>-->
-        <!--</div>-->
-        <!--</div>-->
     </div>
     <!-- 个人信息结束 -->
     <div id="class">
@@ -193,14 +170,55 @@
     function C_mydetails(c) {
         document.getElementById("myAllClass").innerHTML = "";
         c.forEach(function (v) {
+
             var div = document.createElement("p");
-            div.className = " ";
-            div.innerHTML =
-                v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end||"") + "届" + " " + getCut("||", 1, v.class_name) + "班";
+            div.className = " AL W11 H4M  bordBD1 FL";
+            div.innerHTML ='<div class="FL LH25">'+ v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end||"") + "届" + " " + getCut("||", 1, v.class_name) + "班"+'</div>'+
+            '<div class="B3M H3M FR" onclick="del_school('+v.id+')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
+
             document.getElementById("myAllClass").appendChild(div);
         });
     }
+    function  del_school(id) {
+        console.log(id);
+        _wit.postmessage({
+            functionname: "deleteexp",
+            witparams: JSON.stringify({
+                type: 0,
+                id : id
+            }),
+            callbackparam: JSON.stringify({
+                type: 0,
+                id: id
+            }),
+            callback: "delExp"
+        });
+    }
+    function delExp(msg, param) {
+        console.log("正在删除");
+        console.log(msg);
+        var j = msg,
+            p = JSON.parse(param);
+        if (j && j.result >= 0) {
+            _wd.info("删除成功！", "bgc5e");
+            document.location.reload(); //当前页面
+            //其他端免回调
+        } else {//pc端
+            var o = p.json;
+            console.log(o);
+            console.log(p.type);
+            p.type === 0 && externalfun.deleteexp(function (msg) {
 
+                console.log(msg);
+                _fun.toLoading(-1);
+                var j = JSON.parse(msg);
+                if (j.result >= 0) {
+                    _wd.info("删除成功！", "bgc5e");
+                    document.location.reload(); //当前页面
+                }
+            },p.id, 0);
+        }
+    }
     function Show_Hidden(obj) {
         if (obj.style.display == "block") {
             obj.style.display = 'none';
@@ -285,7 +303,7 @@
             _wd.info("请将数据填写完整再添加！", "bgc5e");
         } else {
             _wit.postmessage({
-                functionname: "addExp",
+                functionname: "createexp",
                 witparams: JSON.stringify({
                     type: 0,
                     json: o
@@ -385,6 +403,8 @@
         var j = msg,
             p = JSON.parse(param);
         if (j && j.result >= 0) {
+            _wd.info("添加经历成功！", "bgc5e");
+            document.location.reload(); //当前页面
             //其他端免回调
         } else {
             var o = p.json;

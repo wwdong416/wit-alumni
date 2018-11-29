@@ -3,6 +3,7 @@
  * @date 2018/11/2
  */
 var _wd = {
+    _sto: null, //setTimeout全局
     /**
      * 提示框
      * @$t:提示内容
@@ -28,6 +29,55 @@ var _wd = {
             if (d) d.classList.add("none");
             else document.querySelector("#toInfo").classList.add("none");
         }, 2000);
+    },
+    //自定义进度——自动生成：time/超时时间，img/进度条图片地址,modal/是否模态窗口
+    toLoading: function ($time, $img, $modal) {
+        var $this = this, img = $img || "../images/icon/loading2.gif", d = document.querySelector("#toLoading"),
+            time = $time || 5000, modal = $modal;
+        if (d) {
+            document.body.removeChild(d);
+            clearTimeout($this._sto);
+        } else {
+            if (time <= 0) {
+                clearTimeout($this._sto);
+                return;
+            }
+            var div = document.createElement("div");
+            div.className = "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
+            div.id = "toLoading";
+            div.innerHTML = '<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
+            $this.insertBefore(document.body, div);
+            $this._sto = setTimeout(function () {
+                if (div) {
+                    document.body.removeChild(div);
+                    //$this.toAlert("访问超时！", 1500);
+                }
+            }, time);
+        }
+    },
+    toError: function (a) {
+        console.log(a);
+        var $this = this, d = document.querySelector("#toError");
+        if (d) {
+            document.body.removeChild(d);
+        } else {
+            var div = document.createElement("div");
+            div.className = "fix index999 AC CW bgc10";
+            div.style.height = CH - 9 * M + "px";
+            div.id = "toError";
+            div.innerHTML = '<div class="relative top40">' +
+                '<div class=" W11 MA">' +
+                '<img src="../images/icon/errorPage.png">' +
+                '</div>' +
+                '<div class="W11 AC ">加载失败了~~</div>' +
+                '<div class="MTH W11 ">点击重试</div>' +
+                '</div> ';
+            div.onclick =function (){
+                window.location.reload();
+            };
+            $this.insertBefore(document.body, div);
+        }
+
     },
     /*
     * ajax数据交互
@@ -56,21 +106,23 @@ var _wd = {
         } else {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
         }
-        // !noloading && $this.toLoading(5000);
+        !noloading && $this.toLoading(5000);
         xmlhttp.open("post", url, async);
         if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
         xmlhttp.onreadystatechange = function () {
             //console.log(xmlhttp);
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
-                    // !noloading && $this.toLoading(0);
+                    !noloading && $this.toLoading(0);
                     var msg = xmlhttp.responseText;
                     func(msg);
                 }
                 else {
-                    // !noloading && $this.toLoading(0);
+                    !noloading && $this.toLoading(0);
                     var funerr = error || function () {
-                        _wd.info("服务器异常！", "bgc24");
+                         // _wd.info("服务器异常！", "bgc24");
+                         $this.toError($this);
+                         // return 0;
                     };
                     funerr();
                 }
@@ -272,6 +324,14 @@ var _wd = {
         img.classList.add("P2M");
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },
+    insertBefore: function (parent, newChild) {
+        if (parent.firstChild) {
+            parent.insertBefore(newChild, parent.firstChild);
+        } else {
+            parent.appendChild(newChild);
+        }
+        return parent;
+    },     //dom插入
     insertAfter: function (newElement, targetElement) {
         var parent = targetElement.parentNode;
         if (parent.lastChild == targetElement) {
