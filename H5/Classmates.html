@@ -15,11 +15,11 @@
 <body class="ofhx ffWRYH" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgca8b"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
-
+<div id="new_page" class="none index99 fix bottom0 W11 CH callnone bgc9"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
     <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
-    <img src='../images/icon/setting.png' class="FR ICON P05M"/>
+    <img src='../images/icon/index_b.png' class="B4M H4M FR ICON P05M" onclick="window.open('index.html')"/>
 </div>
 <!--首页-->
 <div id="index" class="MTH F3">
@@ -29,7 +29,7 @@
     <div class="W11 bgc9 MT">
         <div class="FL B9M H9M bgc4 rad05e MTNMH ML" >
             <!--班级头像-->
-            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic1.png" alt="">
+            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic1.png" id="classLogo" onclick="class_msg()">
         </div>
         <div class="FL P1M ffWRYH C10M">
             <div class=" bold F3 ellips" id="class_name"></div>

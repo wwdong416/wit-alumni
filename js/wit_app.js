@@ -55,8 +55,8 @@ var _wd = {
             }, time);
         }
     },
-    toError: function (a) {
-        console.log(a);
+    toError: function () {
+        // console.log(a);
         var $this = this, d = document.querySelector("#toError");
         if (d) {
             document.body.removeChild(d);
@@ -121,7 +121,7 @@ var _wd = {
                     !noloading && $this.toLoading(0);
                     var funerr = error || function () {
                          // _wd.info("服务器异常！", "bgc24");
-                         $this.toError($this);
+                         $this.toError();
                          // return 0;
                     };
                     funerr();

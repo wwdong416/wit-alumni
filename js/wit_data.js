@@ -3,45 +3,66 @@
  * @date 2018/11/2
  * @Description:数据交互接口
  */
+var _userguid="10086", _token = "6a88d84141c6a72cc632e2b52fd88680";
+
 var _phone = "18806097971";
 var _editor = "W.Dong";
 var url = "http://121.43.233.185/alumnicloudweb";
 //http://121.43.233.185/alumnicloudweb
 // var url = "http://192.168.10.5:8888";
 //获取学校id
-var s_guid = _wd.getUrl_sid().sid;
+var s_guid = "3433000550";
 
-var id = _wd.getUrl_sid().cid;
+var id = "34330005502003301";
 
 
 console.log(s_guid);
 
 //返回值失败的情况
 function m_Error(msg) {
+
     var p = JSON.parse(msg);
     if (p.result < 0) {
+        console.log(msg);
         _wd.toError();
         _wd.info("服务器异常！", "bgc24");
         return false;
     }
     return true;
 }
-
-
+_wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+function init(msg) {
+    if (msg.result >= 0) {
+        var info = msg.message;
+        // _userguid = info.user_guid;
+        // _token = info.token;
+        _wit.event.input_UI("s_select", function (i, v, d) {
+            console.log(i, v, d);
+        });
+        _wit.event.input_limit();
+    } else {
+        _wd.info("用户非法，请重新登录！", "bgc24");
+    }
+}
 
 //班级信息
 function class_message() {
     var para = {
+        token: _token,
+        userguid: _userguid,
         guid: s_guid,
         page: 1,
         pagesize: 1
     };
+    console.log(_token+""+_userguid);
     _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
         if (m_Error(msg)) {
             var p = JSON.parse(msg);
-            // console.log(p);
+             console.log(p);
             schoolname = p.message[0].name;//获取学校名称
             var para = {
+                token: _token,
+                userguid: _userguid,
                 guid: id,
                 page: 1,
                 pagesize: 1
@@ -49,7 +70,9 @@ function class_message() {
             _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
                 if (m_Error(msg)) {
                     var p = JSON.parse(msg);
-                    console.log(p);
+                    // document.getElementById("classLogo").
+                    // class_msg(s_msg,p);
+                    // console.log(p);
                     //获取班级和班主任
                     classname = p.message[0].name;
                     master = p.message[0].master;
@@ -57,17 +80,52 @@ function class_message() {
                     document.getElementById("class_master").innerText = "班主任：" + master;
                 }
             });
-        } else {
-            error_Refresh("index");
         }
     });
 }
-
+// 班级详情
+function class_msg() {
+    // console.log(s);
+    // console.log(c);
+    var p = document.getElementById("new_page");
+    var div = document.createElement("div");
+    div.className = "fix W11 CHmax bgc9 PB1M ofa";
+    div.innerHTML = '<div class="fix top0 H W11 AC ffHT">' +
+        '    <div  class="FL B4M H4M F2" onclick="_wd.hide(new_page)">' +
+        '<img src="../images/icon/back_w.png" class="FL B4M H4M  P05M" > </div>' +
+        '    <div  class="FR B4M H4M F2 color8">' +
+        '<img src="../images/icon/index_w.png" class="FR B4M H4M  P05M" > </div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="H21M W11 ofh OFC"><img src="../images/pic1.png" class=" W11 H11  OFC "></div>'+
+        '<div class="F4 W11 bold P1M">班级信息</div>'+
+        '<div class=" W11 F3 bgc10">' +
+        '<div class="bordBD1 H4M ">' +
+        '<div class="FL W31 AL P1M">学校</div>' +
+        '<div  class="FR W32 AR P1M color8">'+schoolname+'</div>' +
+        '<div class="clear"></div>' +
+        '</div>'+
+        '<div class="bordBD1 H4M ">' +
+        '<div class="FL W31 AL P1M">班级</div>' +
+        '<div  class="FR W32 AR P1M color8">'+classname+'班</div>' +
+        '<div class="clear"></div>' +
+        '</div>'+
+        '<div class="bordBD1 H4M ">' +
+        '<div class="FL W31 AL P1M">班主任</div>' +
+        '<div  class="FR W32 AR P1M color8">'+master+'</div>' +
+        '<div class="clear"></div>' +
+        '</div>'+
+        '</div>';
+    p.appendChild(div);
+    _wd.show(p);
+}
 //首页通知
 function cl_index() {
     var f_notice = document.getElementById("first_notice");
     document.getElementById("index_notice").innerHTML = "";
     var para = {
+        token: _token,
+        userguid: _userguid,
         cid: id,
         page: 1,
         pagesize: 5//首页只展示五条数据
@@ -183,7 +241,7 @@ function in_notice() {
     var notice = document.getElementById("re_content").value;
     if (type < 0 || title.length == 0) {
         _wd.info("通知标签、标题不能为空", "bgc5e");
-        console.log(type, title.length);
+        // console.log(type, title.length);
         document.getElementById("n_tag").click();
     } else if (_wd.getBLen(title) > 50) {
         _wd.info("标题不能超过25个字！", "bgc5e");
@@ -192,6 +250,8 @@ function in_notice() {
     } else {
         var para = {
             json: {
+                token: _token,
+                userguid: _userguid,
                 sid: s_guid,
                 cid: id,
                 phone: _phone,
@@ -230,6 +290,8 @@ function cl_notice() {
 //获取通知列表
 function getNoticeList(page) {
     var para = {
+        token: _token,
+        userguid: _userguid,
         cid: id,
         page: page,
         pagesize: 20
@@ -288,6 +350,8 @@ function cl_information() {
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
     var para = {
+        token: _token,
+        userguid: _userguid,
         cid: id,
         page: 1,
         pagesize: 50
@@ -332,7 +396,6 @@ function cl_information() {
         }
     }
 }
-
 function classmatesMember() {
 
 }
@@ -341,7 +404,7 @@ var ph_more_btn = 1;
 
 //档案
 function cl_photo() {
-    console.log("cl_photo");
+    // console.log("cl_photo");
     ph_more_btn = 1;
     var ph_img = document.getElementById("ph_img");
     ph_img.innerHTML = "";
@@ -377,6 +440,8 @@ function get_cl_Photo(page, type) {
     var ph_video = document.getElementById("ph_video");
     var ph_word = document.getElementById("ph_word");
     var para = {
+        token: _token,
+        userguid: _userguid,
         cid: id,
         type: type,
         page: page,
@@ -406,28 +471,21 @@ function get_cl_Photo(page, type) {
                 switch (type) {
                     case 1:
                         _wd.insertAfter(more_div, ph_img);
-                        // ph_img.appendChild(more_div);
                         break;
                     case 2:
                         _wd.insertAfter(more_div, ph_video);
-                        // ph_video.appendChild(more_div);
                         break;
                     case 4:
                         _wd.insertAfter(more_div, ph_word);
-                        // ph_word.appendChild(more_div);
-                        // console.log(ph_word.children);
                         break;
                 }
             } else {
                 var pa_id = "ph_more_type" + type;
                 if (document.getElementById(pa_id)) {
-                    console.log(type + "__111");
                     var more_img = "more_btn_img" + type;
                     if (document.getElementById(more_img)) {
                         document.getElementById(pa_id).removeChild(document.getElementById(more_img));
                     }
-                } else {
-                    console.log(1);
                 }
             }
             p.forEach(function (v) {
@@ -439,6 +497,8 @@ function get_cl_Photo(page, type) {
                 };
                 var imgurl = "";
                 var para = {
+                    token: _token,
+                    userguid: _userguid,
                     cid: id,
                     gid: v.id,
                     page: 1,
@@ -488,13 +548,8 @@ function get_cl_Photo(page, type) {
                     }
                 });
             });
-
-
         }
     });
-    // _wd.clear(ph_img);
-    // _wd.clear(ph_video);
-    // _wd.clear(ph_word);
 }
 
 function ph_type_list(type) {
@@ -546,6 +601,8 @@ function addFolder(type) {
     var fol_name = document.getElementById("folder_name").value;
     var para = {
         json: {
+            token: _token,
+            userguid: _userguid,
             sid: s_guid,
             cid: id,
             phone: _phone,
@@ -569,6 +626,8 @@ function addFolder(type) {
 
 function ph_addMore($id, $page, $type) {
     var para = {
+        token: _token,
+        userguid: _userguid,
         cid: id,
         gid: $id,
         page: $page,
@@ -578,7 +637,7 @@ function ph_addMore($id, $page, $type) {
         if (m_Error(msg)) {
             var imgurl = JSON.parse(msg).logoPath;
             var p = JSON.parse(msg).message;
-            console.log(p);
+            // console.log(p);
             // document.getElementById("builder").classList.remove("none");
             var ph_img = document.getElementById("ph_list");
             var ph_more = document.getElementById("ph_addMore");
@@ -638,8 +697,8 @@ function toFull_img(pic) {
         _wd.hide(s);
     }
     var img = document.querySelector("#full_img>img");
-    console.log(img.clientHeight + "_" + CH);
-    console.log(document.getElementById("full_img").height);
+    // console.log(img.clientHeight + "_" + CH);
+    // console.log(document.getElementById("full_img").height);
     if (CH - img.clientHeight > 0) {
         img.style.paddingTop = (CH - img.clientHeight) / 2 + "px";
     }
@@ -747,7 +806,7 @@ function addPhotos($id, $name, $phone, $date, $type) {
             var reader = new FileReader();
             reader.index = i;
             fd.append("files", this.files[i]);
-            console.log(this.files[i]);
+            // console.log(this.files[i]);
             if ($type == 1) {
                 reader.readAsDataURL(this.files[i]);  //转成base64
                 reader.fileName = this.files[i].name;
@@ -849,13 +908,13 @@ function addPhotos($id, $name, $phone, $date, $type) {
             //     console.log(v);
             //     fd.append("files", v);
             // });
-            console.log(fd);
+            // console.log(fd);
             _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
                 _wd.hide("ph_upload");
                 _wd.hide("re_photo");
                 toMenu("cl_photo");
                 document.getElementById("photo").classList.remove("CHNH");
-                console.log(msg);
+                // console.log(msg);
             }, function (msg) {
                 _wd.info("无法上传，请重试！", "bgc24");
             });

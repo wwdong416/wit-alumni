@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
+    <meta name="keywords" content="校友录，校友会,手机校友录，慧脑校友录">
+    <meta name="description" content="慧脑校友录,手机校友录，校友会">
+    <link rel="stylesheet" type="text/css" href="../css/alumni.css">
+    <link rel="stylesheet" type="text/css" href="../css/witcs.css">
+    <script src="../js/witjs.js"></script>
+    <title>校友录</title>
+</head>
+<body class="ofa" onload="loadend()" onresize="autocss()">
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+<div id="myDetails" class="W11  bgc9 ">
+
+    <div class="index99 fix top0 H W11 AC ffHT  bgc9">个人信息
+        <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="location.href='index.html'"/>
+        <div class="B4M H4M FR  P05M"></div>
+    </div>
+    <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
+        <div class="H6M flexbox">
+            <div class="W21 FL AL">头像</div>
+            <div class="W21 FR  flexbox">
+                <div class="W11 AR H6M">
+                    <img src="../images/pic1.png" class="H6M B6M P05M rad1 AR" alt="" id="myImg">
+                </div>
+                <div class=" AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="H1M W11 bgcaf5 bordBDe6"></div>
+    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">名字</div>
+            <div id="myname" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">性别</div>
+            <div id="mysex" class="W21 FR AR color8 ellips">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="  H4M flexbox">
+            <div class="W21 FL AL">生日</div>
+            <div id="mybirthday" class="W21 FR AR color8 ellips" >
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+    </div>
+    <div class="H1M W11 bgcaf5 bordBDe6"></div>
+    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">邮箱</div>
+            <div id="mymail" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">QQ</div>
+            <div id="myqq" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="  H4M flexbox">
+            <div class="W21 FL AL">微信</div>
+            <div id="mywx" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+    </div>
+    <div class="H1M W11 bordBDe6"></div>
+    <div class=" W11  PL1M PR1M bgc10  bordBDe6 ellips">
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">地址</div>
+            <div id="myaddr" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="  H4M flexbox">
+            <div class="W21 FL AL">邮编</div>
+            <div id="myzcode" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+    </div>
+    <div class="H1M W11 bordBDe6"></div>
+    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">学历</div>
+            <div id="myeducation" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="  H4M flexbox">
+            <div class="W21 FL AL">毕业院校</div>
+            <div id="mygraduation" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+    </div>
+    <div class="H1M W11 bordBDe6"></div>
+    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">行业</div>
+            <div id="myindustry" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">单位</div>
+            <div id="mycomp" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">部门</div>
+            <div id="mydept" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">职务</div>
+            <div id="myjob" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">职称</div>
+            <div id="mycareer" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+        <div class="bordBDe6  H4M flexbox">
+            <div class="W21 FL AL">荣誉</div>
+            <div id="myhonor" class="W21 FR AR color8 ellips" data-t="my_msg">
+            </div>
+            <div class="ML AR color8">
+                <div class=" AR">&#62</div>
+            </div>
+        </div>
+    </div>
+    <div class="H1M W11 bordBDe6"></div>
+    <div class=" W11    bgc119  bordBDe6">
+        <details open>
+            <summary class="FL AL W11 P1M bordBD1 ">已加班级</summary>
+            <div id="myAllClass"></div>
+        </details>
+        <div class="clear"></div>
+    </div>
+    <div class="H8M"></div>
+</div>
+</body>
+</html>
+<script src="../js/wit_ajax.js"></script>
+<script src="../js/witconfig.js"></script>
+<script src="../js/witjsdate.js"></script>
+<script src="../js/witjsaddr.js"></script>
+<script src="../js/wit_app.js"></script>
+<script type="text/javascript">
+    "use strict";
+    autocss();
+    var _userguid, _token;
+    const _url = "http://121.43.233.185/alumnicloudweb";
+    getClassMsg();
+
+    function loadend() {
+        autocss();
+        loadimg();
+        postmessage({functionname: "getuser", callback: "callback"});
+    }
+
+    function callback(msg) {
+        console.log(msg);
+        var info = msg.perinfo;
+        //获取班级信息
+        var myclass = info.perexpeducationjson;
+        console.log(myclass);
+        C_mydetails(myclass);
+        _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+    }
+
+    function getClassMsg() {
+        var para = {
+            token: "6a88d84141c6a72cc632e2b52fd88680",
+            userguid: "10086",
+            phone: "15158677106",
+            page: 1,
+            pagesize: 1
+        };
+        _wd.ajax_formdata(_url + "/member/queryByGuid.do", true, para, function (msg) {
+            var p = JSON.parse(msg).message[0];
+            console.log(p);
+            var pd = document.getElementById("myDetails").querySelectorAll("[data-t='my_msg']");
+            console.log(pd);
+            var mysex = document.getElementById("mysex");
+            var sex;
+            switch (p.sex) {
+                case 0:
+                    sex = " ";
+                    break;
+                case 1:
+                    sex = " 男";
+                    break;
+                case 2:
+                    sex = "女";
+                    break;
+            }
+            mysex.innerText = sex;
+            var mybirthday = document.getElementById("mybirthday");
+            mybirthday.innerText = _wd.crtTimeYMD(p.birthday);
+            Array.prototype.forEach.call(pd, function (v) {
+                // console.log(v.id.split("my")[1]);
+                for (var i in p) {
+                    // console.log(i);
+                    if (i === v.id.split("my")[1]) {
+                        v.innerText = p[i];
+                    }
+                }
+            });
+            // p.forEach(function (v) {
+            //
+            //
+            //     var myImg = document.getElementById("myImg");
+            //     myImg.src = "";
+            //     var myname = document.getElementById("myname");
+            //     myname.innerText = v.name;
+            //     var mysex = document.getElementById("mysex");
+            //     var sex;
+            //     switch (v.sex) {
+            //         case 0:
+            //             sex = " ";
+            //             break;
+            //         case 1:
+            //             sex = " 男";
+            //             break;
+            //         case 2:
+            //             sex = "女";
+            //             break;
+            //     }
+            //     mysex.innerText = sex;
+            //     var mybirthday = document.getElementById("mybirthday");
+            //
+            //     if( _wd.crtTimeYMD(v.birthday)){
+            //         mybirthday.innerText =  _wd.crtTimeYMD(v.birthday);
+            //     }else {
+            //         mybirthday.innerText = "";
+            //     }
+            //
+            //
+            //     var mymail = document.getElementById("mymail");
+            //     mymail.innerText = v.mail;
+            //
+            //     var myqq = document.getElementById("myqq");
+            //     myqq.innerText = v.qq;
+            //
+            //     var mywx = document.getElementById("mywx");
+            //     mywx.innerText = v.wx;
+            //
+            //     var myaddr = document.getElementById("myaddr");
+            //     myaddr.innerText = v.addr;
+            //
+            //     var myzcode = document.getElementById("myzcode");
+            //     myzcode.innerText = v.zcode;
+            //
+            //     var myeducation= document.getElementById("myeducation");
+            //     myeducation.innerText = v.education;
+            //
+            //     var mygraduation = document.getElementById("mygraduation");
+            //     mygraduation.innerText = v.graduation;
+            //
+            //     var myindustry = document.getElementById("myindustry");
+            //     myindustry.innerText = v.industry;
+            //
+            //     var mycomp = document.getElementById("mycomp");
+            //     mycomp.innerText = v.comp;
+            //
+            //     var mycareer = document.getElementById("mycareer");
+            //     mycareer.innerText = v.career;
+            //
+            //     var mydept = document.getElementById("mydept");
+            //     mydept.innerText = v.dept;
+            //
+            //     var myjob = document.getElementById("myjob");
+            //     myjob.innerText = v.job;
+            //
+            //     var myhonor = document.getElementById("myhonor");
+            //     myhonor.innerText = v.honor;
+            //
+            //
+            // })
+        });
+    }
+
+    function C_mymsg(c) {
+
+
+    }
+
+    function C_mydetails(c) {
+        document.getElementById("myAllClass").innerHTML = "";
+        c.forEach(function (v) {
+            var div = document.createElement("p");
+            div.className = " AL W11 H4M  bordBD1 FL";
+            div.innerHTML = '<div class="FL LH25">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
+                '<div class="B3M H3M FR" onclick="del_school(' + v.id + ')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
+
+            document.getElementById("myAllClass").appendChild(div);
+        });
+    }
+
+    function init(msg) {
+        console.log(msg);
+        if (msg.result >= 0) {
+            var info = msg.message;
+            _userguid = info.user_guid;
+            _token = info.token;
+            _wit.event.input_UI("s_select", function (i, v, d) {
+                console.log(i, v, d);
+            });
+            _wit.event.input_limit();
+            C_mymsg(info);
+        } else {
+            _wd.info("用户非法，请重新登录！", "bgc24");
+            // _fun.toAlert("用户非法，请重新登录！");
+        }
+    }
+
+    function del_school(id) {
+        console.log(id);
+        _wit.postmessage({
+            functionname: "deleteexp",
+            witparams: JSON.stringify({
+                type: 0,
+                id: id
+            }),
+            callbackparam: JSON.stringify({
+                type: 0,
+                id: id
+            }),
+            callback: "delExp"
+        });
+    }
+
+    function delExp(msg, param) {
+        console.log("正在删除");
+        console.log(msg);
+        var j = msg,
+            p = JSON.parse(param);
+        if (j && j.result >= 0) {
+            _wd.info("删除成功！", "bgc5e");
+            postmessage({functionname: "getuser", callback: "callback"});
+            // document.location.reload(); //当前页面
+            //其他端免回调
+        } else {//pc端
+            var o = p.json;
+            console.log(o);
+            console.log(p.type);
+            p.type === 0 && externalfun.deleteexp(function (msg) {
+                console.log(msg);
+                _fun.toLoading(-1);
+                var j = JSON.parse(msg);
+                if (j.result >= 0) {
+                    _wd.info("删除成功！", "bgc5e");
+                    // document.location.reload(); //当前页面
+                    postmessage({functionname: "getuser", callback: "callback"});
+                }
+            }, p.id, 0);
+        }
+    }
+</script>
