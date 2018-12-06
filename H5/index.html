@@ -64,7 +64,7 @@
     <div id="focus">
         <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
         <ul id="myfocus" class="clear ffHT color1"></ul>
-        <a>
+        <a onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
             <img src="../images/icon/add.png" alt="" class="AC MA H2M MT">
 
         </a>
@@ -75,12 +75,14 @@
 <!-- 添加班级开始 -->
 <div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
     <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
-    <li class="relative W11 MT2H  rad05e LSP ffWRYH">
+    <div class="relative W11 MT2H  rad05e LSP ffWRYH">
         <input name="industrycode" data-id="industry_code" placeholder="学校类别"
-               class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio" data-finp="clearschoolname"
+               class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio"
+               data-finp="clearschoolname"
                data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
         <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
-               class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title="" onmousedown="creat_addr(3,0);"/>
+               class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title=""
+               onmousedown="creat_addr(3,0);"/>
         <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
                class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
                data-uid="undefined" readonly/>
@@ -90,29 +92,19 @@
         <div class="FL MT B1M H AC color1">-</div>
         <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
                class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
-        <!--<input name="classdate" placeholder="入学年级" readonly class="FL MLT B9M H AC border bord_select"-->
-        <!--onclick="wit_date.init(this,0, '0');"/>-->
-        <!--<input name="group" data-id="class_name" id="d_class" placeholder="输入班级" class="FL MLT A1T2 H ALP bord_select" value=""-->
-        <!--onclick="selectClass();"/>-->
-        <div name="group" data-id="class_name" id="d_class" class="color75 rad05e  FL MLT A1T2 H ALP bord_select" data-in="title"
+        <div name="group" data-id="class_name" id="d_class" class="color75 rad05e  FL MLT A1T2 H ALP bord_select"
+             data-in="title"
              required onclick="selectClass();">选择班级
         </div>
-        <!--<div class="FR B6M MT H">班</div>-->
-        <!--<input name="role" data-id="position_name" placeholder="职务" class="FL MLT A2T4 H ALP" value="" readonly=""-->
-        <!--data-t="check" data-s="学生,班长,副班长,学习委员,文娱委员,劳动委员,体育委员,纪律委员,课代表"/>-->
-        <!--<input name="" data-id="relation_tag" maxlength="6" type="text" class="FL MLT A2T4 H F4 bord0 ALP "-->
-        <!--placeholder="关联关系分类" data-t="clear" value=""/>-->
-        <!--<div class="FL MLNH B4M H ofa alpha MT none" title="quick">-->
-        <!--<img title="del" src="../images/icon/del.png" class="FL B4M H"></div>-->
-        <!--<textarea data-id="honors" class="FL MLT A1T2 HN4M F4 ALP bord0" placeholder="请输入成绩和荣誉"></textarea>-->
         <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
-        <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">添加</div>
-    </li>
+        <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">
+            添加
+        </div>
+        <div class="clear"></div>
+    </div>
 </div>
 <!-- 添加班级结束 -->
-
 </body>
-
 </html>
 <!-- <script src="../js/witjs0.js"></script> -->
 <script src="../js/wit_ajax.js"></script>
@@ -125,10 +117,15 @@
     "use strict";
     autocss();
     const _url = "http://121.43.233.185/alumnicloudweb";
+    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    const lo_url = "Classmates.html";
+    var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
 
     function loadend() {
         autocss();
         loadimg();
+        // postmessage({functionname: "getapp", callback: "callback"});
+
         postmessage({functionname: "getuser", callback: "callback"});
 
     }
@@ -141,7 +138,8 @@
             div.className = "MT MA C9M F3 LH3 AC ellips PL1M PR1M shadow0 bg_contain";
             div.style = "background-image:url(../images/muban1.png)";
             div.onclick = function () {
-                window.location.href = "Classmates.html?sid=" + v.unit_id + "&cid=" + cid;
+                window.location.href = lo_url + "?sid=" + v.unit_id + "&cid=" + cid + "&id=" + v.id;
+                // window.location.href = "Classmates.html?sid=" + v.unit_id + "&cid=" + cid;
             };
             div.innerHTML =
                 v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name) + "班";
@@ -149,25 +147,26 @@
         });
     }
 
+
     function C_mydetails(c) {
         document.getElementById("myAllClass").innerHTML = "";
+        console.log(c);
         c.forEach(function (v) {
-
             var div = document.createElement("p");
             div.className = " AL W11 H4M  bordBD1 FL";
-            div.innerHTML ='<div class="FL LH25">'+ v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end||"") + "届" + " " + getCut("||", 1, v.class_name) + "班"+'</div>'+
-            '<div class="B3M H3M FR" onclick="del_school('+v.id+')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
-
+            div.innerHTML = '<div class="FL LH25">' + v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end || "") + "届" + " " + getCut("||", 1, v.class_name) + "班" + '</div>' +
+                '<div class="B3M H3M FR" onclick="del_school(' + v.id + ')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
             document.getElementById("myAllClass").appendChild(div);
         });
     }
-    function  del_school(id) {
+
+    function del_school(id) {
         console.log(id);
         _wit.postmessage({
             functionname: "deleteexp",
             witparams: JSON.stringify({
                 type: 0,
-                id : id
+                id: id
             }),
             callbackparam: JSON.stringify({
                 type: 0,
@@ -176,6 +175,7 @@
             callback: "delExp"
         });
     }
+
     function delExp(msg, param) {
         console.log("正在删除");
         console.log(msg);
@@ -184,7 +184,7 @@
         if (j && j.result >= 0) {
             _wd.info("删除成功！", "bgc5e");
 
-             document.location.reload(); //当前页面
+            document.location.reload(); //当前页面
             _fun.show('mydetails');
             //其他端免回调
         } else {//pc端
@@ -201,9 +201,10 @@
                     document.location.reload(); //当前页面
                     _fun.show('mydetails');
                 }
-            },p.id, 0);
+            }, p.id, 0);
         }
     }
+
     function Show_Hidden(obj) {
         if (obj.style.display == "block") {
             obj.style.display = 'none';
@@ -213,21 +214,21 @@
 
         }
     }
-// console.log(getCut(".",0,""));
+
+    // console.log(getCut(".",0,""));
     function getCut(reg, num, msg) {
-        if (msg){
+        if (msg) {
             var name = msg.split(reg);
             // console.log(name[num]);
-            if (name){
+            if (name) {
                 return name[num] || "";
             }
         }
-      return "";
+        return "";
     }
 
     function callback(msg) {
         console.log(msg);
-
         var info = msg.perinfo;
         //获取班级信息
         var myclass = info.perexpeducationjson;
@@ -235,33 +236,29 @@
         document.getElementById("myName").innerHTML = info.perobjectjson.per_full_name;
         C_schoolcata("myclass", myclass);
         C_mydetails(myclass);
-        // var myPic = info.perobjectjson.per_portrait;
-        // myImg.src = myPic;
-        // console.log(myPic);
+
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
-    var _userguid="10086", _token = "6a88d84141c6a72cc632e2b52fd88680";
+
     function init(msg) {
         console.log(msg);
         if (msg.result >= 0) {
             var info = msg.message;
-            // _userguid = info.user_guid;
-            // _token = info.token;
             _wit.event.input_UI("s_select", function (i, v, d) {
                 console.log(i, v, d);
             });
             _wit.event.input_limit();
             var myImg = document.getElementById("myImg");
 
-            myImg.src =  info.localpath+info.per_portrait;
+            myImg.src = info.localpath + info.per_portrait;
 
         } else {
             _wd.info("用户非法，请重新登录！", "bgc24");
             // _fun.toAlert("用户非法，请重新登录！");
         }
     }
-    function addEdu(pd) {
 
+    function addEdu(pd) {
         var o = {
             adm_div_code: "||",
             class_name: "||",
@@ -334,7 +331,7 @@
         console.log(ds + " " + date.getFullYear() + " " + dt);
         if (ds == "undefined" || dt < 0) {
             _wd.info("请将数据填写完整再添加！", "bgc5e");
-        }else {
+        } else {
             toClassmates(ds, date.getFullYear(), dt, event.target)
         }
     }
@@ -376,7 +373,7 @@
 //                    a.style.bottom = "";
 //                    a.style.top = d.offsetTop + H + "px";
                 })
-            } else{
+            } else {
                 _wd.info("无此班级信息！", "bgc24");
             }
         });
@@ -399,7 +396,7 @@
             p.type === 0 && externalfun.createexp(function (msg) {
 
                 console.log(msg);
-                _fun.toLoading(-1);
+                _wd.toLoading();
                 var j = JSON.parse(msg);
                 if (j.result >= 0) {
                     _wd.info("添加经历成功！", "bgc5e");

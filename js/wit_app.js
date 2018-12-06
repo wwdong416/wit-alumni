@@ -55,6 +55,27 @@ var _wd = {
             }, time);
         }
     },
+    toConfirm: function ($t,f) {
+        var t = $t, d = document.querySelector("#toConfirm");
+        var className = "AC fix ffWRYH F3 MA color8 rad05e  PT1M bgc10";
+        if (d) {
+            document.body.removeChild(d);
+        }
+        var div = document.createElement("div");
+        div.className = "CW CH fix top0 index999 bgcabg";
+        div.id = "toConfirm";
+        div.innerHTML = '<div class="' + className + '" style="width:50%;top:45%;left:0; right: 0">' +
+            '<div class="P1M">' + t + '</div>' +
+            '<div class="MT bordTD1">' +
+            '<div class="FL  W21 bordRD1 colorR P1M" id="toTrue">确认</div>' +
+            '<div class="W21  FR bordLD1 P1M" id="toFalse">取消</div></div>' +
+            '</div>';
+        document.body.appendChild(div);
+        document.getElementById("toTrue").onclick = f;
+        document.getElementById("toFalse").onclick = function () {
+            document.body.removeChild(div);
+        };
+    },
     toError: function () {
         // console.log(a);
         var $this = this, d = document.querySelector("#toError");
@@ -72,12 +93,18 @@ var _wd = {
                 '<div class="W11 AC ">加载失败了~~</div>' +
                 '<div class="MTH W11 ">点击重试</div>' +
                 '</div> ';
-            div.onclick =function (){
+            div.onclick = function () {
                 window.location.reload();
             };
             $this.insertBefore(document.body, div);
         }
 
+    },
+    toTrue: function () {
+        return true;
+    },
+    toFalse: function () {
+        return false;
     },
     /*
     * ajax数据交互
@@ -120,9 +147,9 @@ var _wd = {
                 else {
                     !noloading && $this.toLoading(0);
                     var funerr = error || function () {
-                         // _wd.info("服务器异常！", "bgc24");
-                         $this.toError();
-                         // return 0;
+                        // _wd.info("服务器异常！", "bgc24");
+                        $this.toError();
+                        // return 0;
                     };
                     funerr();
                 }

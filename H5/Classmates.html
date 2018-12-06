@@ -15,11 +15,11 @@
 <body class="ofhx ffWRYH" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgca8b"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
-<div id="new_page" class="none index99 fix bottom0 W11 CH callnone bgc9"></div>
+<div id="new_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
-    <img src='../images/icon/xy2.png' class="FL B4M H4M" onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
-    <img src='../images/icon/index_b.png' class="B4M H4M FR ICON P05M" onclick="window.open('index.html')"/>
+    <img  src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="window.open('index.html')"/>
+    <img src='../images/icon/xy2.png' class="B4M H4M FR ICON " onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
 </div>
 <!--首页-->
 <div id="index" class="MTH F3">
@@ -108,7 +108,7 @@
         <!--毕业照-->
         <div class=" H18M ofh relative">
             <ul id="ph_gra" class="absolute">
-                <li><img src="" alt="" class="W11 indexN FL" id="by_photo"></li>
+                <li><img src="../images/byz/3.png" alt="" class="W11 indexN FL" id="by_photo"></li>
             </ul>
             <ul id="ph_index" class="W21 AR absolute rightM bottom0">
             </ul>
@@ -466,40 +466,6 @@
 
     }
 
-    //毕业照左右滑动监听事件
-    var ph_touch = document.getElementById("ph_gra");
-    EventUtil.listenTouchDirection(ph_touch, true, "", tou_right, "", tou_left);
-    var number = 1;//初始化滑动次数
-    var by_photos = ["1.png", "2.png", "3.png"];//存放毕业照
-    var ph_index = document.getElementById("ph_index").children;
-    var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
-    var ph_white = "color1 radius index9 inlineB F8";//激活状态的样式
-    //向右滑动
-    function tou_right() {
-        number--;
-        if (number < 0) {
-            number = 1;
-        } else {
-            for (var i = 0; i < by_photos.length; i++) {
-                ph_index[i].className = ph_gray;
-            }
-            ph_index[number].className = ph_white;
-            document.getElementById("by_photo").src = "../images/byz/" + by_photos[number];
-        }
-    }
 
-    //向左滑动
-    function tou_left() {
-        number++;
-        if (number > by_photos.length) {
-            number = by_photos.length - 1;
-        } else {
-            for (var i = 0; i < by_photos.length; i++) {
-                ph_index[i].className = ph_gray;
-            }
-            ph_index[number - 1].className = ph_white;
-            document.getElementById("by_photo").src = "../images/byz/" + by_photos[number - 1];
-        }
-    }
 </script>
 </html>
