@@ -351,6 +351,10 @@ var _wd = {
         img.classList.add("P2M");
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },
+    noLogo: function (img,url) {
+        img.src = url;
+        img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
+    },
     insertBefore: function (parent, newChild) {
         if (parent.firstChild) {
             parent.insertBefore(newChild, parent.firstChild);

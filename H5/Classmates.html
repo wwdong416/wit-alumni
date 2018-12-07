@@ -216,11 +216,12 @@
 <script src="../js/wit_app.js"></script>
 <script src="../js/wit_data.js"></script>
 <script>
-    toMenu("cl_index");
+
     function loadend() {
         autocss();
         loadimg();
-        class_message();
+        _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+        // class_message();
     }
 
     function ch_menu(id) {

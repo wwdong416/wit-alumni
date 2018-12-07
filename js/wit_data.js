@@ -3,10 +3,9 @@
  * @date 2018/11/2
  * @Description:数据交互接口
  */
-var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
+// var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
 
-var _phone = "18806097971";
-var _editor = "W.Dong";
+
 var url = "http://121.43.233.185/alumnicloudweb";
 //http://121.43.233.185/alumnicloudweb
 //  var url = "http://192.168.10.5:8080";
@@ -16,14 +15,15 @@ var s_guid = _wd.getUrl_sid().sid;
 var id = _wd.getUrl_sid().cid;
 
 var class_id = _wd.getUrl_sid().id;
+var _userguid , _token,_phone,_editor;
 console.log(class_id);
 console.log(s_guid);
 
 //返回值失败的情况
-function m_Error(msg) {
+function m_Error(msg,io) {
     var p = JSON.parse(msg);
     if (p.result < 0) {
-        console.log(msg);
+        console.log(msg,io);
         _wd.toError();
         _wd.info("服务器异常！", "bgc24");
         return false;
@@ -31,17 +31,20 @@ function m_Error(msg) {
     return true;
 }
 
-_wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
-
 function init(msg) {
     if (msg.result >= 0) {
         var info = msg.message;
-        // _userguid = info.user_guid;
-        // _token = info.token;
+         _userguid = info.user_guid;
+         _token = info.token;
+         _editor = info.per_full_name;
+         _phone = info.user_phone;
         _wit.event.input_UI("s_select", function (i, v, d) {
             console.log(i, v, d);
         });
         _wit.event.input_limit();
+        toMenu("cl_index");
+        class_message();
+        getGra_ph();
     } else {
         _wd.info("用户非法，请重新登录！", "bgc24");
     }
@@ -58,7 +61,7 @@ function class_message() {
     };
     console.log(_token + "" + _userguid);
     _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
-        if (m_Error(msg)) {
+        if (m_Error(msg,"school_queryByGuid")) {
             var p = JSON.parse(msg);
             console.log(p);
             schoolname = p.message[0].name;//获取学校名称
@@ -70,7 +73,7 @@ function class_message() {
                 pagesize: 1
             };
             _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
-                if (m_Error(msg)) {
+                if (m_Error(msg,"class_queryByGuid")) {
                     var p = JSON.parse(msg);
                     // document.getElementById("classLogo").
                     // class_msg(s_msg,p);
@@ -181,8 +184,9 @@ function cl_index() {
         page: 1,
         pagesize: 5//首页只展示五条数据
     };
+    console.log(para);
     _wd.ajax_formdata(url + "/notice/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg)) {
+        if (m_Error(msg,"notice/queryByCid1")) {
             var p = JSON.parse(msg).message;
             if (p.length > 0) {
                 // console.log(JSON.parse(msg));
@@ -348,7 +352,7 @@ function getNoticeList(page) {
         pagesize: 20
     };
     _wd.ajax_formdata(url + "/notice/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg)) {
+        if (m_Error(msg,"notice/queryByCid")) {
             var p = JSON.parse(msg).message;
             var more_notice = document.getElementById("more_notice");
             if (p.length < 20 && p.length > 0) {
@@ -398,6 +402,7 @@ if (moreNotice) {
 //添加通讯录
 function cl_information() {
     daisWH(6, 7);//设置默认座位表
+    console.log("infor");
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
     var para = {
@@ -407,9 +412,12 @@ function cl_information() {
         page: 1,
         pagesize: 50
     };
+    console.log(para);
     _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg)) {
+            console.log(msg);
             var p = JSON.parse(msg).message;
+            console.log(p);
             p.forEach(function (v) {
                 var div = document.createElement("div");
                 div.className = " W11 H7M ofh bordBD1";
@@ -475,7 +483,6 @@ function cl_photo() {
     //添加毕业照小白点
 }
 
-getGra_ph();
 //毕业照左右滑动监听事件
 var ph_touch = document.getElementById("ph_gra");
 EventUtil.listenTouchDirection(ph_touch, true, "", tou_right, "", tou_left);
@@ -502,7 +509,7 @@ function getGra_ph() {
                 token: _token,
                 userguid: _userguid,
                 cid: id,
-                gid: _gra_id,
+                gid: _gra_id || 0,
                 page: 1,
                 pagesize: 5
             };

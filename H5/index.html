@@ -26,7 +26,7 @@
 
 <div class="W11 pb150 AC" id="mymsg">
     <div class="W11 AC F3">
-        <img id="myImg" src="../images/port03.jpg" class="B6M H6M radius " onclick="window.open('msg.html')">
+        <img id="myImg" src="" class="B6M H6M radius " onerror="_wd.noLogo(this,'../images/port03.jpg');" onclick="window.open('msg.html')">
     </div>
     <!-- 个人信息开始 -->
     <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
@@ -115,21 +115,17 @@
 <script src="../js/wit_app.js"></script>
 <script type="text/javascript">
     "use strict";
-    autocss();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    const lo_url = "Classmates.html";
-    var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
-
+     const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    // const lo_url = "Classmates.html";
+    var myObject, myPrivacy, myPersocial;
+    var _userguid, _token,_phone;
     function loadend() {
         autocss();
         loadimg();
         // postmessage({functionname: "getapp", callback: "callback"});
-
         postmessage({functionname: "getuser", callback: "callback"});
-
     }
-
     function C_schoolcata(d, c) {
         document.getElementById(d).innerHTML = "";
         c.forEach(function (v) {
@@ -146,7 +142,6 @@
             document.getElementById(d).appendChild(div);
         });
     }
-
 
     function C_mydetails(c) {
         document.getElementById("myAllClass").innerHTML = "";
@@ -205,17 +200,6 @@
         }
     }
 
-    function Show_Hidden(obj) {
-        if (obj.style.display == "block") {
-            obj.style.display = 'none';
-
-        } else {
-            obj.style.display = 'block';
-
-        }
-    }
-
-    // console.log(getCut(".",0,""));
     function getCut(reg, num, msg) {
         if (msg) {
             var name = msg.split(reg);
@@ -232,11 +216,13 @@
         var info = msg.perinfo;
         //获取班级信息
         var myclass = info.perexpeducationjson;
+        myObject = info.perobjectjson;
+        myPrivacy = info.perprivacyobjectjson;
+        myPersocial = info.persocialinforobjectjson;
         console.log(myclass);
         document.getElementById("myName").innerHTML = info.perobjectjson.per_full_name;
         C_schoolcata("myclass", myclass);
         C_mydetails(myclass);
-
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
 
@@ -249,8 +235,15 @@
             });
             _wit.event.input_limit();
             var myImg = document.getElementById("myImg");
+            _userguid = info.user_guid;
+            _token = info.token;
+            _phone = info.user_phone;
+            if (info.per_portrait){
+                myImg.src = info.localpath + info.per_portrait;
+            }else {
+                myImg.src="../images/port03.jpg";
+            }
 
-            myImg.src = info.localpath + info.per_portrait;
 
         } else {
             _wd.info("用户非法，请重新登录！", "bgc24");
@@ -284,10 +277,10 @@
         } else {
             _wit.postmessage({
                 functionname: "createexp",
-                witparams: JSON.stringify({
+                witparams: {
                     type: 0,
-                    json: o
-                }),
+                    json: JSON.stringify(o)
+                },
                 callbackparam: JSON.stringify({
                     type: 0,
                     json: o
@@ -295,7 +288,6 @@
                 callback: "cbExp"
             });
         }
-
     }
 
     function refill(pd, o) {
@@ -347,8 +339,8 @@
         };
         console.log(para);
         _fun.ajax_formdata(_url + "/class/queryBySTD.do", true, para, function (msg) {
-            console.log(msg);
             const j = JSON.parse(msg);
+            console.log(j);
             if (j.result >= 0 && j.message.length > 0) {
                 _fun.toDownList(document.querySelector("#d_class"), function (a, p) {
                     console.log(a, p);
@@ -378,33 +370,85 @@
             }
         });
     }             //班级 关联信息
+    function isMsg(cid) {
+        const para = {
+            token: _token,
+            userguid: _userguid,
+            cid: cid,
+            phone: "18806097971"
+        };
+        console.log(para);
+        _fun.ajax_formdata(_url + "/member/queryByCH.do", true, para, function (msg) {
+            var p = JSON.parse(msg);
+            console.log(p);
+            var len = p.message.length;
+            if (len === 0) {
+                console.log();
+                addClassmate(cid);
+            }
+        });
+    }
+
+    function addClassmate(s) {
+        const c = myPrivacy;
+        const o = myObject;
+        const b = myPersocial;
+        const p = {}, para = {};
+        p.cid = s;
+        p.sid = s.substring(0, 10);
+        p.phone = "";
+        p.name = o.per_full_name || "";
+        p.sex = o.per_sex || "";
+        p.addr = getCut("@@", 0, o.per_address || "") + getCut("@@", 1, o.per_address || "") || "";
+        p.acode = getCut("||", 2, o.per_address || "") || "";
+        p.zcode = "";
+        p.mail = o.per_email || "";
+        p.qq = o.per_qq || "";
+        p.wx = o.per_webchat || "";
+        p.education = c.per_education || "";
+        p.ret = "";
+        p.graduation = "";
+        p.industry = parseInt(parseInt(o.per_industry) / 100) || "";
+        p.career = c.per_job_title || "";
+        p.honor = "";
+        p.comp = o.per_unit_name || "";
+        p.dept = o.per_dept || "";
+        p.job = o.per_position || "";
+        p.birthday = b.per_birth_date || "";
+        p.site = 0;
+        p.date = new Date().getTime();
+        p.checkmember = p.checkrank = p.checkdate = 0;
+        para.json = p;
+        para.token = _token;
+        para.userguid = _userguid;
+        // para.logo = per_portrait.src.replace(/^data:image\/\w+;base64,/, "");
+        console.log(para);
+        _fun.ajax_formdata(_url + "/member/insert.do", true, para, function (msg) {
+            console.log(msg);
+            var j = JSON.parse(msg);
+            if (j.result >= 0) {
+                _wd.info("添加成功！", "bgc5e");
+            } else {
+                _wd.info("添加失败！", "bgc5e");
+            }
+        });
+    }
 
     function cbExp(msg, param) {
         console.log("正在添加");
-
+        console.log(msg);
         var j = msg,
             p = JSON.parse(param);
+        console.log(p);
         if (j && j.result >= 0) {
             _wd.info("添加经历成功！", "bgc5e");
+            var classname = p.json.class_name;
+            if (classname) {
+                var cid = getCut("||", 2, classname);
+                isMsg(cid);
+            }
             document.location.reload(); //当前页面
             //其他端免回调
-        } else {
-            var o = p.json;
-            console.log(o);
-            console.log(p.type);
-            //            return;
-            p.type === 0 && externalfun.createexp(function (msg) {
-
-                console.log(msg);
-                _wd.toLoading();
-                var j = JSON.parse(msg);
-                if (j.result >= 0) {
-                    _wd.info("添加经历成功！", "bgc5e");
-                    document.location.reload(); //当前页面
-                } else {
-                    _wd.info("请选择学校类别！", "bgc5e");
-                }
-            }, JSON.stringify(o), 0);
         }
     }
 
