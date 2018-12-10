@@ -26,7 +26,7 @@
 
 <div class="W11 pb150 AC" id="mymsg">
     <div class="W11 AC F3">
-        <img id="myImg" src="" class="B6M H6M radius " onerror="_wd.noLogo(this,'../images/port03.jpg');" onclick="window.open('msg.html')">
+        <img id="myImg" src="" class="B6M H6M radius "  onclick="window.open('msg.html')">
     </div>
     <!-- 个人信息开始 -->
     <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
@@ -96,10 +96,12 @@
              data-in="title"
              required onclick="selectClass();">选择班级
         </div>
+        <textarea data-id="honors" class="FL rad05e MLT A1T2 HN4M F4 ALP color75 bord0" placeholder="请输入成绩和荣誉"></textarea>
         <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
         <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">
             添加
         </div>
+
         <div class="clear"></div>
     </div>
 </div>
@@ -116,8 +118,8 @@
 <script type="text/javascript">
     "use strict";
     const _url = "http://121.43.233.185/alumnicloudweb";
-     const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    // const lo_url = "Classmates.html";
+     // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+     const lo_url = "Classmates.html";
     var myObject, myPrivacy, myPersocial;
     var _userguid, _token,_phone;
     function loadend() {
@@ -238,10 +240,12 @@
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
-            if (info.per_portrait){
+            if (info.per_portrait_social) {
+                myImg.src = info.localpath + info.per_portrait_social || info.per_portrait;
+            } else if (info.per_portrait) {
                 myImg.src = info.localpath + info.per_portrait;
-            }else {
-                myImg.src="../images/port03.jpg";
+            } else {
+                myImg.src = "../images/port03.jpg";
             }
 
 
@@ -375,7 +379,7 @@
             token: _token,
             userguid: _userguid,
             cid: cid,
-            phone: "18806097971"
+            phone: _phone
         };
         console.log(para);
         _fun.ajax_formdata(_url + "/member/queryByCH.do", true, para, function (msg) {
@@ -447,7 +451,7 @@
                 var cid = getCut("||", 2, classname);
                 isMsg(cid);
             }
-            document.location.reload(); //当前页面
+             document.location.reload(); //当前页面
             //其他端免回调
         }
     }

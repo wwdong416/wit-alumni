@@ -131,7 +131,9 @@ li {
 .bordBDe6 {
     border-bottom: 1px solid #e6e6e6;
 }
-
+.bordBTe6 {
+    border-top: 1px solid #e6e6e6;
+}
 .bgcff {
     background: #ffc437;
 }
