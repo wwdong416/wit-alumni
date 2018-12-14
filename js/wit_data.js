@@ -4,50 +4,178 @@
  * @Description:数据交互接口
  */
 // var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
-
-
 var url = "http://121.43.233.185/alumnicloudweb";
-//http://121.43.233.185/alumnicloudweb
-//  var url = "http://192.168.10.5:8080";
 //获取学校id
 var s_guid = _wd.getUrl_sid().sid;
 
 var id = _wd.getUrl_sid().cid;
 
 var class_id = _wd.getUrl_sid().id;
-var _userguid , _token,_phone,_editor;
-console.log(class_id);
-console.log(s_guid);
+
+var _userguid, _token, _phone, _editor, _logoPic;
+
+var myclass, myObject, myPrivacy, myPersocial;
+
+var base64img = "";
+
+console.log(class_id, s_guid, id);
 
 //返回值失败的情况
-function m_Error(msg,io) {
+function m_Error(msg, io) {
     var p = JSON.parse(msg);
     if (p.result < 0) {
-        console.log(msg,io);
+        console.log(msg, io);
         _wd.toError();
-        _wd.info("服务器异常！", "bgc24");
+        _wd.info("加载失败！请重试", "bgc24");
         return false;
     }
     return true;
 }
 
+function callback(msg) {
+    console.log(msg);
+    var info = msg.perinfo;
+    //获取班级信息
+    myclass = info.perexpeducationjson;
+    myObject = info.perobjectjson;
+    myPrivacy = info.perprivacyobjectjson;
+    myPersocial = info.persocialinforobjectjson;
+    _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+}
+
 function init(msg) {
     if (msg.result >= 0) {
+        console.log(msg);
         var info = msg.message;
-         _userguid = info.user_guid;
-         _token = info.token;
-         _editor = info.per_full_name;
-         _phone = info.user_phone;
+        _userguid = info.user_guid;
+        _token = info.token;
+        _editor = info.per_full_name;
+        _phone = info.user_phone;
+
+        console.log(_editor, _phone);
+        if (info.per_portrait_social) {
+            _logoPic = info.localpath + info.per_portrait_social;
+        } else {
+            _logoPic = info.localpath + info.per_portrait;
+        }
+        var img = new Image();
+        img.src = _logoPic;
+        img.onload = function () {
+            const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
+            cvs.width = img.width;
+            cvs.height = img.height;
+            ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+            base64img = cvs.toDataURL();
+        };
         _wit.event.input_UI("s_select", function (i, v, d) {
             console.log(i, v, d);
         });
         _wit.event.input_limit();
-        toMenu("cl_index");
-        class_message();
-        getGra_ph();
+        if (!id || !s_guid) {
+            _wd.info("学校尚未加入，请联系管理员！", "bgc24");
+        } else {
+            toMenu("cl_index");
+            class_message();
+            getGra_ph();
+            isMsg();
+        }
     } else {
         _wd.info("用户非法，请重新登录！", "bgc24");
     }
+}
+
+//判断是否为班级成员
+function isMsg() {
+    const para = {
+        token: _token,
+        userguid: _userguid,
+        cid: id,
+        phone: _phone
+    };
+    console.log(para);
+    _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
+        if (m_Error(msg, "获取本人在此班级信息")) {
+            var p = JSON.parse(msg);
+            console.log(p);
+            var len = p.message.length;
+            if (len === 0) {
+                _wd.toConfirm("是否加入此班级！", addClassmate, backindex)
+            } else {
+                console.log("成员已存在，直接进入班级！");
+            }
+        }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
+    });
+}
+
+//返回首页
+function backindex() {
+    window.location.href = "index.html";
+}
+
+//添加信息到班级成员表中
+function addClassmate() {
+    console.log("开始添加成员");
+    const c = myPrivacy;
+    const o = myObject;
+    const b = myPersocial;
+    const p = {}, para = {};
+    var a = o.per_address.split("||");
+    console.log(a.length);
+    if (a.length > 1) {
+        p.acode = a[1];
+        var addr = a[0].split("@@");
+        if (addr.length > 1) {
+            p.addr = addr[0] + addr[1];
+        }
+    }
+    p.cid = id;
+    p.sid = s_guid;
+    p.phone = o.per_phone0 || "";
+    p.name = o.per_full_name || "";
+    p.sex = o.per_sex || 0;
+    p.zcode = "";
+    p.mail = o.per_email || "";
+    p.qq = o.per_qq || "";
+    p.wx = o.per_webchat || "";
+    p.education = c.per_education || "";
+    p.ret = 0;
+    p.graduation = "";
+    p.industry = parseInt(parseInt(o.per_industry) / 100) || "";
+    p.career = c.per_job_title || "";
+    p.honor = "";
+    p.comp = o.per_unit_name || "";
+    p.dept = o.per_dept || "";
+    p.job = o.per_position || "";
+    p.birthday = b.per_birth_date || "";
+    p.site = 0;
+    p.date = new Date().getTime();
+    p.checkmember = p.checkrank = p.checkdate = 0;
+    para.json = p;
+    para.token = _token;
+    para.userguid = _userguid;
+    para.logo = base64img ? base64img.split(",")[1] : "";
+    console.log("成员信息", para);
+    _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
+        if (m_Error(msg, "插入此班级")) {
+            console.log(msg);
+            var j = JSON.parse(msg);
+            if (j.result >= 0) {
+                _wd.info("添加成功！", "bgc5e");
+                setTimeout(function () {
+                    // window.location.reload();
+                }, 1000)
+            } else {
+                _wd.info("添加失败！", "bgc5e");
+                setTimeout(function () {
+                    // window.location.href = "index.html";
+                }, 1000)
+            }
+        }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
+    });
 }
 
 //班级信息
@@ -59,33 +187,39 @@ function class_message() {
         page: 1,
         pagesize: 1
     };
-    console.log(_token + "" + _userguid);
     _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
-        if (m_Error(msg,"获取学校信息")) {
-            var p = JSON.parse(msg);
-            console.log(p);
-            schoolname = p.message[0].name;//获取学校名称
-            var para = {
-                token: _token,
-                userguid: _userguid,
-                guid: id,
-                page: 1,
-                pagesize: 1
-            };
-            _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
-                if (m_Error(msg,"获取班级信息")) {
-                    var p = JSON.parse(msg);
-                    // document.getElementById("classLogo").
-                    // class_msg(s_msg,p);
-                    // console.log(p);
-                    //获取班级和班主任
-                    classname = p.message[0].name;
-                    master = p.message[0].master;
-                    document.getElementById("class_name").innerText = schoolname + classname + "班";
-                    document.getElementById("class_master").innerText = "班主任：" + master;
-                }
-            });
+        if (m_Error(msg, "获取学校信息")) {
+            var p = JSON.parse(msg).message;
+            if (p) {
+                console.log(p);
+                schoolname = p[0].name;//获取学校名称
+                var para = {
+                    token: _token,
+                    userguid: _userguid,
+                    guid: id,
+                    page: 1,
+                    pagesize: 1
+                };
+                _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
+                    if (m_Error(msg, "获取班级信息")) {
+                        var p = JSON.parse(msg).message;
+                        if (p) {
+                            console.log(p);
+                            //获取班级和班主任
+                            classname = p[0].name;
+                            master = p[0].master;
+                            sdate = p[0].sdate;
+                            document.getElementById("class_name").innerText = schoolname + sdate + "届" + classname + "班";
+                            document.getElementById("class_master").innerText = "班主任：" + master;
+                        }
+                    }
+                }, function (msg) {
+                    _wd.info("错误！" + msg, "bgc24");
+                });
+            }
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -112,6 +246,11 @@ function class_msg() {
         '<div class="clear"></div>' +
         '</div>' +
         '<div class="bordBD1 H4M ">' +
+        '<div class="FL W31 AL P1M">年届</div>' +
+        '<div  class="FR W32 AR P1M color8">' + sdate + '届</div>' +
+        '<div class="clear"></div>' +
+        '</div>' +
+        '<div class="bordBD1 H4M ">' +
         '<div class="FL W31 AL P1M">班级</div>' +
         '<div  class="FR W32 AR P1M color8">' + classname + '班</div>' +
         '<div class="clear"></div>' +
@@ -126,10 +265,11 @@ function class_msg() {
     p.appendChild(div);
     _wd.show(p);
     document.getElementById("del_calss").onclick = function () {
-        _wd.toConfirm("确定删除该班级?",del_school)
+        _wd.toConfirm("确定删除该班级?", del_school)
     }
 }
 
+//删除已加入的学校
 function del_school() {
     console.log(class_id);
     _wit.postmessage({
@@ -153,21 +293,26 @@ function delExp(msg, param) {
         p = JSON.parse(param);
     if (j && j.result >= 0) {
         _wd.info("删除成功！", "bgc5e");
-        document.location.reload(); //当前页面
-        window.location.href='index.html';
+        setTimeout(function () {
+            window.location.reload();
+        }, 1000);
+        window.location.href = 'index.html';
         //其他端免回调
     } else {//pc端
         var o = p.json;
         console.log(o);
         console.log(p.type);
+        _wd.toLoading();
         p.type === 0 && externalfun.deleteexp(function (msg) {
             console.log(msg);
-            _fun.toLoading(-1);
+            _wd.toLoading(-1);
             var j = JSON.parse(msg);
             if (j.result >= 0) {
                 _wd.info("删除成功！", "bgc5e");
-                document.location.reload(); //当前页面
-                window.location.href='index.html';
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+                window.location.href = 'index.html';
             }
         }, p.id, 0);
     }
@@ -186,12 +331,12 @@ function cl_index() {
     };
     console.log(para);
     _wd.ajax_formdata(url + "/notice/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg,"获取通知（展现在首页）")) {
+        if (m_Error(msg, "获取通知（展现在首页）")) {
             var p = JSON.parse(msg).message;
             if (p.length > 0) {
-                // console.log(JSON.parse(msg));
+                console.log(JSON.parse(msg));
                 //插入置顶通知，即数据库首条数据
-                f_notice.innerText = "【" + p[0].title + "】" + p[0].notice;
+                f_notice.innerHTML = "【" + p[0].title + "】" + p[0].notice;
                 var sameTime;
                 p.forEach(function (v) {
                     var date = _wd.crtTimeFtt(v.date);
@@ -213,7 +358,7 @@ function cl_index() {
                     }
                     var timeTitle = "";
                     //判断是否为同一天的通知
-                    if (sameTime != YMD) {
+                    if (sameTime !== YMD) {
                         timeTitle = '<div class="AC colorA PB1M PT1M flexbox" id="index_time">' +
                             '                <img class="W31 FL" src="../images/icon/line-min.png" alt="">' +
                             '                <div class="W41 FL">' + YMD + '</div>' +
@@ -223,7 +368,7 @@ function cl_index() {
                     var div = document.createElement("div");
                     var id = "index_n_" + v.id;
                     var n_detail = v.notice;
-                    if (n_detail.length == 0 || typeof(n_detail) == "undefined") {
+                    if (n_detail.length === 0 || typeof(n_detail) === "undefined") {
                         n_detail = "";
                     }
                     //展开通知详情
@@ -251,6 +396,8 @@ function cl_index() {
             }
 
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -295,7 +442,7 @@ function in_notice() {
     var type = parseInt(document.getElementById("n_tag").title);
     var title = document.getElementById("re_title").value;
     var notice = document.getElementById("re_content").value;
-    if (type < 0 || title.length == 0) {
+    if (type < 0 || title.length === 0) {
         _wd.info("通知标签、标题不能为空", "bgc5e");
         // console.log(type, title.length);
         document.getElementById("n_tag").click();
@@ -322,15 +469,20 @@ function in_notice() {
         // console.log(para.json);
         _wd.ajax_formdata(url + "/notice/insert.do", true, para, function (msg) {
             // console.log(JSON.parse(msg));
-            if (m_Error(msg,"发布通知")) {
+            if (m_Error(msg, "发布通知")) {
                 var p = JSON.parse(msg).result;
                 if (p == 1) {
                     dais.toggle(re_notice, 0);
                     toMenu("cl_notice");
                 } else {
                     _wd.info("发布失败，请重试！", "bgc24");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
                 }
             }
+        }, function (msg) {
+            _wd.info("错误！" + msg, "bgc24");
         });
     }
 }
@@ -354,12 +506,12 @@ function getNoticeList(page) {
         pagesize: 20
     };
     _wd.ajax_formdata(url + "/notice/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg,"加载更多通知")) {
+        if (m_Error(msg, "加载更多通知")) {
             var p = JSON.parse(msg).message;
             var more_notice = document.getElementById("more_notice");
             if (p.length < 20 && p.length > 0) {
                 more_notice.innerText = "—————— END ——————";
-            } else if (p.length == 0) {
+            } else if (p.length === 0) {
                 more_notice.innerText = "已经没有更多了！";
                 more_btn = 1;
             } else {
@@ -370,7 +522,7 @@ function getNoticeList(page) {
                 div.className = " W11 AL";
                 var id = "notice_" + v.id;
                 var n_detail = v.notice;
-                if (n_detail.length == 0 || typeof(n_detail) == "undefined") {
+                if (n_detail.length === 0 || typeof(n_detail) === "undefined") {
                     n_detail = "";
                 }
                 div.onclick = function () {
@@ -389,6 +541,8 @@ function getNoticeList(page) {
                 document.getElementById("cont_notice").appendChild(div);
             });
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -401,9 +555,110 @@ if (moreNotice) {
     };
 }
 
+/**
+ * 座位表的图片
+ * */
+function daisWH(value_w, value_h) {
+    var daisBtn = document.getElementById("dais_value");
+    daisBtn.setAttribute("wh", value_w + "*" + value_h);
+    // console.log("座位表：列" + value_w + " 行" + value_h);
+    var cont = "";
+    for (var i = 1; i <= value_h * value_w; i++) {
+        cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png'  id=c_headimg" + i + " onclick='change_info_logo(this)'>"
+    }//绘制座位表
+    document.getElementById("daislist").innerHTML = cont;
+}
+
+/*座位的展开与隐藏*/
+function openAll() {
+    var daislist = document.getElementById("daislist");
+    var daislistclass = daislist.className;
+    var bq_open = document.getElementById("open_all");
+    var class_name = "ofh" + " " + "H16M" + " " + "W11" + " " + "relative";
+    if (daislistclass.indexOf("ofh H16M") > -1) {
+        daislist.className = "W11" + " " + "relative";
+        bq_open.src = "../images/icon/close.png";
+    }
+    else {
+        daislist.className = class_name;
+        bq_open.src = "../images/icon/open.png";
+    }
+}
+
+//座位表插入头像
+function get_information_logo() {
+    var para = {
+        token: _token,
+        userguid: _userguid,
+        cid: id,
+        page: 1,
+        pagesize: 200
+    };
+    console.log(para);
+    _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
+        if (m_Error(msg, "获取班级成员头像")) {
+            console.log(JSON.parse(msg));
+            var p = JSON.parse(msg).message;
+            var logoPath = JSON.parse(msg).logoPath;
+            p.forEach(function (v) {
+                if (v.site > 0) {
+                    var logo = document.getElementById("c_headimg" + v.site);
+                    logo.src = logoPath + MD5(v.phone) + ".jpg";
+                }
+            });
+        }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
+    });
+}
+
+//改变座位
+function change_info_logo(s) {
+    if (s.src.indexOf("classmatespic") > 0) {
+        const para = {
+            token: _token,
+            userguid: _userguid,
+            cid: id,
+            phone: _phone
+        };
+        console.log(para);
+        _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
+            if (m_Error(msg, "修改座位")) {
+                var p = JSON.parse(msg);
+                console.log(p);
+                var l = p.message[0];
+                console.log(l);
+                if (l) {
+                    var para = {};
+                    var newSite = JSON.parse(JSON.stringify(l));
+                    newSite.site = parseInt(s.id.replace(/[^0-9]/ig, ""));
+                    para.json = newSite;
+                    para.token = _token;
+                    para.userguid = _userguid;
+                    para.logo = "";
+                    console.log("成员信息", para);
+                    _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
+                        console.log(msg);
+                        var j = JSON.parse(msg);
+                        if (j.result >= 0) {
+                            _wd.info("入座成功！", "bgc5e");
+                            get_information_logo();
+                        } else {
+                            _wd.info("入座失败！", "bgc24");
+                        }
+                    });
+                }
+            }
+        }, function (msg) {
+            _wd.info("错误！" + msg, "bgc24");
+        });
+    }
+}
+
 //添加通讯录
 function cl_information() {
     daisWH(6, 7);//设置默认座位表
+    get_information_logo();
     console.log("infor");
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
@@ -412,24 +667,28 @@ function cl_information() {
         userguid: _userguid,
         cid: id,
         page: 1,
-        pagesize: 50
+        pagesize: 200
     };
     console.log(para);
     _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg,"获取班级成员")) {
-            console.log(msg);
+        if (m_Error(msg, "获取班级成员")) {
+            console.log(JSON.parse(msg));
             var p = JSON.parse(msg).message;
-            console.log(p);
+            var logoPath = JSON.parse(msg).logoPath;
+            // console.log(p);
             p.forEach(function (v) {
+                console.log(logoPath + MD5(v.phone));
                 var div = document.createElement("div");
                 div.className = " W11 H7M ofh bordBD1";
                 div.innerHTML = '<li class="absolute W11 H7M bordBD1 bgc10 ofh index9">' +
-                    '<img class="FL B5M rad0 M" src="../images/pic2.png" alt=""> ' +
+                    '<img class="FL B5M rad0 M" src="' + logoPath + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
                     '<div class="FL W21 color876 bold ofh F3">' + v.name + '</div> ' +
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +
                     '<div class="FL W11 color8 F3 ellips AL">' + v.comp +
-                    '</div></div></li>' +
+                    '</div></div>' +
+                    '<div class="none" id="tel">' + v.phone + '</div>' +
+                    '</li>' +
                     '<div class="absolute left0 B7M H7M F4 AC LH4 bgc36 color1 ">详情</div>' +
                     '<div class="absolute right0 B7M H7M F4 AC LH4 bgc45 color1 ">打电话</div>"';
                 var li = div.querySelector("li");
@@ -440,17 +699,23 @@ function cl_information() {
                     , L: M * 12
                     , MOVE_BACK: {_X: 10, X_: CW - 10}
                     , MOVE_LIMIT: true
-                }, f, {});
+                }, f, {e1: v.phone});
                 cont.appendChild(div);
             });
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
     var f = {
-        A_L: function () {
-            console.log("1");
+        A_L: function (e) {
+            window.open("tel://" + e.e1);
         },
-        A_R: function () {
-            console.log("2");
+        A_R: function (e) {
+            if (e.e1 === "") {
+                _wd.info("此同学信息为空！", "bgc24");
+            } else {
+                classmatesMember(e.e1)
+            }
         },
         A_O: function () {
 
@@ -458,13 +723,170 @@ function cl_information() {
     }
 }
 
-function classmatesMember() {
-
+//班级成员详情
+function classmatesMember(p) {
+    console.log(p);
+    var cont = document.getElementById("classmates_page");
+    cont.innerHTML = "";
+    var div = document.createElement("div");
+    div.className = "fix top0 F3  W11 CHmax bgc9 ofa";
+    var msgHtml = '<div class="fix index100 top0 H bgc9 W11 AC ffHT ">成员信息' +
+        '<div class="FL B4M H4M F2" onclick="_wd.hide(classmates_page)"><b class="F3 ">&lt;</b>返回</div>' +
+        '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
+        '</div>';
+    const hy = ["其它", "公务", "教育", "医疗", "科研设计", "农业", "食品", "纺织服饰", "轻工", "能源矿材", "化工", "五金机电", "仪器仪表", "家电", "设备制造", "建筑房产", "交通工业", "物流服务", "信息产业", "商贸", "金融", "商务服务", "居民服务", "环境管理", "文化娱乐", "餐住旅游"];
+    const para = {
+        token: _token,
+        userguid: _userguid,
+        cid: id,
+        phone: p
+    };
+    console.log(para);
+    _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
+        if (m_Error(msg, "获取班级成员")) {
+            var p = JSON.parse(msg).message;
+            console.log(p[0]);
+            var sex = "";
+            switch (p[0].sex) {
+                case 0:
+                    sex = "男";
+                    break;
+                case 1:
+                    sex = " 女";
+                    break;
+                case "":
+                    sex = "";
+                    break;
+            }
+            var ret = "";
+            switch (p[0].ret) {
+                case 0:
+                    ret = "在职";
+                    break;
+                case 1:
+                    ret = "退休";
+                    break;
+            }
+            msgHtml +=
+                '<div class="bgc10 W11 MTH">' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">姓名</div>' +
+                '            <div  class="W32 FR AR color8 ellips">' + p[0].name +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="  H4M flexbox">' +
+                '            <div class="W31 FL  AL">电话</div>' +
+                '            <div  class="W32 FR AR color8 ellips">' + p[0].phone +
+                '            </div>' +
+                '        </div>' +
+                '</div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">性别</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + sex +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="  H4M flexbox">' +
+                '            <div class="W31 FL  AL">生日</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + _wd.crtTimeYMD(p[0].birthday) +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">QQ</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].qq +
+                '            </div>' +
+                '        </div>' +
+                '        <div class=" bordBDe6 H4M flexbox">' +
+                '            <div class="W31 FL  AL">微信</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].wx +
+                '            </div>' +
+                '        </div>' +
+                '        <div class=" H4M flexbox">' +
+                '            <div class="W31 FL  AL">邮箱</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].mail +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="HN4M flexbox">' +
+                '            <div class="W31 FL  AL">地址</div>' +
+                '                <div  class="W32 FR AL P05M color8 ">' + p[0].addr +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">学历</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].education +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="H4M flexbox">' +
+                '            <div class="W31 FL  AL">毕业院校</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">行业</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + hy[p[0].industry] +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="bordBDe6 H4M flexbox">' +
+                '            <div class="W31 FL  AL">单位名称</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].comp +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="bordBDe6 H4M flexbox">' +
+                '            <div class="W31 FL  AL">部门</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].dept +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="bordBDe6 H4M flexbox">' +
+                '            <div class="W31 FL  AL">职务</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].job +
+                '            </div>' +
+                '        </div>' +
+                '        <div class=" H4M flexbox">' +
+                '            <div class="W31 FL  AL">职称</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].career +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                ' <div class="H1M W11 bgcaf5 bordBDe6"></div>' +
+                '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
+                '        <div class="bordBDe6  H4M flexbox">' +
+                '            <div class="W31 FL  AL">工作状况</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' + ret +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="H4M flexbox">' +
+                '            <div class="W31 FL  AL">荣誉</div>' +
+                '                <div  class="W32 FR AR color8 ellips">' +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>';
+            div.innerHTML = msgHtml;
+        }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
+    });
+    cont.appendChild(div);
+    _wd.show(cont);
 }
 
-var ph_more_btn_img = 1;
-var ph_more_btn_vdo = 1;
-var ph_more_btn_wrd = 1;
+var ph_more_btn_img = 1;//照片页数
+var ph_more_btn_vdo = 1;//视频页数
+var ph_more_btn_wrd = 1;//文件页数
 
 //档案
 function cl_photo() {
@@ -495,6 +917,7 @@ var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
 var ph_white = "color1 radius index9 inlineB F8";//激活状态的样式
 var _gra_id, byzPath;
 
+//获取毕业照
 function getGra_ph() {
     var para = {
         token: _token,
@@ -503,7 +926,7 @@ function getGra_ph() {
         type: 5,
     };
     _wd.ajax_formdata(url + "/recordGroup/queryByType.do", true, para, function (msg) {
-        if (m_Error(msg,"获取毕业照")) {
+        if (m_Error(msg, "获取毕业照")) {
             var p = JSON.parse(msg).message;
             console.log(p);
             if (p.length > 0) {
@@ -518,7 +941,7 @@ function getGra_ph() {
                 };
                 console.log(para1);
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para1, function (msg) {
-                    if (m_Error(msg,"获取毕业照图片路路径")) {
+                    if (m_Error(msg, "获取毕业照图片路路径")) {
                         var p = JSON.parse(msg).message;
                         console.log(p);
                         if (p.length > 0) {
@@ -526,7 +949,7 @@ function getGra_ph() {
                             by_photos = [];
                             p.forEach(function (v) {
                                 by_photos.push(v.src);
-                                console.log(v.src);
+                                // console.log(v.src);
                             });
                             // console.log(by_photos);
                             add_photoindex(by_photos);
@@ -535,6 +958,8 @@ function getGra_ph() {
                 });
             }
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 
 }
@@ -587,10 +1012,9 @@ function add_photoindex(by_photos) {
         ph_photoindex.children[0].className = ph_white;//设置初始状态的小白点
         document.getElementById("by_photo").src = byzPath + by_photos[0];//设置初始图片
     }
-
-
 }
 
+//点击毕业照，判断是否存在，否则新建
 ph_touch.onclick = function () {
     var para = {
         token: _token,
@@ -599,7 +1023,7 @@ ph_touch.onclick = function () {
         type: 5,
     };
     _wd.ajax_formdata(url + "/recordGroup/queryByType.do", true, para, function (msg) {
-        if (m_Error(msg,"判断是否有毕业照")) {
+        if (m_Error(msg, "判断是否有毕业照")) {
             var p = JSON.parse(msg).message;
             console.log(p);
 
@@ -619,7 +1043,7 @@ ph_touch.onclick = function () {
                     userguid: _userguid,
                 };
                 _wd.ajax_formdata(url + "/recordGroup/insert.do", true, para, function (msg) {
-                    if (m_Error(msg,"上传毕业照文件")) {
+                    if (m_Error(msg, "上传毕业照文件")) {
                         var p = JSON.parse(msg);
                         console.log(p);
                     }
@@ -636,7 +1060,7 @@ ph_touch.onclick = function () {
                 };
                 console.log(para1);
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para1, function (msg) {
-                    if (m_Error(msg,"获取所有毕业照")) {
+                    if (m_Error(msg, "获取所有毕业照")) {
                         var p = JSON.parse(msg).message;
                         console.log(p);
                         var cont = document.getElementById("new_page");
@@ -658,7 +1082,7 @@ ph_touch.onclick = function () {
                         cont.appendChild(div);
                         _wd.show(cont);
                         var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
-                        var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+                        var isIos = (ua.indexOf('iphone') !== -1) || (ua.indexOf('ipad') !== -1);
                         if (isIos) {
                             document.getElementById("up_photo").removeAttribute("capture");
                         }
@@ -690,6 +1114,7 @@ ph_touch.onclick = function () {
                         });
                         _wd.clear(gra_photo);
 
+                        //上传毕业照
                         function readFile() {
                             fd = new FormData();
                             var iLen = this.files.length;
@@ -751,25 +1176,31 @@ ph_touch.onclick = function () {
                                 fd.append("token", _token);
                                 fd.append("userguid", _userguid);
                                 _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
-                                    _wd.hide("ph_upload");
-                                    _wd.hide("re_photo");
-                                    toMenu("cl_photo");
-                                    console.log(msg);
+                                    if (m_Error(msg, "上传毕业照")) {
+                                        _wd.hide("ph_upload");
+                                        _wd.hide("re_photo");
+                                        toMenu("cl_photo");
+                                        console.log(msg);
+                                    }
                                 }, function (msg) {
-                                    _wd.info("无法上传，请重试！", "bgc24");
+                                    _wd.info("无法上传，请重试！" + msg, "bgc24");
                                 });
                             }
                         }
                     }
+                }, function (msg) {
+                    _wd.info("错误！" + msg, "bgc24");
                 });
             }
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 
 
 };
 
-
+//获取所有班级档案
 function get_cl_Photo(page, type) {
     var ph_img = document.getElementById("ph_img");
     var ph_video = document.getElementById("ph_video");
@@ -783,7 +1214,7 @@ function get_cl_Photo(page, type) {
         pagesize: 7
     };
     _wd.ajax_formdata(url + "/recordGroup/queryByType.do", true, para, function (msg) {
-        if (m_Error(msg,"获取所有档案")) {
+        if (m_Error(msg, "获取所有档案")) {
             var p = JSON.parse(msg).message;
             console.log(p);
             if (p.length > 6) {
@@ -850,7 +1281,7 @@ function get_cl_Photo(page, type) {
                     pagesize: 1
                 };
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para, function (msg) {
-                    if (m_Error(msg,"获取每个文件夹第一张图片")) {
+                    if (m_Error(msg, "获取每个文件夹第一张图片")) {
                         var p = JSON.parse(msg);
                         var imgSrc = "";
                         var imgHtml = "";
@@ -890,9 +1321,13 @@ function get_cl_Photo(page, type) {
                                 break;
                         }
                     }
+                }, function (msg) {
+                    _wd.info("错误！" + msg, "bgc24");
                 });
             });
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -957,7 +1392,7 @@ function addFolder(type) {
         userguid: _userguid,
     };
     _wd.ajax_formdata(url + "/recordGroup/insert.do", true, para, function (msg) {
-        if (m_Error(msg,"创建文件夹")) {
+        if (m_Error(msg, "创建文件夹")) {
             var p = JSON.parse(msg).result;
             // console.log(JSON.parse(msg));
             if (p > 0) {
@@ -968,6 +1403,8 @@ function addFolder(type) {
                 _wd.info("创建失败！", "bgc24");
             }
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -982,14 +1419,14 @@ function ph_addMore($id, $page, $type) {
         pagesize: 18
     };
     _wd.ajax_formdata(url + "/record/queryByGid.do", true, para, function (msg) {
-        if (m_Error(msg,"加载更多文件夹")) {
+        if (m_Error(msg, "加载更多文件夹")) {
             var imgurl = JSON.parse(msg).logoPath;
             var p = JSON.parse(msg).message;
             console.log(p);
             // document.getElementById("builder").classList.remove("none");
             var ph_img = document.getElementById("ph_list");
             var ph_more = document.getElementById("ph_addMore");
-            if (p.length == 0) {
+            if (p.length === 0) {
                 ph_more.innerText = "没有内容了";
             }
             else {
@@ -1007,13 +1444,14 @@ function ph_addMore($id, $page, $type) {
                             break;
                         case 2:
                             div.className = "AC H21M";
-                            div.innerHTML =
-                                '<video class="W11 H11 "  src="' + imgurl + v.src + '" controls="controls"></video>';
+                            div.innerHTML = '<div class="W11"><div class="W11 ALP ellips">' + v.name + '</div>' +
+                                '<video class="W11 H11 "  src="' + imgurl + v.src + '" controls="controls"></video>' +
+                                '</div>';
                             break;
                         case 4:
                             div.className = "FL  W11 ellips bordBD1 P1M F2";
                             div.innerHTML =
-                                ' <li class=" W11 H2M F3" ><span class="W65 FL AL" >' + v.name + '</span><a class="W61 FR H2M B2M" href="' + imgurl + v.src + '" download="' + v.name + '"><img class="W61 FR H2M B2M" src="../images/icon/download.png"/></a></li> ' +
+                                ' <li class=" W11 H2M F3" ><span class="W65 FL AL ellips" >' + v.name + '</span><a class="W61 FR H2M B2M" href="' + imgurl + v.src + '" download="' + v.name + '"><img class="W61 FR H2M B2M" src="../images/icon/download.png"/></a></li> ' +
                                 '<li class="W11 F2 AL color8"> ' +
                                 '<div class="FL">上传者：' + v.phone + '</div>' +
                                 '<div class="FR">日期：' + _wd.crtTimeFtt(v.date) + '</div>' +
@@ -1025,6 +1463,8 @@ function ph_addMore($id, $page, $type) {
             }
             _wd.clear(ph_img);
         }
+    }, function (msg) {
+        _wd.info("错误！" + msg, "bgc24");
     });
 }
 
@@ -1088,14 +1528,14 @@ function addPhotos($id, $name, $phone, $date, $type) {
         _wd.deleteChild("re_photo", "detail_ph");
         document.getElementById("photo").classList.remove("CHNH");
     };
-    if ($type == 2) {
+    if ($type === 2) {
         document.getElementById("up_photo").setAttribute("accept", "video/*");
     }
-    if ($type == 4) {
+    if ($type === 4) {
         document.getElementById("up_photo").removeAttribute("accept");
     }
     var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
-    var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+    var isIos = (ua.indexOf('iphone') !== -1) || (ua.indexOf('ipad') !== -1);
     if (isIos) {
         document.getElementById("up_photo").removeAttribute("capture");
     }
@@ -1148,14 +1588,18 @@ function addPhotos($id, $name, $phone, $date, $type) {
         // dais.toggle("ph_upload", 1);
 
         for (var i = 0; i < iLen; i++) {
-            // if (!input['value'].match(/.jpg|.gif|.png|.jpeg|.bmp/i)) {　　//判断上传文件格式
-            //     return alert("上传的图片格式不正确，请重新选择");
-            // }
             var reader = new FileReader();
             reader.index = i;
             fd.append("files", this.files[i]);
-            // console.log(this.files[i]);
-            if ($type == 1) {
+            console.log(this.files[i]);
+            var file_name = this.files[i].name;
+            var file_size = this.files[i].size;
+            var file_type = this.files[i].type;
+            if (file_type === "") {
+                file_type = /\.[^\.]+$/.exec(file_name);
+            }
+            console.log(file_name, file_type);
+            if ($type === 1) {
                 reader.readAsDataURL(this.files[i]);  //转成base64
                 reader.fileName = this.files[i].name;
                 reader.onload = function (e) {
@@ -1181,17 +1625,8 @@ function addPhotos($id, $name, $phone, $date, $type) {
                     div1.className = "FL M05 pic33 ofh";
                     // div1.id = "delete_p" + imgMsg.name;
                     document.getElementById("ch_list").appendChild(div1);
-                    // var deletePicId = "delete_ph" + imgMsg.name;
-                    // var deletePic = document.getElementById(deletePicId);
-                    // deletePic.onclick = function () {
-                    //     this.parentNode.remove();                  // 在页面中删除该图片元素
-                    //     delete dataArr[this.index];  // 删除dataArr对应的数据
-                    //     fd.delete(index);
-                    // console.log(oInput.value);
-                    // };
-                    // index++;
                 }
-            } else if ($type == 2) {
+            } else if ($type === 2) {
                 var videoSize = 0;
                 if (this.files[i].size > 1024 * 1024) {
                     videoSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -1213,7 +1648,7 @@ function addPhotos($id, $name, $phone, $date, $type) {
                 }
                 div1.className = "FL  W11 ellips bordBD1";
                 document.getElementById("ch_list").appendChild(div1);
-            } else if ($type == 4) {
+            } else if ($type === 4) {
                 var fileSize = 0;
                 if (this.files[i].size > 1024 * 1024) {
                     fileSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -1238,28 +1673,35 @@ function addPhotos($id, $name, $phone, $date, $type) {
             }
         }
         document.getElementById("ph_upload_btn").onclick = function () {
-            fd.append("json", JSON.stringify({
-                cid: id,
-                sid: s_guid,
-                gid: record_id,
-                phone: _phone,
-                type: $type,
-                name: "测试图片",
-                src: "",
-                memo: "测试备注",
-                date: new Date().getTime(),
-                replay: ""
-            }));
-            fd.append("token", _token);
-            fd.append("userguid", _userguid);
-            _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
-                _wd.hide("ph_upload");
-                _wd.hide("re_photo");
-                toMenu("cl_photo");
-                document.getElementById("photo").classList.remove("CHNH");
-            }, function (msg) {
-                _wd.info("无法上传，请重试！", "bgc24");
-            });
+            if (file_size < 20971521) {
+                fd.append("json", JSON.stringify({
+                    cid: id,
+                    sid: s_guid,
+                    gid: record_id,
+                    phone: _phone,
+                    type: $type,
+                    name: file_name,
+                    src: "",
+                    memo: file_type,
+                    date: new Date().getTime(),
+                    replay: ""
+                }));
+                fd.append("token", _token);
+                fd.append("userguid", _userguid);
+                _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
+                    if (m_Error(msg, "上传")) {
+                        _wd.hide("re_photo");
+                        _wd.deleteChild("ph_upload", "ph_up_list" + record_id);
+                        toMenu("cl_photo");
+                        document.getElementById("photo").classList.remove("CHNH");
+                    }
+                }, function (msg) {
+                    _wd.info("无法上传，请重试！" + msg, "bgc24");
+                });
+            } else {
+                _wd.info("请上传小于20M的文件！", "bgc24");
+            }
+
         }
     }
 
@@ -1271,4 +1713,6 @@ function addPhotos($id, $name, $phone, $date, $type) {
         oInput.click();
     };
 }
+
+
 

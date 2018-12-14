@@ -16,6 +16,7 @@
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgca8b"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
 <div id="new_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
+<div id="classmates_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
     <img  src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="window.open('index.html')"/>
@@ -29,7 +30,7 @@
     <div class="W11 bgc9 MT">
         <div class="FL B9M H9M bgc4 rad05e MTNMH ML" >
             <!--班级头像-->
-            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic1.png" id="classLogo" onclick="class_msg()">
+            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic1.png"  onerror="this.src ='../images/pic1.png' " id="classLogo" onclick="class_msg()">
         </div>
         <div class="FL P1M ffWRYH C10M">
             <div class=" bold F3 ellips" id="class_name"></div>
@@ -81,7 +82,7 @@
         </div>
         <img src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
         <div id="dais" class="MT">
-            <div class="W11 ofh H16M relative img-edge-cover" id="daislist">
+            <div class="W11 ofh H16M relative" id="daislist">
 
             </div>
             <div class="AC W11 ">
@@ -97,10 +98,11 @@
         </div>
         <div id="phone_list" class="bgcd1">
             <!--通讯录列表-->
+
         </div>
 
     </div>
-    <div class="W11 H8M AC F2 color8 PT1M">—————— END ——————</div>
+    <div class="W11 H8M AC F2 color8 PT1M" id="more_phone_list">—————— END ——————</div>
 </div>
 <!--档案-->
 <div id="photo" class="W11 AC MTH  none F3  ofh">
@@ -168,18 +170,19 @@
 </div>
 <!--动态-->
 <div id="dynamic" class="W11 AC  CH bgcf4  MTH none">
-    <div class="W11 P1M">
-        <img src="../images/pic2.png" alt="" class="FL radius B4M">
-        <div class="FL">
-            <div class="relative rad05e P05M bgc10 M talkbubble ALP2 PL1M PR1M">图片格式如何处理</div>
-        </div>
+    <div class="CH CW bgc10">此功能暂未开放，敬请期待...</div>
+    <!--<div class="W11 P1M">-->
+        <!--<img src="../images/pic2.png" alt="" class="FL radius B4M">-->
+        <!--<div class="FL">-->
+            <!--<div class="relative rad05e P05M bgc10 M talkbubble ALP2 PL1M PR1M">图片格式如何处理</div>-->
+        <!--</div>-->
 
-        <div class="clear"></div>
-    </div>
-    <div class="W11 fix bottom10M ">
-        <input type="text" class="FL MLT ML H3M W43  ALP  " placeholder="说一下...">
-        <div class=" FR W61  bgc4 border MLT MR H3M  LH24">发送</div>
-    </div>
+        <!--<div class="clear"></div>-->
+    <!--</div>-->
+    <!--<div class="W11 fix bottom10M ">-->
+        <!--<input type="text" class="FL MLT ML H3M W43  ALP  " placeholder="说一下...">-->
+        <!--<div class=" FR W61  bgc4 border MLT MR H3M  LH24">发送</div>-->
+    <!--</div>-->
 </div>
 <!--bottom-->
 <!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
@@ -215,12 +218,13 @@
 <script src="../js/wit_touch.js"></script>
 <script src="../js/wit_app.js"></script>
 <script src="../js/wit_data.js"></script>
+<script src="../js/lib/MD5.js"></script>
 <script>
 
     function loadend() {
         autocss();
         loadimg();
-        _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
+        _wit.postmessage({functionname: "getuser", callback: "callback"});
         // class_message();
     }
 
@@ -433,35 +437,7 @@
         },
     };
 
-    /**
-     * 座位表的图片
-     * */
-    function daisWH(value_w, value_h) {
-        var daisBtn = document.getElementById("dais_value");
-        daisBtn.setAttribute("wh", value_w + "*" + value_h);
-        // console.log("座位表：列" + value_w + " 行" + value_h);
-        var cont = "";
-        for (var i = 0; i < value_h * value_w; i++) {
-            cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png'  id=c_headimg" + i + ">"
-        }//绘制座位表
-        document.getElementById("daislist").innerHTML = cont;
-    }
 
-    /*座位的展开与隐藏*/
-    function openAll() {
-        var daislist = document.getElementById("daislist");
-        var daislistclass = daislist.className;
-        var bq_open = document.getElementById("open_all");
-        var class_name = "ofh" + " " + "H16M" + " " + "img-edge-cover" + " " + "W11" + " " + "relative";
-        if (daislistclass.indexOf("ofh H16M") > -1) {
-            daislist.className = "W11" + " " + "relative";
-            bq_open.src = "../images/icon/close.png";
-        }
-        else {
-            daislist.className = class_name;
-            bq_open.src = "../images/icon/open.png";
-        }
-    }
 
     function cl_dynamic() {
 

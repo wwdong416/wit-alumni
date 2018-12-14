@@ -33,7 +33,7 @@ var _wd = {
     //自定义进度——自动生成：time/超时时间，img/进度条图片地址,modal/是否模态窗口
     toLoading: function ($time, $img, $modal) {
         var $this = this, img = $img || "../images/icon/loading2.gif", d = document.querySelector("#toLoading"),
-            time = $time || 5000, modal = $modal;
+            time = $time || 2000, modal = $modal;
         if (d) {
             document.body.removeChild(d);
             clearTimeout($this._sto);
@@ -49,14 +49,17 @@ var _wd = {
             $this.insertBefore(document.body, div);
             $this._sto = setTimeout(function () {
                 if (div) {
+                    console.log(div,div.parentNode);
                     document.body.removeChild(div);
                     //$this.toAlert("访问超时！", 1500);
                 }
             }, time);
         }
     },
-    toConfirm: function ($t,f) {
-        var t = $t, d = document.querySelector("#toConfirm");
+    toConfirm: function ($t,$f,$e) {
+        var t = $t, d = document.querySelector("#toConfirm"),f = $f, e = $e ||function () {
+            document.body.removeChild(div);
+        };
         var className = "AC fix ffWRYH F3 MA color8 rad05e  PT1M bgc10";
         if (d) {
             document.body.removeChild(d);
@@ -72,9 +75,7 @@ var _wd = {
             '</div>';
         document.body.appendChild(div);
         document.getElementById("toTrue").onclick = f;
-        document.getElementById("toFalse").onclick = function () {
-            document.body.removeChild(div);
-        };
+        document.getElementById("toFalse").onclick = e;
     },
     toError: function () {
         // console.log(a);
@@ -99,12 +100,6 @@ var _wd = {
             $this.insertBefore(document.body, div);
         }
 
-    },
-    toTrue: function () {
-        return true;
-    },
-    toFalse: function () {
-        return false;
     },
     /*
     * ajax数据交互

@@ -425,6 +425,22 @@ var _wit = {
             d.appendChild(li);
         });
     },      //生成嵌入式选择模版（可多选）
+    toPara: function ($d) {
+        const d = $d || document.querySelector("#form"), dl = d.querySelectorAll("[data-id]"), p = {};
+        for (let i in dl) {
+            if (i == "length") break;
+            const v = dl[i], di = v.dataset.in, rd = v.getAttribute("required") != null, rp = v.getAttribute("placeholder");
+            const value = di ? v.getAttribute(di) : (v.value || v.innerHTML.replace(rp, ""));
+            if (rd && !value) {
+                v.focus();
+                v.click();
+                return false;
+            }
+            p[v.dataset.id] = value;
+        }
+        console.log(p);
+        return p;
+    },                         //格式化提交实体
     event: {
         input_del: function ($cb) {
             var list = document.querySelectorAll("input[data-t~='clear']"), cb = $cb || function () {
@@ -477,9 +493,15 @@ var _wit = {
                         return false;
                     };
                     v.oninput = function () {
-                        v.value = v.value.replace(/\D/g, "");
+                        //v.value = v.value.replace(/\D/g, "");
+                        v.value = Number(v.value);
                         if (input) input();
                     }
+                }
+                if (t.indexOf("+") >= 0) {
+                    v.addEventListener("input", function () {
+                        this.value = this.value < 0 ? 0 : this.value;
+                    }, false);
                 }
                 if (t.indexOf("enter") >= 0) {
                     var link = v.dataset.enter;
@@ -657,16 +679,18 @@ var _wit = {
                             } else if (t == "radios") {
                                 html += "<div id='UI_confirm' class='FR MRT H bgc16 ALP " + liwidth + "'>确认</div>";
                             } else if (t == "check" || t == "checks") {
-                                var v_arr = v.innerHTML.split(","), sub = [];
-                                for (var v_i in v_arr) {
-                                    if (arr.indexOf(v_arr[v_i]) < 0) sub.push(v_arr[v_i]);
+                                var sub = [];
+                                for (let i in vl) {
+                                    if (arr.indexOf(vl[i]) < 0) sub.push(vl[i]);
                                 }
-                                !v.title && (sub = []);
+                                //!v.title && (sub = []);
                                 html += "<input id='UI_new' type='text' class='FL MLT C9M H ALP' placeholder='输入自定义选项' value='" + sub.join(",") + "'/>" +
                                     "<div id='UI_confirm' class='FR MRT BTN bgc16'>确定</div>";
                             }
-                            for (var i = 0; i < arr.length; i++) {
-                                html += "<li class='FL MLT H ALP ellips " + liwidth + (t == "radio" ? " rad " : " radem ") + (vl.indexOf(arr[i]) >= 0 ? "bgc56" : "bgc10") + " '>" + arr[i] + "</li>"
+                            for (let i in arr) {
+                                var ix = vl.indexOf(arr[i]);
+                                html += "<li class='FL MLT H ALP ellips " + liwidth + (t == "radio" ? " rad " : " radem ") + (ix >= 0 ? "bgc56" : "bgc10") + " '>" + arr[i] + "</li>"
+                                if (ix >= 0) vl.splice(ix, 1);
                             }
                             html += '</div></div>';
                         }
@@ -753,9 +777,9 @@ var _wit = {
                 };
                 v.removeEventListener("click", click_, false);
                 v.addEventListener("click", click_, false);
-                v.addEventListener("focus", function () {
-                    v.blur();
-                })
+                //v.addEventListener("focus", function () {
+                //    v.blur();
+                //})
             });
         },       //自定义UI选择栏——DIV
         input_readonly: function () {
@@ -820,6 +844,9 @@ var _fun = {
     _sto: null, //setTimeout全局
     /*———————————function—————————————*/
     //
+    back: function () {
+        opener && window.close() || window.history.back();
+    },                            //后退/关闭窗口
     doClick: function ($obj) {
         var obj = $obj;
         if (typeof obj == "string") obj = document.querySelector("#" + obj);
@@ -842,6 +869,20 @@ var _fun = {
             }
         }
     },                     //清除对象内容
+    inputLimit: function ($obj) {
+        var obj = $obj;
+        if (typeof obj == "string") obj = [document.querySelector("#" + obj)];
+        else if (typeof obj != "object" && obj in Array) throw Error("参数输入格式有误！");
+        for (var i in obj) {
+            if (isNaN(i)) break;
+            var v = obj[i];
+            if (!v.value || v.value.length <= 0) {
+                v.focus();
+                return false;
+            }
+        }
+        return true;
+    },                  //input控件非空验证
     show: function ($obj) {
         var obj = $obj;
         if (typeof obj == "string") obj = document.querySelector("#" + obj);
@@ -887,7 +928,7 @@ var _fun = {
 
                 }, initIndex = $initIndex;
         if (typeof d == "string") d = document.querySelector("#" + d);
-        d.dataset.radio = initIndex || -1;
+        d.dataset.radio = initIndex == void 0 ? -1 : initIndex;
         var dl = d.children;
         if (dl.length > 0) {
             Array.prototype.forEach.call(dl, function (v, i) {
@@ -1253,13 +1294,6 @@ var _fun = {
         }
         return JSON.parse(t);
     },                           //自定义JSON处理——精度
-    toPara: function ($s) {
-        var s = $s, o = {};
-        s.ltrim("?").split("&").forEach(function (v) {
-            o[v.split("=")[0]] = v.split("=")[1];
-        });
-        return o;
-    },                         //格式化URL字符串
     addCK: function ($k, $v, $n, $dt) {
         var k = $k, v = $v, n = $n, dt = $dt;
         var exp = new Date();
@@ -1402,9 +1436,9 @@ var _fun = {
             else document.querySelector("#toAlert").classList.add("none");
         }, lt ? lt : 1500);
     },                  //自定义警告——自动生成
-    toError: function ($url, $time) {
-        var url = $url, time = $time;
-        this.toAlert("参数异常！", time || 1500);
+    toError: function ($url, $alert, $time) {
+        var url = $url, time = $time, alert = $alert;
+        this.toAlert(alert || "参数异常！", time || 1500);
         setTimeout(function () {
             location.href = (url || "../com/error.html");
         }, time || 1500);
@@ -1480,6 +1514,7 @@ var _fun = {
         document.body.style.overflow = "hidden";
         _fun.show(d);
         f(da, d);
+        document.body.style.overflow = "";
     },                  //自定义下拉菜单——自动生成
 
     //ajax提交
@@ -1510,14 +1545,17 @@ var _fun = {
     //para：url(请求路径),async(TRUE/FALSE是否异步),para(POST传递参数-object),func(回调函数-成功),error(回调-失败),file(文件流),
     ajax_formdata: function (url, async, para, func, error, file, noloading) {
         var xmlhttp, $this = this;
+        if (!para) return;
         var form = new FormData();
-        if (para) {
+        if (para instanceof FormData) {
+            form = para;
+        } else {
             for (var i in para) {
-                if (typeof para[i] == "object") {
+                if (para[i] instanceof File) {
+                    form.append(i, para[i]);
+                } else if (typeof para[i] == "object") {
                     form.append(i, JSON.stringify(para[i]));
-                    continue;
-                }
-                form.append(i, para[i]);
+                } else form.append(i, para[i]);
             }
         }
         if (window.XMLHttpRequest) {
@@ -1547,7 +1585,27 @@ var _fun = {
         };
         xmlhttp.send(form);
     },
-
+    fetch: function (url, p, cfg = 1) {
+        var form = new FormData();
+        if (p instanceof FormData) {
+            form = p;
+        } else {
+            for (var i in p) {
+                if (p[i] instanceof File) {
+                    form.append(i, p[i]);
+                } else if (typeof p[i] == "object") {
+                    form.append(i, JSON.stringify(p[i]));
+                } else form.append(i, p[i]);
+            }
+        }
+        return p && fetch(url, {
+                method: "post",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: form
+            }) || fetch(url);
+    },
     //异常处理
     using: function (fun, err) {
         err = err || function () {
@@ -1589,7 +1647,7 @@ var _fun = {
     String.prototype.params = function (v) {
         var s = this, o = {}, t = v || "&";
         s.ltrim("?").split(t).forEach(function (v) {
-            o[v.trim().split("=")[0]] = v.trim().split("=")[1];
+            v && (o[v.trim().split("=")[0]] = v.trim().split("=")[1]);
         });
         return o;
     };

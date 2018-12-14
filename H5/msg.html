@@ -21,6 +21,11 @@
         text-align: center;
     }
 
+    textarea:focus {
+        background: #FFF;
+        color: black;
+        text-align: left;
+    }
 </style>
 <body class="ofa" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone "></div>
@@ -29,22 +34,22 @@
 
     <div class="index9 fix top0 H W11 AC ffHT  bgc9">个人信息
         <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="location.href='index.html'"/>
-        <div class="H4M FR F3 colorff PR1M">保存</div>
+        <div class="H4M FR F3 colorff PR1M" onclick="save(myinfo);">保存</div>
     </div>
     <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
         <div class="H6M flexbox">
             <div class="W31 FL H AL">头像</div>
             <div class="W32 FR  flexbox">
                 <div class="W11 AR H6M">
-                    <img id="myImg" class="H6M B6M P05M rad1 AR " data-id="per_portrait_social" alt="" data-src="../img/port/port02.jpg"
+                    <img id="myImg" class="H6M B6M P05M rad1 AR " data-id="per_portrait_social" alt=""
+                         data-src="../images/port03.jpg"
+                         onerror="this.src ='../images/port03.jpg' "
                          src=""
-                         onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'i_logo'})});" lazy/>
-                    <input id="f_logo" data-img="per_portrait" type="file" name="imgUpload" accept="image/*" class="none"
+                         onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'i_logo'})});"
+                         lazy/>
+                    <input id="f_logo" data-img="per_portrait" type="file" name="imgUpload" accept="image/*"
+                           class="none"
                            onchange="_fun.previewImage(this,{},'myImg');"/>
-
-
-                    <!--<img src="../images/pic1.png" data-id="per_portrait_social" class="H6M B6M P05M rad1 AR" alt=""-->
-                         <!--id="myImg">-->
                 </div>
                 <div class=" AR color8">
                     <div class=" AR">&#62</div>
@@ -121,19 +126,19 @@
     </div>
     <div class="H1M W11 bordBDe6"></div>
     <div class=" W11  PL1M PR1M bgc10  bordBDe6 ">
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">邮编</div>
-            <input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="myzcode" placeholder="" value=""/>
-            <!--<div id="myzcode" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
+        <!--<div class="bordBDe6  H4M flexbox">-->
+        <!--<div class="W31 FL H AL">邮编</div>-->
+        <!--<input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="myzcode" placeholder="" value=""/>-->
+        <!--&lt;!&ndash;<div id="myzcode" class="W32 FR AR color8 ellips" data-t="my_msg">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div class="ML AR color8">-->
+        <!--<div class=" AR">&#62</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <div class="H4M bordBDe6">
             <div class="flexbox">
                 <div class="W41 FL H AL">地址</div>
-                <div id="myaddr" data-in="title" class="W43 FR AR color8 H ellips" title="110101001"
+                <div id="myaddr" data-in="title" class="W43 FR AR color8 H ellips" title=""
                      onclick="creat_addr(4,0)">请选择所在区域
                 </div>
                 <div class="ML AR color8">
@@ -151,11 +156,11 @@
                 <div class=" AR">&#62</div>
             </div>
         </div>
-
+        <input data-id="per_address" id="address" class="none" placeholder="请输入地址">
     </div>
     <div class="H1M W11 bordBDe6"></div>
     <div class=" W11  PL1M PR1M bgc10  bordBDe6">
-        <div class="bordBDe6  H4M flexbox">
+        <div class=" H4M flexbox">
             <div class="W31 FL H AL">学历</div>
             <div id="myeducation" class="W32 FR AR color8 H ellips" data-t="check" data-id="per_education"
                  data-l="my_msg" data-s="无,小学,初中,高中,中专,大专,本科,学士,硕士,博士">
@@ -181,7 +186,8 @@
         </div>
         <div class="bordBDe6  H4M flexbox">
             <div class="W31 FL H AL">单位</div>
-            <input type="text" class="W32 bordBTe6 FR AR color8 H ellips ffWRYH " id="mycomp" data-id="per_unit_name"
+            <input type="text" class="W32 bordBTe6 bordBDe6 FR AR color8 H ellips ffWRYH " id="mycomp"
+                   data-id="per_unit_name"
                    placeholder="" value=""/>
             <!--<div id="mycomp" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             <!--</div>-->
@@ -210,7 +216,7 @@
                 <div class=" AR">&#62</div>
             </div>
         </div>
-        <div class="bordBDe6  H4M flexbox">
+        <div class="  H4M flexbox">
             <div class="W31 FL H AL">职称</div>
             <div id="mycareer" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_job_title"
                  data-s="教授,副教授,高级讲师,讲师,特级教师,高级教师,一级教师,研究员,副研究员,教授级高工,高级工程师,工程师,主任医师,副主任医师,主治医师,主管护师,高级经济师,经济师,高级会计师,会计师">
@@ -220,14 +226,7 @@
                 <div class=" AR">&#62</div>
             </div>
         </div>
-        <div class="bordBDe6  flexbox">
 
-            <!--<div id="myhonor" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <!--<div class="ML AR color8">-->
-            <!--<div class=" AR">&#62</div>-->
-            <!--</div>-->
-        </div>
     </div>
     <div class=" H1M W11 bordBDe6"></div>
     <div class=" W11  bgc119  bordBDe6">
@@ -248,6 +247,7 @@
 <script src="../js/witjsdate.js"></script>
 <script src="../js/witjsaddr.js"></script>
 <script src="../js/wit_app.js"></script>
+<script src="../js/lib/MD5.js"></script>
 <script type="text/javascript">
     "use strict";
     var _userguid, _token, _editor, _phone;
@@ -310,8 +310,8 @@
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("p");
-            div.className = " AL W11 H4M  bordBD1 FL";
-            div.innerHTML = '<div class="FL LH25">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
+            div.className = " AL W11 H4M ellips bordBD1 FL";
+            div.innerHTML = '<div class="FL W65 ellips LH25">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
                 '<div class="B3M H3M FR" onclick="del_school(' + v.id + ')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
             document.getElementById("myAllClass").appendChild(div);
         });
@@ -352,12 +352,18 @@
         var myWX = document.getElementById("mywx");
         myWX.value = o.per_webchat || "";
 
-        var myAddr = document.getElementById("myaddr1");
-        myAddr.innerText = _wd.getCut("@@", 0, o.per_address || "") + _wd.getCut("@@", 1, o.per_address || "") || "";
-
-        var myZcode = document.getElementById("myzcode");
-        myZcode.innerText = _wd.getCut("||", 2, o.per_address || "") || "";
-
+        var myAddr = document.getElementById("myaddr");
+        var myAddr1 = document.getElementById("myaddr1");
+        var a = o.per_address.split("||");
+        console.log(a.length);
+        if (a.length > 1) {
+            myAddr.title = a[1];
+            var addr = a[0].split("@@");
+            if (addr.length > 1) {
+                myAddr.innerText = addr[0];
+                myAddr1.value = addr[1];
+            }
+        }
         var myEdu = document.getElementById("myeducation");
         myEdu.innerText = c.per_education || "";
 
@@ -379,82 +385,59 @@
 
     }
 
-    function updateAddr(p) {
-        var cont = p.children[1].innerText;
-        var inHtml = '<div id="per_address0"   data-in="title" class="FL W11 F3 H4M LH3   bordBD1  bgcddc  color876 bord_select AC" onclick="creat_addr(4,0)">请选择所在区域</div>' +
-            '<div class="FL F2 W11 P1M bgc9">详细地址：</div>' +
-            '<textarea class=" FL  W11 F3 ALP  bordBD1 ffWRYH " rows="4"  style="resize:none"  id="re_content"  >' + cont + '</textarea>';
-
-        document.getElementById("re_page").innerHTML = "";
-        var div = document.createElement("div");
-        div.className = " W11 index99 fix bgc9 CH";
-        div.innerHTML = '<div class="top0 H W11 AC ffHT bgc9 ">设置地址' +
-            '    <div  class="FL B4M H4M F2" onclick="_wd.hide(re_page)"> 取消</div>' +
-            '    <div  class="FR B4M H4M F2  colorff" id="n_release"> 完成</div>' +
-            '</div><div class="bgc10 W11 F2 AL F3" id="up_list">' + inHtml +
-            '</div>';
-        document.getElementById("re_page").appendChild(div);
-        _wd.show("re_page");
-        _wit.event.div_UI("s_select");
-        var update = document.getElementById("n_release");
-        update.onclick = function () {
-            var d = document.querySelector("#up_list>input");
-            if (d) {
-                console.log(d.value);
-                console.log(d.id);
-            } else {
-                var t = document.querySelector("#up_list>div");
-                console.log(t);
-                console.log(t.id);
-            }
-
-        };
-    }
-
-    function up_infoMsg() {
-        var pd = document.getElementById("myDetails").querySelectorAll("[data-l='my_msg']");
-        var pt = document.getElementById("myDetails").querySelectorAll("input");
-        var px = document.getElementById("myhonor");
-        var pl = document.getElementById("myImg");
-        // Array.prototype.forEach.call(pd, function (v) {
-        // for (var i in pd) {
-        //  console.log(i);
-        // if (i === v.id.split("my")[1]) {
-        //     v.innerText = p[i];
-        // }
-        // }
-        // });
-        console.log(pd, pt, px, pl);
-    }
-
     function save(j) {
         console.log(myinfo);
         try {
             if (update(myinfo)) {
-                myinfo.perobjectjson.per_address = document.getElementById("myaddr").innerText+"@@"+document.getElementById("myaddr1").innerText
-                    +"||"+document.getElementById("myzcode").innerText;
+                if (document.getElementById("myImg").src.indexOf('base64') < 0) myinfo.perobjectjson.per_portrait_social = "";
+                if (myinfo.perobjectjson.per_full_name.length <= 0) {
+                    _wd.info("姓名不能为空！", "bgc24");
+                    return;
+                }
                 var theinfo = {};
                 _fun.extendDeep(theinfo, myinfo, true);
                 delete theinfo.perexpjobjson;
                 delete theinfo.perexpeducationjson;
                 delete theinfo.perexpotherjson;
                 _wd.toLoading();
-                externalfun.updateuserinfo(function (msg) {
-                    console.log(msg);
-                    var json = JSON.parse(msg);
-                    console.log(json);
-                    if (json.result >= 0) {
-                        // toCard(1);
-                    } else {
-                        _wd.info("修改失败！","bgc24");
-                        _wd.toLoading();
-                    }
-                }, JSON.stringify(theinfo));
+                _wit.postmessage({
+                    functionname: "updateuserinfo",
+                    witparams: {
+                        json: JSON.stringify(theinfo)
+                    },
+                    callback: "cb_updateMsg"
+                });
+                // externalfun.updateuserinfo(function (msg) {
+                //     console.log(msg);
+                //     var json = JSON.parse(msg);
+                //     console.log(json);
+                //     if (json.result >= 0) {
+                //         window.location.reload();
+                //     } else {
+                //         _wd.info("修改失败！", "bgc24");
+                //         _wd.toLoading();
+                //     }
+                // }, JSON.stringify(theinfo));
             }
         } catch (ex) {
-            _fun.toAlert(ex, 1500);
-            _fun.toLoading();
+            _wd.info(ex, "bgc24");
+            // _fun.toLoading();
             throw ex;
+        }
+    }
+
+    function cb_updateMsg(msg) {
+        console.log(msg);
+        var p = msg.result;
+        if (p >= 0) {
+            _wd.info("修改成功！", "bgc5e");
+            setTimeout(function () {
+                window.location.reload();
+            },1000)
+
+        } else {
+            _wd.info("修改失败！", "bgc24");
+            _wd.toLoading();
         }
     }
 
@@ -470,7 +453,15 @@
             if (obj) {
                 var tag = obj.tagName;
                 if (tag === "INPUT") {
-                    d[i] = obj.value;
+                    if (obj.id === "address") {
+                        var addr = document.querySelector("#myaddr").innerHTML,
+                            addr1 = document.querySelector("#myaddr1").value,
+                            acode = document.querySelector("#myaddr").title;
+                        d[i] = addr + "@@" + addr1 + "||" + acode;
+                        d[i] = d[i] === "@@||" ? "" : d[i];
+                    } else {
+                        d[i] = obj.value;
+                    }
                 } else if (tag === "DIV") {
                     console.log(obj.id);
                     if (obj.id === "mysex") {
@@ -478,12 +469,20 @@
                         continue;
                     }
                     if (obj.id === "myindustry") {
-                        d[i] = parseInt(obj.title) * 100;
+                        if (parseInt(obj.title) < 100) {
+                            d[i] = parseInt(obj.title) * 100;
+                        } else {
+                            d[i] = parseInt(obj.title);
+                        }
                     }
                     else {
                         d[i] = obj.innerText;
                     }
-                }else if (tag === "IMG") {
+                } else if (tag === "IMG") {
+                    d[i] = obj.src;
+                    console.log(1);
+                }
+                else if (tag === "IMG") {
                     d[i] = obj.src;
                     console.log(1);
                 }
@@ -516,10 +515,12 @@
         var j = msg,
             p = JSON.parse(param);
         if (j && j.result >= 0) {
-            _wd.info("删除成功！", "bgc5e");
+            // _wd.info("删除成功！", "bgc5e");
             _wit.postmessage({functionname: "getuser", callback: "callback"});
             // document.location.reload(); //当前页面
             //其他端免回调
+        }else {
+            _wd.info("删除失败！", "bgc24");
         }
         // else {//pc端
         //     var o = p.json;
@@ -537,9 +538,11 @@
         //     }, p.id, 0);
         // }
     }
+
     function selectphone_callback(msg, para) {
         console.log("调用相册：", msg, para);
-        var j = msg, p = JSON.parse(para), img = document.querySelector("#" + p.img), d = document.querySelector("#" + p.ipt);
+        var j = msg, p = JSON.parse(para), img = document.querySelector("#" + p.img),
+            d = document.querySelector("#" + p.ipt);
         if (j && j.result >= 0) {
             img.src = j.message;
         } else {
