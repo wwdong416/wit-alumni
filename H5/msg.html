@@ -33,8 +33,8 @@
 <div id="myDetails" class="W11  bgc9  ffWRYH">
 
     <div class="index9 fix top0 H W11 AC ffHT  bgc9">个人信息
-        <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="location.href='index.html'"/>
-        <div class="H4M FR F3 colorff PR1M" onclick="save(myinfo);">保存</div>
+        <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="_wit.winclose();"/>
+        <div class="H4M FR F3 colorff PR1M" onclick="save();">保存</div>
     </div>
     <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
         <div class="H6M flexbox">
@@ -45,7 +45,7 @@
                          data-src="../images/port03.jpg"
                          onerror="this.src ='../images/port03.jpg' "
                          src=""
-                         onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'i_logo'})});"
+                         onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'myImg'})});"
                          lazy/>
                     <input id="f_logo" data-img="per_portrait" type="file" name="imgUpload" accept="image/*"
                            class="none"
@@ -62,7 +62,7 @@
     <div class=" W11  PL1M PR1M bgc10  bordBDe6">
         <div class="bordBDe6  H4M flexbox">
             <div class="W31 FL H AL">名字</div>
-            <input type="text" class="W32 bordBTe6 FR AR color8 H ellips ffWRYH " id="myname" data-id="per_full_name"
+            <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="myname" data-id="per_full_name"
                    placeholder="" value=""/>
             <!--<div id="myname" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             <!--</div>-->
@@ -95,7 +95,7 @@
     <div class=" W11  PL1M PR1M bgc10  bordBDe6">
         <div class="bordBDe6  H4M flexbox">
             <div class="W31 FL H AL">邮箱</div>
-            <input type="text" class="W32 bordBDe6  bordBTe6  FR AR color8 H ellips ffWRYH " id="mymail"
+            <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mymail"
                    data-id="per_email" placeholder="" value=""/>
             <!--<div id="mymail" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             <!--</div>-->
@@ -105,7 +105,7 @@
         </div>
         <div class="bordBDe6   H4M flexbox">
             <div class="W31 FL H AL">QQ</div>
-            <input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="myqq" data-id="per_qq" placeholder=""
+            <input type="text" class="W32 bordBDe6 FR AR color8 H ellips ffWRYH " id="myqq" data-id="per_qq" placeholder=""
                    value=""/>
             <!--<div id="myqq" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             <!--</div>-->
@@ -126,15 +126,6 @@
     </div>
     <div class="H1M W11 bordBDe6"></div>
     <div class=" W11  PL1M PR1M bgc10  bordBDe6 ">
-        <!--<div class="bordBDe6  H4M flexbox">-->
-        <!--<div class="W31 FL H AL">邮编</div>-->
-        <!--<input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="myzcode" placeholder="" value=""/>-->
-        <!--&lt;!&ndash;<div id="myzcode" class="W32 FR AR color8 ellips" data-t="my_msg">&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--<div class="ML AR color8">-->
-        <!--<div class=" AR">&#62</div>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="H4M bordBDe6">
             <div class="flexbox">
                 <div class="W41 FL H AL">地址</div>
@@ -150,7 +141,7 @@
         </div>
         <div class=" HN4M flexbox">
             <div class="W41 FL H AL">详细地址</div>
-            <textarea class=" FL W43  F3 AR  color8 ffWRYH " rows="2" style="resize:none" id="myaddr1"
+            <textarea class=" FL W43  F4 AR  color8 ffWRYH " rows="2" style="resize:none" id="myaddr1"
                       title=""></textarea>
             <div class=" AR color8">
                 <div class=" AR">&#62</div>
@@ -186,7 +177,7 @@
         </div>
         <div class="bordBDe6  H4M flexbox">
             <div class="W31 FL H AL">单位</div>
-            <input type="text" class="W32 bordBTe6 bordBDe6 FR AR color8 H ellips ffWRYH " id="mycomp"
+            <input type="text" class="W32  FR AR color8 H ellips ffWRYH " id="mycomp"
                    data-id="per_unit_name"
                    placeholder="" value=""/>
             <!--<div id="mycomp" class="W32 FR AR color8 ellips" data-t="my_msg">-->
@@ -237,7 +228,7 @@
         <div class="clear"></div>
     </div>
     <div class=" H1M W11 bordBDe6"></div>
-    <div class="W11 H AC bgcff" id="saveMsg" onclick="save(myinfo);">保存</div>
+    <div class="W11 H AC bgcff" id="saveMsg" onclick="save();">保存</div>
 
 </div>
 </body>
@@ -250,14 +241,13 @@
 <script src="../js/lib/MD5.js"></script>
 <script type="text/javascript">
     "use strict";
+    autocss();
     var _userguid, _token, _editor, _phone;
     const _url = "http://121.43.233.185/alumnicloudweb";
     var myObject, myPrivacy, myPersocial;
-    var myinfo = JSON.parse(externalfun.getuser()).perinfo;
-    console.log(myinfo);
+    var myinfo;
 
     function loadend() {
-        autocss();
         loadimg();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
     }
@@ -265,6 +255,7 @@
     function callback(msg) {
         console.log(msg);
         var info = msg.perinfo;
+        myinfo =  msg.perinfo;
         //获取班级信息
         var myclass = info.perexpeducationjson;
         myObject = info.perobjectjson;
@@ -328,23 +319,23 @@
         var mySex = document.getElementById("mysex");
         var sex = "";
         switch (o.per_sex) {
-            case 0:
+            case 1:
                 sex = "男";
                 break;
-            case 1:
+            case 2:
                 sex = " 女";
                 break;
-            case "":
+            default:
                 sex = "";
                 break;
         }
-        mySex.title = parseInt(o.per_sex);
+        mySex.title = parseInt(o.per_sex-1);
         mySex.innerText = sex;
         var mybirth = document.getElementById("mybirthday");
         mybirth.innerText = b.per_birth_date || "";
 
         var myMail = document.getElementById("mymail");
-        myMail.value = o.per_email || "";
+        myMail.value = o.per_email || o.per_email2 || "";
 
         var myQQ = document.getElementById("myqq");
         myQQ.value = o.per_qq || "";
@@ -355,15 +346,15 @@
         var myAddr = document.getElementById("myaddr");
         var myAddr1 = document.getElementById("myaddr1");
         var a = o.per_address.split("||");
-        console.log(a.length);
-        if (a.length > 1) {
-            myAddr.title = a[1];
-            var addr = a[0].split("@@");
-            if (addr.length > 1) {
-                myAddr.innerText = addr[0];
-                myAddr1.value = addr[1];
-            }
+        // console.log(a.length);
+        // if (a.length > 1) {
+        myAddr.title = a[1] || "";
+        var addr = a[0].split("@@");
+        if (addr.length > 1) {
+            myAddr.innerText = addr[0];
+            myAddr1.value = addr[1];
         }
+        // }
         var myEdu = document.getElementById("myeducation");
         myEdu.innerText = c.per_education || "";
 
@@ -385,7 +376,7 @@
 
     }
 
-    function save(j) {
+    function save() {
         console.log(myinfo);
         try {
             if (update(myinfo)) {
@@ -433,7 +424,7 @@
             _wd.info("修改成功！", "bgc5e");
             setTimeout(function () {
                 window.location.reload();
-            },1000)
+            }, 1000)
 
         } else {
             _wd.info("修改失败！", "bgc24");
@@ -465,7 +456,7 @@
                 } else if (tag === "DIV") {
                     console.log(obj.id);
                     if (obj.id === "mysex") {
-                        d[i] = obj.title;
+                        d[i] = parseInt(obj.title)+1;
                         continue;
                     }
                     if (obj.id === "myindustry") {
@@ -519,24 +510,9 @@
             _wit.postmessage({functionname: "getuser", callback: "callback"});
             // document.location.reload(); //当前页面
             //其他端免回调
-        }else {
+        } else {
             _wd.info("删除失败！", "bgc24");
         }
-        // else {//pc端
-        //     var o = p.json;
-        //     console.log(o);
-        //     console.log(p.type);
-        //     p.type === 0 && externalfun.deleteexp(function (msg) {
-        //         console.log(msg);
-        //         _fun.toLoading(-1);
-        //         var j = JSON.parse(msg);
-        //         if (j.result >= 0) {
-        //             _wd.info("删除成功！", "bgc5e");
-        //             // document.location.reload(); //当前页面
-        //             _wit.postmessage({functionname: "getuser", callback: "callback"});
-        //         }
-        //     }, p.id, 0);
-        // }
     }
 
     function selectphone_callback(msg, para) {

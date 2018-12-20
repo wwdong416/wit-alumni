@@ -19,7 +19,7 @@
 <div id="classmates_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
-    <img  src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="window.open('index.html')"/>
+    <img  src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
     <img src='../images/icon/xy2.png' class="B4M H4M FR ICON " onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
 </div>
 <!--首页-->
@@ -220,9 +220,9 @@
 <script src="../js/wit_data.js"></script>
 <script src="../js/lib/MD5.js"></script>
 <script>
-
+    "use strict";
+    autocss();
     function loadend() {
-        autocss();
         loadimg();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
         // class_message();

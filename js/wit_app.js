@@ -18,7 +18,6 @@ var _wd = {
             if (div.style.display == "none") div.style.display = "";
             div.innerHTML = '<div class="' + className + '" style="width:50%;top:50%;left:0; right: 0">' + t + '</div>';
         } else {
-
             var div = document.createElement("div");
             div.className = "CW CH fix index999";
             div.id = "toInfo";
@@ -26,8 +25,12 @@ var _wd = {
             document.body.appendChild(div);
         }
         setTimeout(function () {
-            if (d) d.classList.add("none");
-            else document.querySelector("#toInfo").classList.add("none");
+            if (d) {
+                d.classList.add("none");
+            }
+            else {
+                document.querySelector("#toInfo").classList.add("none");
+            }
         }, 2000);
     },
     //自定义进度——自动生成：time/超时时间，img/进度条图片地址,modal/是否模态窗口
@@ -49,15 +52,15 @@ var _wd = {
             $this.insertBefore(document.body, div);
             $this._sto = setTimeout(function () {
                 if (div) {
-                    console.log(div,div.parentNode);
+                    console.log(div, div.parentNode);
                     document.body.removeChild(div);
                     //$this.toAlert("访问超时！", 1500);
                 }
             }, time);
         }
     },
-    toConfirm: function ($t,$f,$e) {
-        var t = $t, d = document.querySelector("#toConfirm"),f = $f, e = $e ||function () {
+    toConfirm: function ($t, $f, $e) {
+        var t = $t, d = document.querySelector("#toConfirm"), f = $f, e = $e || function () {
             document.body.removeChild(div);
         };
         var className = "AC fix ffWRYH F3 MA color8 rad05e  PT1M bgc10";
@@ -75,6 +78,7 @@ var _wd = {
             '</div>';
         document.body.appendChild(div);
         document.getElementById("toTrue").onclick = f;
+
         document.getElementById("toFalse").onclick = e;
     },
     toError: function () {
@@ -294,9 +298,8 @@ var _wd = {
      * @return      [返回截取后第num个的字符]
      */
     getCut: function (reg, num, msg) {
-        var name = msg.split(reg);
-        // console.log(name[num]);
-        return name[num];
+        var name = msg.split(reg) ;
+        return name[num] || "";
     },
     //--------------上拉加载更多---------------
     //获取滚动条当前的位置
@@ -346,7 +349,7 @@ var _wd = {
         img.classList.add("P2M");
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },
-    noLogo: function (img,url) {
+    noLogo: function (img, url) {
         img.src = url;
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },
