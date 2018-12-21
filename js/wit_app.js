@@ -95,8 +95,8 @@ var _wd = {
                 '<div class=" W11 MA">' +
                 '<img src="../images/icon/errorPage.png">' +
                 '</div>' +
-                '<div class="W11 AC ">加载失败了~~</div>' +
-                '<div class="MTH W11 ">点击重试</div>' +
+                '<div class="W11 AC F4">加载失败了</div>' +
+                '<div class="MT2 W11 F4">点击重试</div>' +
                 '</div> ';
             div.onclick = function () {
                 window.location.reload();
@@ -146,7 +146,7 @@ var _wd = {
                 else {
                     !noloading && $this.toLoading(0);
                     var funerr = error || function () {
-                        // _wd.info("服务器异常！", "bgc24");
+                        _wd.info("异常！您与服务器断开连接！", "bgc24");
                         $this.toError();
                         // return 0;
                     };

@@ -5,6 +5,7 @@
  */
 // var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
 var url = "http://121.43.233.185/alumnicloudweb";
+// var url = "http://192.168.10.5:8080";
 //获取学校id
 var s_guid = _wd.getUrl_sid().sid;
 
@@ -19,17 +20,19 @@ var myclass, myObject, myPrivacy, myPersocial, myEduJson;
 var base64img = "";
 
 console.log(class_id, s_guid, id);
-
+console.log(url);
 //返回值失败的情况
 function m_Error(msg, io) {
     var p = JSON.parse(msg);
+    // console.log(p);
     if (p.result < 0) {
-        console.log(msg, io);
+        console.log(p, io);
         _wd.toError();
-        _wd.info("加载失败！请重试", "bgc24");
+        _wd.info("加载失败！请重试！"+p.message, "bgc24");
         return false;
+    }else {
+        return true;
     }
-    return true;
 }
 
 function callback(msg) {
@@ -78,6 +81,7 @@ function init(msg) {
 
     } else {
         _wd.info("用户非法，请重新登录！", "bgc24");
+
     }
 }
 
@@ -102,7 +106,7 @@ function isMsg() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -183,7 +187,7 @@ function addClassmate() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg || "", "bgc24");
+        _wd.info("错误！请重新登录！" , "bgc24");
     });
 }
 
@@ -227,14 +231,16 @@ function class_message() {
                         }
                     }
                 }, function (msg) {
-                    _wd.info("错误！" + msg|| "", "bgc24");
+                    _wd.info("错误！请重新登录！", "bgc24");
+                    _wd.toError();
                 });
             } else {
                 _wd.toConfirm("此班级未加入，请联系管理员！", backindex, backindex)
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
+        _wd.toError();
     });
 }
 
@@ -413,7 +419,7 @@ function cl_index() {
 
             }
         }, function (msg) {
-            _wd.info("错误！" + msg|| "", "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     }
 }
@@ -499,7 +505,7 @@ function in_notice() {
                 }
             }
         }, function (msg) {
-            _wd.info("错误！" + msg|| "", "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     }
 }
@@ -559,7 +565,7 @@ function getNoticeList(page) {
             });
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -625,7 +631,7 @@ function get_information_logo() {
             });
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -670,12 +676,12 @@ function change_site(site) {
                     var j = JSON.parse(msg);
                     if (j.result >= 0) {
                         _wd.info("入座成功！", "bgc5e");
-                        // toMenu("cl_information");
-                        // if (d) {
-                        //     document.body.removeChild(d);
-                        // } else {
-                        //     window.location.reload();
-                        // }
+                        toMenu("cl_information");
+                        if (d) {
+                            document.body.removeChild(d);
+                        } else {
+                            window.location.reload();
+                        }
                     } else {
                         _wd.info("入座失败！", "bgc24");
                         toMenu("cl_information");
@@ -689,7 +695,7 @@ function change_site(site) {
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -742,7 +748,7 @@ function cl_information() {
             });
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
     var f = {
         A_L: function (e) {
@@ -918,7 +924,7 @@ function classmatesMember(p) {
             div.innerHTML = msgHtml;
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
     cont.appendChild(div);
     _wd.show(cont);
@@ -999,7 +1005,7 @@ function getGra_ph() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 
 }
@@ -1229,12 +1235,12 @@ ph_touch.onclick = function () {
                         }
                     }
                 }, function (msg) {
-                    _wd.info("错误！" + msg|| "", "bgc24");
+                    _wd.info("错误！请重新登录！", "bgc24");
                 });
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 
 
@@ -1362,12 +1368,12 @@ function get_cl_Photo(page, type) {
                         }
                     }
                 }, function (msg) {
-                    _wd.info("错误！" + msg|| "", "bgc24");
+                    _wd.info("错误！请重新登录！", "bgc24");
                 });
             });
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -1444,7 +1450,7 @@ function addFolder(type) {
             }
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -1504,7 +1510,7 @@ function ph_addMore($id, $page, $type) {
             _wd.clear(ph_img);
         }
     }, function (msg) {
-        _wd.info("错误！" + msg|| "", "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
