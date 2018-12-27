@@ -6,9 +6,10 @@ var _wd = {
     _sto: null, //setTimeout全局
     /**
      * 提示框
-     * @$t:提示内容
-     * @$c:提示框颜色
+     * @param $t:提示内容
+     * @param $c:提示框颜色
      */
+
     info: function ($t, $c) {
         var t = $t, c = $c, d = document.querySelector("#toInfo");
         var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + c;
@@ -33,7 +34,12 @@ var _wd = {
             }
         }, 2000);
     },
-    //自定义进度——自动生成：time/超时时间，img/进度条图片地址,modal/是否模态窗口
+    /**
+     *页面加载动画
+     * @param $time 延迟时间
+     * @param $img 图片地址选填
+     * @param $modal 是否有模态框
+     */
     toLoading: function ($time, $img, $modal) {
         var $this = this, img = $img || "../images/icon/loading2.gif", d = document.querySelector("#toLoading"),
             time = $time || 2000, modal = $modal;
@@ -46,19 +52,24 @@ var _wd = {
                 return;
             }
             var div = document.createElement("div");
-            div.className = "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
+            div.className =  "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
             div.id = "toLoading";
-            div.innerHTML = '<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
+            div.innerHTML ='<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
             $this.insertBefore(document.body, div);
             $this._sto = setTimeout(function () {
                 if (div) {
-                    console.log(div, div.parentNode);
                     document.body.removeChild(div);
                     //$this.toAlert("访问超时！", 1500);
                 }
             }, time);
         }
     },
+    /**
+     * 确认提示框
+     * @param $t 内容
+     * @param $f 确认返回方法 （必填）
+     * @param $e 取消返回方法 （选填）
+     */
     toConfirm: function ($t, $f, $e) {
         var t = $t, d = document.querySelector("#toConfirm"), f = $f, e = $e || function () {
             document.body.removeChild(div);
@@ -122,7 +133,7 @@ var _wd = {
             for (var i in para) {
                 if (para[i] instanceof File) {
                     form.append(i, para[i]);
-                } else if (typeof para[i] == "object") {
+                } else if (typeof para[i] === "object") {
                     form.append(i, JSON.stringify(para[i]));
                 } else form.append(i, para[i]);
             }
@@ -137,8 +148,8 @@ var _wd = {
         if (file) xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
         xmlhttp.onreadystatechange = function () {
             //console.log(xmlhttp);
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
                     !noloading && $this.toLoading(0);
                     var msg = xmlhttp.responseText;
                     func(msg);
@@ -298,7 +309,7 @@ var _wd = {
      * @return      [返回截取后第num个的字符]
      */
     getCut: function (reg, num, msg) {
-        var name = msg.split(reg) ;
+        var name = msg.split(reg);
         return name[num] || "";
     },
     //--------------上拉加载更多---------------
@@ -343,6 +354,56 @@ var _wd = {
             }, 400);
         }
     },
+    /**
+     * 下拉刷新
+     * @param $p 包裹所有需要刷新的新节点
+     * @param $s  新节点下的新节点
+     */
+    down_refresh: function ($p,$s) {
+        var p = $p || "d_cont_p",s = $s || "d_cont_s";
+        var scroll = document.getElementById(s);
+        var outerScroller = document.getElementById(p);
+         // scroll.className = "absolute top0 bottom0 W11 left0";
+        // outerScroller.className = "absolute top0 bottom0 W11 left0";
+        var touchStart = 0;
+        var touchDis = 0;
+        outerScroller.addEventListener('touchstart', function (event) {
+            var touch = event.targetTouches[0];
+            // 把元素放在手指所在的位置
+            touchStart = touch.pageY;
+            // console.log(touchStart);
+        }, false);
+        outerScroller.addEventListener('touchmove', function (event) {
+            var touch = event.targetTouches[0];
+            // console.log(touch.pageY + 'px');
+            scroll.style.top = scroll.offsetTop + touch.pageY - touchStart + 'px';
+             if ((scroll.offsetTop + touch.pageY - touchStart) > 120){
+                 scroll.children[0].innerHTML ="正在刷新...";
+             }
+            touchStart = touch.pageY;
+            touchDis = touch.pageY - touchStart;
+        }, false);
+        outerScroller.addEventListener('touchend', function (event) {
+            touchStart = 0;
+            var top = scroll.offsetTop;
+             console.log(top);
+            if (top > 120) {
+                setTimeout(function () {
+                    window.location.reload();
+                },400);
+            }
+            if (top > 0) {
+                var time = setInterval(function () {
+                    scroll.style.top = scroll.offsetTop - 2 + 'px';
+                    if (scroll.offsetTop <= 0) clearInterval(time);
+                }, 1)
+            }
+        }, false);
+    },
+    /**
+     * 图片加载错误返回的图片
+     * @param img 节点
+     */
     noFind_Pic: function (img) {
         img.src = "../images/nofindpic.png";
         img.alt = "图片加载失败";
@@ -353,6 +414,12 @@ var _wd = {
         img.src = url;
         img.onerror = null; //如果错误图片也不存在就会死循环一直跳，所以要设置成null，也可以不加
     },
+    /**
+     * 插入新节点
+     * @param parent 父节点
+     * @param newChild 新节点
+     * @returns {*}
+     */
     insertBefore: function (parent, newChild) {
         if (parent.firstChild) {
             parent.insertBefore(newChild, parent.firstChild);
@@ -361,28 +428,48 @@ var _wd = {
         }
         return parent;
     },     //dom插入
+    /**
+     * 末尾插入新节点，无返回值
+     * @param newElement 新节点
+     * @param targetElement 父节点
+     */
     insertAfter: function (newElement, targetElement) {
         var parent = targetElement.parentNode;
-        if (parent.lastChild == targetElement) {
+        if (parent.lastChild === targetElement) {
             parent.appendChild(newElement);
         }
         else {
             parent.insertBefore(newElement, targetElement.nextSibling);
         }
     },
+    /**
+     * 删除父节点下的子节点
+     * @param $p 父节点
+     * @param $s 子节点
+     */
     deleteChild: function ($p, $s) {
         var p = document.getElementById($p);
         var s = document.getElementById($s);
         p.removeChild(s);
         // document.getElementById(p).removeChild(document.getElementById(s));
     },
+    /**
+     * 展示对象
+     * @param $obj 对象id
+     * @returns 此对象
+     */
     show: function ($obj) {
         var obj = $obj;
         if (typeof obj == "string") obj = document.querySelector("#" + obj);
         if (obj.classList.contains("none")) obj.classList.remove("none");
         if (obj.style.display == "none") obj.style.display = "";
         return this;
-    },                        //对象显示（display）
+    },
+    /**
+     * 隐藏对象
+     * @param $obj 对象id
+     * @returns 此对象
+     */
     hide: function ($obj) {
         var obj = $obj;
         if (typeof obj == "string") obj = document.querySelector("#" + obj);

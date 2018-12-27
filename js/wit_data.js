@@ -8,9 +8,9 @@ var url = "http://121.43.233.185/alumnicloudweb";
 // var url = "http://192.168.10.5:8080";
 //获取学校id
 var s_guid = _wd.getUrl_sid().sid;
-
+//获取班级id
 var id = _wd.getUrl_sid().cid;
-
+//获取班级在表中的id（退出此班级用）
 var class_id = _wd.getUrl_sid().id;
 
 var _userguid, _token, _phone, _editor, _logoPic;
@@ -21,16 +21,18 @@ var base64img = "";
 
 console.log(class_id, s_guid, id);
 console.log(url);
+
 //返回值失败的情况
+
 function m_Error(msg, io) {
     var p = JSON.parse(msg);
     // console.log(p);
     if (p.result < 0) {
         console.log(p, io);
         _wd.toError();
-        _wd.info("加载失败！请重试！"+p.message, "bgc24");
+        _wd.info("加载失败！请重试！" + p.message, "bgc24");
         return false;
-    }else {
+    } else {
         return true;
     }
 }
@@ -81,7 +83,6 @@ function init(msg) {
 
     } else {
         _wd.info("用户非法，请重新登录！", "bgc24");
-
     }
 }
 
@@ -170,6 +171,7 @@ function addClassmate() {
     para.userguid = _userguid;
     para.logo = base64img ? base64img.split(",")[1] : "";
     console.log("成员信息", para);
+    console.log(base64img);
     _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
         if (m_Error(msg, "插入此班级")) {
             console.log(msg);
@@ -177,7 +179,7 @@ function addClassmate() {
             if (j.result >= 0) {
                 _wd.info("添加成功！", "bgc5e");
                 setTimeout(function () {
-                    window.location.reload();
+                    // window.location.reload();
                 }, 1000)
             } else {
                 _wd.info("添加失败！", "bgc5e");
@@ -187,7 +189,7 @@ function addClassmate() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" , "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -583,13 +585,22 @@ if (moreNotice) {
  * */
 function daisWH(value_w, value_h) {
     var daisBtn = document.getElementById("dais_value");
+    var wh = daisBtn.getAttribute("data-value");
+    if (wh) {
+        value_w = wh.split("*")[0];
+        value_h = wh.split("*")[1];
+    } else {
+        value_w = 6;
+        value_h = 7;
+    }
     daisBtn.setAttribute("wh", value_w + "*" + value_h);
-    // console.log("座位表：列" + value_w + " 行" + value_h);
+    console.log("座位表：列" + value_w + " 行" + value_h);
     var cont = "";
     for (var i = 1; i <= value_h * value_w; i++) {
         cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png'  id=c_headimg" + i + " onclick='change_info_logo(this)'>"
     }//绘制座位表
     document.getElementById("daislist").innerHTML = cont;
+    get_information_logo();
 }
 
 /*座位的展开与隐藏*/
@@ -623,10 +634,19 @@ function get_information_logo() {
             console.log(JSON.parse(msg));
             var p = JSON.parse(msg).message;
             var logoPath = JSON.parse(msg).logoPath;
+            var class_num = p.length;
+            // if (class_num > 8 &&  class_num < 10) {
+            //     daisWH(4,4);
+            // }
             p.forEach(function (v) {
                 if (v.site > 0) {
                     var logo = document.getElementById("c_headimg" + v.site);
                     logo.src = logoPath + MD5(v.phone) + ".jpg";
+                    var logo_w = logo.width;
+                    if (logo.height > logo_w){
+                        logo.height = logo_w;
+                        logo.classList.add("OFC");
+                    }
                 }
             });
         }
@@ -676,6 +696,7 @@ function change_site(site) {
                     var j = JSON.parse(msg);
                     if (j.result >= 0) {
                         _wd.info("入座成功！", "bgc5e");
+                        // get_information_logo();
                         toMenu("cl_information");
                         if (d) {
                             document.body.removeChild(d);
@@ -701,8 +722,9 @@ function change_site(site) {
 
 //添加通讯录
 function cl_information() {
-    daisWH(6, 7);//设置默认座位表
-    get_information_logo();
+    // daisWH();
+    daisWH();//设置默认座位表
+    // get_information_logo();
     console.log("infor");
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
@@ -723,9 +745,9 @@ function cl_information() {
             p.forEach(function (v) {
                 console.log(logoPath + MD5(v.phone));
                 var div = document.createElement("div");
-                div.className = " W11 H7M ofh bordBD1";
-                div.innerHTML = '<li class="absolute W11 H7M bordBD1 bgc10 ofh index9">' +
-                    '<img class="FL B5M rad0 M" src="' + logoPath + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
+                div.className = " CW H7M ofh bordBD1";
+                div.innerHTML = '<li class="absolute CW H7M bordBD1 bgc10 ofh index9">' +
+                    '<img class="FL B5M H5M OFC rad03e M" src="' + logoPath + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
                     '<div class="FL W21 color876 bold ofh F3">' + v.name + '</div> ' +
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +
@@ -733,16 +755,16 @@ function cl_information() {
                     '</div></div>' +
                     '<div class="none" id="tel">' + v.phone + '</div>' +
                     '</li>' +
-                    '<div class="absolute left0 B7M H7M F4 AC LH4 bgc36 color1 ">详情</div>' +
-                    '<div class="absolute right0 B7M H7M F4 AC LH4 bgc45 color1 ">打电话</div>"';
+                    '<div class="absolute left0 B7M H7M F4 AC  bgc36 color1 " style="line-height: '+7*M+'px">详情</div>' +
+                    '<div class="absolute right0 B7M H7M F4 AC LH4 bgc45 color1 " style="line-height: '+7*M+'px">打电话</div>"';
                 var li = div.querySelector("li");
                 SomeEvent(li, {
-                    MOVE_LIMIT_BACK: true
-                    , CW: CW
-                    , S: M * 6
-                    , L: M * 12
-                    , MOVE_BACK: {_X: 10, X_: CW - 10}
-                    , MOVE_LIMIT: true
+                    MOVE_LIMIT_BACK: true,
+                    CW: CW,
+                    S: M * 6,
+                    L: M * 12,
+                    MOVE_BACK: {_X: 10, X_: CW - 10},
+                    MOVE_LIMIT: true
                 }, f, {e1: v.phone});
                 cont.appendChild(div);
             });

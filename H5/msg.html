@@ -31,205 +31,209 @@
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone "></div>
 <div id="re_page" class="none index99 fix bottom0 W11 CH callnone"></div>
 <div id="myDetails" class="W11  bgc9  ffWRYH">
-
-    <div class="index9 fix top0 H W11 AC ffHT  bgc9">个人信息
-        <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="_wit.winclose();"/>
-        <div class="H4M FR F3 colorff PR1M" onclick="save();">保存</div>
-    </div>
-    <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
-        <div class="H6M flexbox">
-            <div class="W31 FL H AL">头像</div>
-            <div class="W32 FR  flexbox">
-                <div class="W11 AR H6M">
-                    <img id="myImg" class="H6M B6M P05M rad1 AR " data-id="per_portrait_social" alt=""
-                         data-src="../images/port03.jpg"
-                         onerror="this.src ='../images/port03.jpg' "
-                         src=""
-                         onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'myImg'})});"
-                         lazy/>
-                    <input id="f_logo" data-img="per_portrait" type="file" name="imgUpload" accept="image/*"
-                           class="none"
-                           onchange="_fun.previewImage(this,{},'myImg');"/>
+    <div id="content">
+        <div class="index9 fix top0 H W11 AC ffHT  bgc9">个人信息
+            <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="_wit.winclose();"/>
+            <div class="H4M FR F3 colorff PR1M" onclick="save();">保存</div>
+        </div>
+        <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
+            <div class="H6M flexbox">
+                <div class="W31 FL H AL">头像</div>
+                <div class="W32 FR  flexbox">
+                    <div class="W11 AR H6M">
+                        <img id="myImg" class="H6M B6M P05M rad1 AR " data-id="per_portrait_social" alt=""
+                             data-src="../images/port03.jpg"
+                             onerror="this.src ='../images/port03.jpg' "
+                             src=""
+                             onclick="_wit.postmessage({functionname: 'selectphoto',callback: 'selectphone_callback',callbackparam:JSON.stringify({ipt:'f_logo',img:'myImg'})});"
+                             lazy/>
+                        <input id="f_logo" data-img="per_portrait" type="file" name="imgUpload" accept="image/*"
+                               class="none"
+                               onchange="_fun.previewImage(this,{},'myImg');"/>
+                    </div>
+                    <div class=" AR color8">
+                        <div class=" AR">&#62</div>
+                    </div>
                 </div>
-                <div class=" AR color8">
+            </div>
+        </div>
+
+        <div class="H1M W11 bgcaf5 bordBDe6"></div>
+        <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">名字</div>
+                <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="myname"
+                       data-id="per_full_name"
+                       placeholder="" value=""/>
+                <!--<div id="myname" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                <!--</div>-->
+                <div class="ML AR color8">
                     <div class=" AR">&#62</div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="H1M W11 bgcaf5 bordBDe6"></div>
-    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">名字</div>
-            <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="myname" data-id="per_full_name"
-                   placeholder="" value=""/>
-            <!--<div id="myname" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">性别</div>
+                <div id="mysex" class="W32 FR AR color8 H ellips" title="-1" data-t="radio" data-l="my_msg"
+                     data-id="per_sex" data-s="男,女"></div>
+                <!--<div id="mysex" class="W32 FR AR color8 ellips">-->
+                <!--</div>-->
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-        </div>
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">性别</div>
-            <div id="mysex" class="W32 FR AR color8 H ellips" title="-1" data-t="radio" data-l="my_msg"
-                 data-id="per_sex" data-s="男,女"></div>
-            <!--<div id="mysex" class="W32 FR AR color8 ellips">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-        <div class="  H4M flexbox">
-            <div class="W31 FL H AL">生日</div>
-            <div data-in="title" id="mybirthday" class="W32 FR AR color8 H ellips" data-l="my_msg"
-                 data-id="per_birth_date" onclick="wit_date.init(this,0, '012','年月日');">
-                <!--<div id="mybirthday" class="W32 FR AR color8 ellips">-->
-            </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-    </div>
-    <div class="H1M W11 bgcaf5 bordBDe6"></div>
-    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">邮箱</div>
-            <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mymail"
-                   data-id="per_email" placeholder="" value=""/>
-            <!--<div id="mymail" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-        <div class="bordBDe6   H4M flexbox">
-            <div class="W31 FL H AL">QQ</div>
-            <input type="text" class="W32 bordBDe6 FR AR color8 H ellips ffWRYH " id="myqq" data-id="per_qq" placeholder=""
-                   value=""/>
-            <!--<div id="myqq" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-        <div class="  H4M flexbox">
-            <div class="W31 FL H AL">微信</div>
-            <input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="mywx" data-id="per_webchat" placeholder=""
-                   value=""/>
-            <!--<div id="mywx" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-    </div>
-    <div class="H1M W11 bordBDe6"></div>
-    <div class=" W11  PL1M PR1M bgc10  bordBDe6 ">
-        <div class="H4M bordBDe6">
-            <div class="flexbox">
-                <div class="W41 FL H AL">地址</div>
-                <div id="myaddr" data-in="title" class="W43 FR AR color8 H ellips" title=""
-                     onclick="creat_addr(4,0)">请选择所在区域
+            <div class="  H4M flexbox">
+                <div class="W31 FL H AL">生日</div>
+                <div data-in="title" id="mybirthday" class="W32 FR AR color8 H ellips" data-l="my_msg"
+                     data-id="per_birth_date" onclick="wit_date.init(this,0, '012','年月日');">
+                    <!--<div id="mybirthday" class="W32 FR AR color8 ellips">-->
                 </div>
                 <div class="ML AR color8">
                     <div class=" AR">&#62</div>
                 </div>
             </div>
-            <!--<div id="myaddr" class="W43 FR P05M AR color8 " data-l="my_msg">-->
-            <!--</div>-->
         </div>
-        <div class=" HN4M flexbox">
-            <div class="W41 FL H AL">详细地址</div>
-            <textarea class=" FL W43  F4 AR  color8 ffWRYH " rows="2" style="resize:none" id="myaddr1"
-                      title=""></textarea>
-            <div class=" AR color8">
-                <div class=" AR">&#62</div>
+        <div class="H1M W11 bgcaf5 bordBDe6"></div>
+        <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">邮箱</div>
+                <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mymail"
+                       data-id="per_email" placeholder="" value=""/>
+                <!--<div id="mymail" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                <!--</div>-->
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-        </div>
-        <input data-id="per_address" id="address" class="none" placeholder="请输入地址">
-    </div>
-    <div class="H1M W11 bordBDe6"></div>
-    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
-        <div class=" H4M flexbox">
-            <div class="W31 FL H AL">学历</div>
-            <div id="myeducation" class="W32 FR AR color8 H ellips" data-t="check" data-id="per_education"
-                 data-l="my_msg" data-s="无,小学,初中,高中,中专,大专,本科,学士,硕士,博士">
-                <!--<div id="myeducation" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+            <div class="bordBDe6   H4M flexbox">
+                <div class="W31 FL H AL">QQ</div>
+                <input type="text" class="W32 bordBDe6 FR AR color8 H ellips ffWRYH " id="myqq" data-id="per_qq"
+                       placeholder=""
+                       value=""/>
+                <!--<div id="myqq" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                <!--</div>-->
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-    </div>
-    <div class="H1M W11 bordBDe6"></div>
-    <div class=" W11  PL1M PR1M bgc10  bordBDe6">
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">行业</div>
-            <div id="myindustry" class=" W32 FR AR color8 H ellips" data-t="check" data-l="my_msg"
-                 data-id="per_industry"
-                 data-s="其它, 公务, 教育, 医疗, 科研设计, 农业, 食品, 纺织服饰, 轻工, 能源矿材, 化工, 五金机电, 仪器仪表, 家电, 设备制造, 建筑房产, 交通工业, 物流服务, 信息产业, 商贸, 金融, 商务服务, 居民服务, 环境管理, 文化娱乐, 餐住旅游">
-                <!--<div id="myindustry" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
+            <div class="  H4M flexbox">
+                <div class="W31 FL H AL">微信</div>
+                <input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="mywx" data-id="per_webchat"
+                       placeholder=""
+                       value=""/>
+                <!--<div id="mywx" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                <!--</div>-->
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
         </div>
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">单位</div>
-            <input type="text" class="W32  FR AR color8 H ellips ffWRYH " id="mycomp"
-                   data-id="per_unit_name"
-                   placeholder="" value=""/>
-            <!--<div id="mycomp" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
+        <div class="H1M W11 bordBDe6"></div>
+        <div class=" W11  PL1M PR1M bgc10  bordBDe6 ">
+            <div class="H4M bordBDe6">
+                <div class="flexbox">
+                    <div class="W41 FL H AL">地址</div>
+                    <div id="myaddr" data-in="title" class="W43 FR AR color8 H ellips" title=""
+                         onclick="creat_addr(4,0)">请选择所在区域
+                    </div>
+                    <div class="ML AR color8">
+                        <div class=" AR">&#62</div>
+                    </div>
+                </div>
+                <!--<div id="myaddr" class="W43 FR P05M AR color8 " data-l="my_msg">-->
+                <!--</div>-->
+            </div>
+            <div class=" HN4M flexbox">
+                <div class="W41 FL H AL">详细地址</div>
+                <textarea class=" FL W43  F4 AR  color8 ffWRYH " rows="2" style="resize:none" id="myaddr1"
+                          title=""></textarea>
+                <div class=" AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
+            </div>
+            <input data-id="per_address" id="address" class="none" placeholder="请输入地址">
+        </div>
+        <div class="H1M W11 bordBDe6"></div>
+        <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+            <div class=" H4M flexbox">
+                <div class="W31 FL H AL">学历</div>
+                <div id="myeducation" class="W32 FR AR color8 H ellips" data-t="check" data-id="per_education"
+                     data-l="my_msg" data-s="无,小学,初中,高中,中专,大专,本科,学士,硕士,博士">
+                    <!--<div id="myeducation" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                </div>
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
         </div>
+        <div class="H1M W11 bordBDe6"></div>
+        <div class=" W11  PL1M PR1M bgc10  bordBDe6">
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">行业</div>
+                <div id="myindustry" class=" W32 FR AR color8 H ellips" data-t="check" data-l="my_msg"
+                     data-id="per_industry"
+                     data-s="其它, 公务, 教育, 医疗, 科研设计, 农业, 食品, 纺织服饰, 轻工, 能源矿材, 化工, 五金机电, 仪器仪表, 家电, 设备制造, 建筑房产, 交通工业, 物流服务, 信息产业, 商贸, 金融, 商务服务, 居民服务, 环境管理, 文化娱乐, 餐住旅游">
+                    <!--<div id="myindustry" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                </div>
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
+            </div>
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">单位</div>
+                <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mycomp"
+                       data-id="per_unit_name"
+                       placeholder="" value=""/>
+                <!--<div id="mycomp" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                <!--</div>-->
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
+            </div>
 
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">部门</div>
-            <div id="mydept" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_dept"
-                 data-s="生产部,销售部,财务部,技术部,品质部,采购部,行政部,人事部,物流部,企划部,外贸部,市场部,设备部,总经办">
-                <!--<div id="mydept" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">部门</div>
+                <div id="mydept" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_dept"
+                     data-s="生产部,销售部,财务部,技术部,品质部,采购部,行政部,人事部,物流部,企划部,外贸部,市场部,设备部,总经办">
+                    <!--<div id="mydept" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                </div>
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
+            <div class="bordBDe6  H4M flexbox">
+                <div class="W31 FL H AL">职务</div>
+                <div id="myjob" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_position"
+                     data-s="董事长,总经理,经理,主任,部长,局长,处长,科长,队长,组长,助理,科员,办事员,院长,书记,主席,总监,监理,总编,主编,主治">
+                    <!--<div id="myjob" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                </div>
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-        </div>
-        <div class="bordBDe6  H4M flexbox">
-            <div class="W31 FL H AL">职务</div>
-            <div id="myjob" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_position"
-                 data-s="董事长,总经理,经理,主任,部长,局长,处长,科长,队长,组长,助理,科员,办事员,院长,书记,主席,总监,监理,总编,主编,主治">
-                <!--<div id="myjob" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+            <div class="  H4M flexbox">
+                <div class="W31 FL H AL">职称</div>
+                <div id="mycareer" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg"
+                     data-id="per_job_title"
+                     data-s="教授,副教授,高级讲师,讲师,特级教师,高级教师,一级教师,研究员,副研究员,教授级高工,高级工程师,工程师,主任医师,副主任医师,主治医师,主管护师,高级经济师,经济师,高级会计师,会计师">
+                    <!--<div id="mycareer" class="W32 FR AR color8 ellips" data-t="my_msg">-->
+                </div>
+                <div class="ML AR color8">
+                    <div class=" AR">&#62</div>
+                </div>
             </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
-        <div class="  H4M flexbox">
-            <div class="W31 FL H AL">职称</div>
-            <div id="mycareer" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_job_title"
-                 data-s="教授,副教授,高级讲师,讲师,特级教师,高级教师,一级教师,研究员,副研究员,教授级高工,高级工程师,工程师,主任医师,副主任医师,主治医师,主管护师,高级经济师,经济师,高级会计师,会计师">
-                <!--<div id="mycareer" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            </div>
-            <div class="ML AR color8">
-                <div class=" AR">&#62</div>
-            </div>
-        </div>
 
+        </div>
+        <div class=" H1M W11 bordBDe6"></div>
+        <div class=" W11  bgc119  bordBDe6">
+            <details>
+                <summary class="FL H AL W11 PL1M bordBD1 ">已加班级</summary>
+                <div id="myAllClass"></div>
+            </details>
+            <div class="clear"></div>
+        </div>
+        <div class=" H1M W11 bordBDe6"></div>
+        <div class="W11 H AC bgcff" id="saveMsg" onclick="save();">保存</div>
     </div>
-    <div class=" H1M W11 bordBDe6"></div>
-    <div class=" W11  bgc119  bordBDe6">
-        <details>
-            <summary class="FL AL W11 P1M bordBD1 ">已加班级</summary>
-            <div id="myAllClass"></div>
-        </details>
-        <div class="clear"></div>
-    </div>
-    <div class=" H1M W11 bordBDe6"></div>
-    <div class="W11 H AC bgcff" id="saveMsg" onclick="save();">保存</div>
-
 </div>
 </body>
 </html>
@@ -242,6 +246,7 @@
 <script type="text/javascript">
     "use strict";
     autocss();
+    _wd.down_refresh("myDetails", "content");
     var _userguid, _token, _editor, _phone;
     const _url = "http://121.43.233.185/alumnicloudweb";
     var myObject, myPrivacy, myPersocial;
@@ -255,7 +260,7 @@
     function callback(msg) {
         console.log(msg);
         var info = msg.perinfo;
-        myinfo =  msg.perinfo;
+        myinfo = msg.perinfo;
         //获取班级信息
         var myclass = info.perexpeducationjson;
         myObject = info.perobjectjson;
@@ -280,7 +285,7 @@
             var myImg = document.getElementById("myImg");
             console.log(myImg);
             if (info.per_portrait_social) {
-                myImg.src = info.localpath + info.per_portrait_social || info.per_portrait;
+                myImg.src = info.localpath + info.per_portrait_social;
             } else if (info.per_portrait) {
                 myImg.src = info.localpath + info.per_portrait;
             } else {
@@ -292,7 +297,6 @@
 
         } else {
             _wd.info("用户非法，请重新登录！", "bgc24");
-            // _fun.toAlert("用户非法，请重新登录！");
         }
     }
 
@@ -300,10 +304,10 @@
         document.getElementById("myAllClass").innerHTML = "";
         console.log(c);
         c.forEach(function (v) {
-            var div = document.createElement("p");
-            div.className = " AL W11 H4M ellips bordBD1 FL";
-            div.innerHTML = '<div class="FL W65 ellips LH25">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
-                '<div class="B3M H3M FR" onclick="del_school(' + v.id + ')" ><img class="B3M H3M P05M" src="../images/icon/delete.png" alt=""></div>  ';
+            var div = document.createElement("div");
+            div.className = " AL W11 H ellips PL1M bordBD1 FL";
+            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
+                '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
             document.getElementById("myAllClass").appendChild(div);
         });
     }
@@ -329,7 +333,7 @@
                 sex = "";
                 break;
         }
-        mySex.title = parseInt(o.per_sex-1);
+        mySex.title = parseInt(o.per_sex - 1);
         mySex.innerText = sex;
         var mybirth = document.getElementById("mybirthday");
         mybirth.innerText = b.per_birth_date || "";
@@ -373,14 +377,15 @@
 
         var myJob = document.getElementById("myjob");
         myJob.innerText = o.per_position || "";
-
     }
 
     function save() {
         console.log(myinfo);
         try {
             if (update(myinfo)) {
-                if (document.getElementById("myImg").src.indexOf('base64') < 0) myinfo.perobjectjson.per_portrait_social = "";
+                if (document.getElementById("myImg").src.indexOf('base64') < 0){
+                    myinfo.perobjectjson.per_portrait_social = "";
+                }
                 if (myinfo.perobjectjson.per_full_name.length <= 0) {
                     _wd.info("姓名不能为空！", "bgc24");
                     return;
@@ -390,7 +395,9 @@
                 delete theinfo.perexpjobjson;
                 delete theinfo.perexpeducationjson;
                 delete theinfo.perexpotherjson;
+                delete theinfo.perconsumeobjectjson;
                 _wd.toLoading();
+                console.log(theinfo);
                 _wit.postmessage({
                     functionname: "updateuserinfo",
                     witparams: {
@@ -398,17 +405,6 @@
                     },
                     callback: "cb_updateMsg"
                 });
-                // externalfun.updateuserinfo(function (msg) {
-                //     console.log(msg);
-                //     var json = JSON.parse(msg);
-                //     console.log(json);
-                //     if (json.result >= 0) {
-                //         window.location.reload();
-                //     } else {
-                //         _wd.info("修改失败！", "bgc24");
-                //         _wd.toLoading();
-                //     }
-                // }, JSON.stringify(theinfo));
             }
         } catch (ex) {
             _wd.info(ex, "bgc24");
@@ -422,13 +418,17 @@
         var p = msg.result;
         if (p >= 0) {
             _wd.info("修改成功！", "bgc5e");
+            opener.location.reload();
             setTimeout(function () {
                 window.location.reload();
             }, 1000)
 
         } else {
             _wd.info("修改失败！", "bgc24");
-            _wd.toLoading();
+            opener.location.reload();
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000)
         }
     }
 
@@ -456,7 +456,7 @@
                 } else if (tag === "DIV") {
                     console.log(obj.id);
                     if (obj.id === "mysex") {
-                        d[i] = parseInt(obj.title)+1;
+                        d[i] = parseInt(obj.title) + 1;
                         continue;
                     }
                     if (obj.id === "myindustry") {
@@ -506,8 +506,12 @@
         var j = msg,
             p = JSON.parse(param);
         if (j && j.result >= 0) {
-            // _wd.info("删除成功！", "bgc5e");
+            _wd.toLoading();
             _wit.postmessage({functionname: "getuser", callback: "callback"});
+            setTimeout(function () {
+                opener.location.reload();
+                _wd.info("删除成功！", "bgc5e");
+            }, 1000)
             // document.location.reload(); //当前页面
             //其他端免回调
         } else {

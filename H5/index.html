@@ -13,102 +13,110 @@
     <script src="../js/witjs.js"></script>
     <title>校友录</title>
 </head>
-<body class="ofa bgbody" onload="loadend()" onresize="autocss()">
+<body class="ofa" onload="loadend()" onresize="autocss()">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
 <div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
     <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
-    <img data-src='../images/icon/setting.png' class="FR ICON P05M" onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
+    <img data-src='../images/icon/setting.png' class="FR ICON P05M"
+         onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
 </div>
-<div class="W11 AC ofh MTH">
-    <img data-src="../images/lantian.png" class="W11">
-</div>
-<img data-src="../images/caodi.png" class="W11  AC fix indexN bottom0">
 
-<div class="W11 pb150 AC" id="mymsg">
-    <div class="W11 AC F3">
-        <!--头像-->
-        <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius" onerror="this.src ='../images/port03.jpg' "
-             onclick="window.open('msg.html')">
-    </div>
-    <!-- 个人信息开始 -->
-    <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
-        <div class="index99 fix top0 H W11 AC ffHT color1">
-            <img data-src='../images/icon/back_w.png' class="FL B4M H4M PD10 P05M" onclick="location.href='index.html'"/>
-        </div>
-        <img data-src="../images/myclass.jpg" alt="" class="W11">
-        <div id="myinfor" class=" W11 ">
-            <div class=" W11 TEXT bgcW MT05">
-                <div class="FL W31 bold PT1M PB1M ">个人信息</div>
-                <div class="clear"></div>
+<div id="d_cont_p" class="absolute top0 bottom0 W11 left0 bgc9">
+    <div id="d_cont_s" class="absolute top0 bottom0 W11 left0 bgbody">
+        <div class="P1M color1 AC">下拉刷新</div>
+        <img data-src="../images/lantian.png" class="W11  AC  ">
+        <img data-src="../images/caodi.png" class="W11  AC fix  bottom0">
+        <div class="W11  AC" id="mymsg">
+            <div class="W11 AC F3">
+                <!--头像-->
+                <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius"
+                     onerror="this.src ='../images/port03.jpg' "
+                     onclick="window.open('msg.html')">
             </div>
-            <div id="mymsg1" class=" bgc10">
-                <div class="bordBD1 P1M H4M">
-                    <div class="FL W31 AL">姓名</div>
-                    <div id="myName" class="FR W32 AR "></div>
-                    <div class="clear"></div>
+            <!-- 个人信息开始 -->
+            <div id="mydetails" class="W11 CH fix index100 top0 bgc9 none">
+                <div class="index99 fix top0 H W11 AC ffHT color1">
+                    <img data-src='../images/icon/back_w.png' class="FL B4M H4M PD10 P05M"
+                         onclick="location.href='index.html'"/>
                 </div>
-                <details open>
-                    <summary class="FL AL W11 P1M bordBD1 ">已加班级</summary>
-                    <div id="myAllClass"></div>
-                </details>
+                <img data-src="../images/myclass.jpg" alt="" class="W11">
+                <div id="myinfor" class=" W11 ">
+                    <div class=" W11 TEXT bgcW MT05">
+                        <div class="FL W31 bold PT1M PB1M ">个人信息</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="mymsg1" class=" bgc10">
+                        <div class="bordBD1 P1M H4M">
+                            <div class="FL W31 AL">姓名</div>
+                            <div id="myName" class="FR W32 AR "></div>
+                            <div class="clear"></div>
+                        </div>
+                        <details open>
+                            <summary class="FL AL W11 P1M bordBD1 ">已加班级</summary>
+                            <div id="myAllClass"></div>
+                        </details>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 个人信息结束 -->
+            <div id="class">
+                <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
+                <ul id="myclass" class="clear ffHT color1"></ul>
+                <a onclick="_fun.show('d_add');">
+                    <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT">
+                </a>
+            </div>
+            <div id="focus">
+                <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
+                <ul id="myfocus" class="clear ffHT color1"></ul>
+                <a onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
+                    <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT">
+
+                </a>
+            </div>
+        </div>
+
+
+        <!-- 添加班级开始 -->
+        <div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
+            <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
+            <div class="relative W11 MT2H  rad05e LSP ffWRYH">
+                <input name="industrycode" data-id="industry_code" placeholder="学校类别"
+                       class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio"
+                       data-finp="clearschoolname"
+                       data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
+                <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
+                       class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title=""
+                       onmousedown="creat_addr(3,0);"/>
+                <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
+                       class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
+                       data-uid="undefined" readonly/>
+                <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
+                <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
+                       class=" rad05e FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+                <div class="FL MT B1M H AC color1">-</div>
+                <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
+                       class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+                <div name="group" data-id="class_name" id="d_class"
+                     class="color75 rad05e  FL MLT A1T2 H ALP bord_select"
+                     data-in="title"
+                     required onclick="selectClass();">选择班级
+                </div>
+                <textarea data-id="honors" class="FL rad05e MLT A1T2 HN4M F4 ALP color75 bord0"
+                          placeholder="请输入成绩和荣誉"></textarea>
+                <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
+                <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB"
+                     onclick="addEdu(this.parentNode);">
+                    添加
+                </div>
+
                 <div class="clear"></div>
             </div>
         </div>
-    </div>
-    <!-- 个人信息结束 -->
-    <div id="class">
-        <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
-        <ul id="myclass" class="clear ffHT color1"></ul>
-        <a onclick="_fun.show('d_add');">
-            <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT">
-        </a>
-    </div>
-    <div id="focus">
-        <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
-        <ul id="myfocus" class="clear ffHT color1"></ul>
-        <a onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
-            <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT">
-
-        </a>
+        <!-- 添加班级结束 -->
     </div>
 </div>
-
-
-<!-- 添加班级开始 -->
-<div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
-    <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
-    <div class="relative W11 MT2H  rad05e LSP ffWRYH">
-        <input name="industrycode" data-id="industry_code" placeholder="学校类别"
-               class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio"
-               data-finp="clearschoolname"
-               data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
-        <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
-               class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title=""
-               onmousedown="creat_addr(3,0);"/>
-        <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
-               class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
-               data-uid="undefined" readonly/>
-        <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
-        <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
-               class=" rad05e FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
-        <div class="FL MT B1M H AC color1">-</div>
-        <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
-               class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
-        <div name="group" data-id="class_name" id="d_class" class="color75 rad05e  FL MLT A1T2 H ALP bord_select"
-             data-in="title"
-             required onclick="selectClass();">选择班级
-        </div>
-        <textarea data-id="honors" class="FL rad05e MLT A1T2 HN4M F4 ALP color75 bord0"
-                  placeholder="请输入成绩和荣誉"></textarea>
-        <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
-        <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" onclick="addEdu(this.parentNode);">
-            添加
-        </div>
-
-        <div class="clear"></div>
-    </div>
-</div>
-<!-- 添加班级结束 -->
 </body>
 </html>
 <!-- <script src="../js/witjs0.js"></script> -->
@@ -122,15 +130,15 @@
 <script type="text/javascript">
     "use strict";
     autocss();
+    _wd.down_refresh();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    // const lo_url = "Classmates.html";
+    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    const lo_url = "Classmates.html";
     var myObject, myPrivacy, myPersocial;
     var _userguid, _token, _phone;
 
     function loadend() {
         loadimg();
-        // postmessage({functionname: "getapp", callback: "callback"});
         _wit.postmessage({functionname: "getuser", callback: "callback"});
 
     }
@@ -143,11 +151,9 @@
         myObject = info.perobjectjson;
         myPrivacy = info.perprivacyobjectjson;
         myPersocial = info.persocialinforobjectjson;
-        console.log(myclass);
         document.getElementById("myName").innerHTML = info.perobjectjson.per_full_name;
         C_schoolcata("myclass", myclass);
         C_mydetails(myclass);
-
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
 
@@ -164,7 +170,7 @@
             _token = info.token;
             _phone = info.user_phone;
             if (info.per_portrait_social) {
-                myImg.src = info.localpath + info.per_portrait_social || info.per_portrait;
+                myImg.src = info.localpath + info.per_portrait_social;
             } else if (info.per_portrait) {
                 myImg.src = info.localpath + info.per_portrait;
             } else {
@@ -183,7 +189,7 @@
     }
 
     function addMsg() {
-       window.open("msg.html");
+        window.open("msg.html");
     }
 
     function reload() {
@@ -210,7 +216,7 @@
 
     function C_mydetails(c) {
         document.getElementById("myAllClass").innerHTML = "";
-        console.log(c);
+        // console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("p");
             div.className = " AL W11 H4M  bordBD1 FL";
@@ -407,7 +413,7 @@
 //                    a.style.top = d.offsetTop + H + "px";
                 })
             } else {
-                _wd.info("无此班级信息！", "bgc24");
+                _wd.info("错误！" + j.message, "bgc24");
             }
         });
     }             //班级 关联信息

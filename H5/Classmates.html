@@ -19,18 +19,18 @@
 <div id="classmates_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
-    <img  src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
-    <img src='../images/icon/xy2.png' class="B4M H4M FR ICON " onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
+    <img  data-src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
+    <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON " onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
 </div>
 <!--首页-->
 <div id="index" class="MTH F3">
     <div class="W11 AC ofh relative img-edge-cover">
-        <img src="../images/classbg.png" class="W11">
+        <img data-src="../images/classbg.png" class="W11">
     </div>
     <div class="W11 bgc9 MT">
         <div class="FL B9M H9M bgc4 rad05e MTNMH ML" >
             <!--班级头像-->
-            <img class="absolute B9M H9M bgc10 P05M rad05e" src="../images/pic1.png"  onerror="this.src ='../images/pic1.png' " id="classLogo" onclick="class_msg()">
+            <img class="absolute B9M H9M bgc10 P05M rad05e" data-src="../images/pic1.png"  onerror="this.src ='../images/pic1.png' " id="classLogo" onclick="class_msg()">
         </div>
         <div class="FL P1M ffWRYH C10M">
             <div class=" bold F3 ellips" id="class_name"></div>
@@ -58,7 +58,7 @@
     <div class=" PT2M PB1M  PL1M PR1M W11 bgcddc">
         <div class="FL W43">
             <div class="FL  P05M AL color876 bold">通告榜</div>
-            <img class="W32 " src="../images/icon/yellow-line.png" alt="">
+            <img class="W32 " data-src="../images/icon/yellow-line.png" alt="">
         </div>
         <div class="FR  rad03e bgc104 P05M W41" onclick="Re_notice()">发布通知</div>
         <div class="clear PT1M"></div>
@@ -80,13 +80,13 @@
             </div>
             <div class="clear H3M"></div>
         </div>
-        <img src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
+        <img data-src="../images/icon/dais.png" alt="" class="W11 MTNH block ">
         <div id="dais" class="MT">
             <div class="W11 ofh H16M relative" id="daislist">
 
             </div>
             <div class="AC W11 ">
-                <img src="../images/icon/open.png" alt="" id="open_all" class="B2M AC" onclick="openAll()">
+                <img data-src="../images/icon/open.png" alt="" id="open_all" class="B2M AC" onclick="openAll()">
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
         <!--毕业照-->
         <div class=" H18M ofh relative">
             <ul id="ph_gra" class="absolute">
-                <li><img src="../images/byz/3.png" alt="" class="W11 indexN FL" id="by_photo"></li>
+                <li><img data-src="../images/byz/3.png" alt="" class="W11 indexN FL" id="by_photo"></li>
             </ul>
             <ul id="ph_index" class="W21 AR absolute rightM bottom0">
             </ul>
@@ -120,7 +120,7 @@
         <div class="P1M  W11">
             <div class="FL W43">
                 <div class="FL color8 P05M   AL">照片</div>
-                <img class="W43 " src="../images/icon/line.png" alt="">
+                <img class="W43 " data-src="../images/icon/line.png" alt="">
             </div>
             <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">新建相册</div>
             <div class="clear"></div>
@@ -133,7 +133,7 @@
         <div class="P1M  W11">
             <div class="FL W43">
                 <div class="FL color8 P05M AL">视频</div>
-                <img class="W43 " src="../images/icon/line.png" alt="">
+                <img class="W43 " data-src="../images/icon/line.png" alt="">
             </div>
             <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">新建视频集</div>
             <div class="clear"></div>
@@ -147,7 +147,7 @@
         <div class="P1M  W11">
             <div class="FL W43">
                 <div class="FL color8 P05M AL">文件</div>
-                <img class="W43 " src="../images/icon/line.png" alt="">
+                <img class="W43 " data-src="../images/icon/line.png" alt="">
             </div>
             <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">新建文件夹</div>
             <div class="clear"></div>
@@ -188,23 +188,23 @@
 <!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
 <div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index90" id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
-        <img class="H2M menuimg" src="../images/icon/index01.png" alt="">
+        <img class="H2M menuimg" data-src="../images/icon/index01.png" alt="">
         <div class="menuname ">首页</div>
     </div>
     <div class="FL W51 AC submenu" id="cl_notice">
-        <img class="H2M menuimg" src="../images/icon/notice01.png" alt="">
+        <img class="H2M menuimg" data-src="../images/icon/notice01.png" alt="">
         <div class="menuname">通知</div>
     </div>
     <div class="FL W51 AC submenu" id="cl_information">
-        <img class="H2M menuimg" src="../images/icon/information01.png" alt="">
+        <img class="H2M menuimg" data-src="../images/icon/information01.png" alt="">
         <div class="menuname">同学录</div>
     </div>
     <div class="FL W51 AC submenu" id="cl_photo">
-        <img class="H2M menuimg" src="../images/icon/photo01.png" alt="">
+        <img class="H2M menuimg" data-src="../images/icon/photo01.png" alt="">
         <div class="menuname">档案</div>
     </div>
     <div class="FL W51 AC submenu" id="cl_dynamic">
-        <img class="H2M menuimg" src="../images/icon/dynamic01.png" alt="">
+        <img class="H2M menuimg" data-src="../images/icon/dynamic01.png" alt="">
         <div class="menuname">动态</div>
     </div>
 </div>
@@ -331,16 +331,17 @@
                // console.log(o.innerText);
                 var daiswh = o.innerText.split("");
                 var daish;
-                if (daiswh[12] == "1") {
+                if (daiswh[12] === "1") {
                     daish = 10;
                     daisWH(daiswh[6], daish);
-                    value.setAttribute("data-value", daiswh[6] + "_" + daish);
+                    value.setAttribute("data-value", daiswh[6] + "*" + daish);
                 } else {
                     daisWH(daiswh[6], daiswh[12]);
                     value.setAttribute("data-value", daiswh[6] + "*" + daiswh[12]);
                 }
-                // console.log(daiswh[6]+"_"+daiswh[12]);
+                console.log(daiswh[6]+"_"+daiswh[12]);
                 $.toggle(p, 0);
+                toMenu("cl_information");
             }, false);
             document.getElementById("UI_bk").addEventListener("click", function () {
                 $.toggle(p, 0);
@@ -436,9 +437,6 @@
             this.attr.d_h = this.attr.rowx;
         },
     };
-
-
-
     function cl_dynamic() {
 
     }
