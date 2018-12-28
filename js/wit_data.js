@@ -179,12 +179,12 @@ function addClassmate() {
             if (j.result >= 0) {
                 _wd.info("添加成功！", "bgc5e");
                 setTimeout(function () {
-                    // window.location.reload();
+                    window.location.reload();
                 }, 1000)
             } else {
                 _wd.info("添加失败！", "bgc5e");
                 setTimeout(function () {
-                    history.back();
+                    _wit.winclose();
                 }, 1000)
             }
         }
@@ -316,10 +316,10 @@ function delExp(msg, param) {
         p = JSON.parse(param);
     if (j && j.result >= 0) {
         _wd.info("删除成功！", "bgc5e");
-        // setTimeout(function () {
+        setTimeout(function () {
         opener.location.reload();
-        // }, 1000);
-        _wit.winclose();
+            _wit.winclose();
+        }, 1000);
         //其他端免回调
     } else {//pc端
         var o = p.json;
@@ -332,10 +332,11 @@ function delExp(msg, param) {
             var j = JSON.parse(msg);
             if (j.result >= 0) {
                 _wd.info("删除成功！", "bgc5e");
-                // setTimeout(function () {
-                opener.location.reload();
-                // }, 1000);
-                _wit.winclose();
+                setTimeout(function () {
+                    opener.location.reload();
+                    _wit.winclose();
+                }, 1000);
+
             }
         }, p.id, 0);
     }
@@ -597,7 +598,7 @@ function daisWH(value_w, value_h) {
     console.log("座位表：列" + value_w + " 行" + value_h);
     var cont = "";
     for (var i = 1; i <= value_h * value_w; i++) {
-        cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png'  id=c_headimg" + i + " onclick='change_info_logo(this)'>"
+        cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png' onerror=\"this.src ='../images/nofindpic.png' \" id=c_headimg" + i + " onclick='change_info_logo(this)'>"
     }//绘制座位表
     document.getElementById("daislist").innerHTML = cont;
     get_information_logo();
@@ -641,7 +642,8 @@ function get_information_logo() {
             p.forEach(function (v) {
                 if (v.site > 0) {
                     var logo = document.getElementById("c_headimg" + v.site);
-                    logo.src = logoPath + MD5(v.phone) + ".jpg";
+                    logo.src = logoPath +s_guid+"/"+id+"/"+ MD5(v.phone) + ".jpg";
+                    console.log(logo.src);
                     var logo_w = logo.width;
                     if (logo.height > logo_w){
                         logo.height = logo_w;
@@ -747,7 +749,7 @@ function cl_information() {
                 var div = document.createElement("div");
                 div.className = " CW H7M ofh bordBD1";
                 div.innerHTML = '<li class="absolute CW H7M bordBD1 bgc10 ofh index9">' +
-                    '<img class="FL B5M H5M OFC rad03e M" src="' + logoPath + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
+                    '<img class="FL B5M H5M OFC rad03e M" src="' + logoPath +s_guid+"/"+id+"/"+ MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
                     '<div class="FL W21 color876 bold ofh F3">' + v.name + '</div> ' +
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +

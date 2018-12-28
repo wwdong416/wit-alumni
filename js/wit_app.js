@@ -363,6 +363,7 @@ var _wd = {
         var p = $p || "d_cont_p",s = $s || "d_cont_s";
         var scroll = document.getElementById(s);
         var outerScroller = document.getElementById(p);
+
          // scroll.className = "absolute top0 bottom0 W11 left0";
         // outerScroller.className = "absolute top0 bottom0 W11 left0";
         var touchStart = 0;
@@ -376,18 +377,21 @@ var _wd = {
         outerScroller.addEventListener('touchmove', function (event) {
             var touch = event.targetTouches[0];
             // console.log(touch.pageY + 'px');
-            scroll.style.top = scroll.offsetTop + touch.pageY - touchStart + 'px';
-             if ((scroll.offsetTop + touch.pageY - touchStart) > 120){
-                 scroll.children[0].innerHTML ="正在刷新...";
-             }
-            touchStart = touch.pageY;
-            touchDis = touch.pageY - touchStart;
+            if ((scroll.offsetTop + touch.pageY - touchStart) > 0){
+                scroll.style.top = scroll.offsetTop + touch.pageY - touchStart + 'px';
+                if ((scroll.offsetTop + touch.pageY - touchStart) > 100){
+                    scroll.children[0].innerHTML ="松开刷新";
+                }
+                touchStart = touch.pageY;
+                touchDis = touch.pageY - touchStart;
+            }
         }, false);
         outerScroller.addEventListener('touchend', function (event) {
             touchStart = 0;
             var top = scroll.offsetTop;
              console.log(top);
-            if (top > 120) {
+           console.log(outerScroller.scrollHeight);
+            if (top > 100) {
                 setTimeout(function () {
                     window.location.reload();
                 },400);
@@ -397,6 +401,51 @@ var _wd = {
                     scroll.style.top = scroll.offsetTop - 2 + 'px';
                     if (scroll.offsetTop <= 0) clearInterval(time);
                 }, 1)
+            }
+            // if (top < 0){
+            //     setTimeout(function () {
+            //         window.location.reload();
+            //     },400);
+            // }
+        }, false);
+    },
+    up_refresh: function () {
+        var touchStart = 0;
+        var touchDis = 0;
+        var tip = document.querySelector("#up_reload");
+        var cont = document.querySelector("#mymsg");
+        console.log(cont.clientHeight);
+        document.body.addEventListener('touchstart', function (event) {
+            var touch = event.targetTouches[0];
+            // 把元素放在手指所在的位置
+            touchStart = touch.pageY;
+            console.log("begin",touchStart);
+        }, false);
+        document.body.addEventListener('touchmove', function (event) {
+            var touch = event.targetTouches[0];
+            touchDis = touch.pageY - touchStart;
+            console.log("move",touchDis);
+            if (touchDis > 0){
+                document.body.style.marginTop = touchDis+"px";
+                if (touchDis>120){
+                    tip.innerText = "正在刷新..."
+                }
+            }
+
+        }, false);
+        document.body.addEventListener('touchend', function (event) {
+            touchStart = 0;
+            console.log(touchDis);
+            console.log(document.body.style.marginTop );
+            if (touchDis > 120){
+                window.location.reload();
+
+            }
+            if (touchDis > 0) {
+                // document.body.style.marginTop = "0px";
+         setTimeout(function () {
+             document.body.style.marginTop = "0px";
+         },100)
             }
         }, false);
     },
