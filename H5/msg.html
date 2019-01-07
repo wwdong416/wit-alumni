@@ -64,8 +64,6 @@
             <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="myname"
                    data-id="per_full_name"
                    placeholder="" value=""/>
-            <!--<div id="myname" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -74,8 +72,6 @@
             <div class="W31 FL H AL">性别</div>
             <div id="mysex" class="W32 FR AR color8 H ellips" title="-1" data-t="radio" data-l="my_msg"
                  data-id="per_sex" data-s="男,女"></div>
-            <!--<div id="mysex" class="W32 FR AR color8 ellips">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -84,7 +80,6 @@
             <div class="W31 FL H AL">生日</div>
             <div data-in="title" id="mybirthday" class="W32 FR AR color8 H ellips" data-l="my_msg"
                  data-id="per_birth_date" onclick="wit_date.init(this,0, '012','年月日');">
-                <!--<div id="mybirthday" class="W32 FR AR color8 ellips">-->
             </div>
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
@@ -97,8 +92,6 @@
             <div class="W31 FL H AL">邮箱</div>
             <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mymail"
                    data-id="per_email" placeholder="" value=""/>
-            <!--<div id="mymail" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -108,8 +101,6 @@
             <input type="text" class="W32 bordBDe6 FR AR color8 H ellips ffWRYH " id="myqq" data-id="per_qq"
                    placeholder=""
                    value=""/>
-            <!--<div id="myqq" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -119,8 +110,6 @@
             <input type="text" class="W32 FR AR color8 H ellips ffWRYH " id="mywx" data-id="per_webchat"
                    placeholder=""
                    value=""/>
-            <!--<div id="mywx" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -138,8 +127,6 @@
                     <div class=" AR">&#62</div>
                 </div>
             </div>
-            <!--<div id="myaddr" class="W43 FR P05M AR color8 " data-l="my_msg">-->
-            <!--</div>-->
         </div>
         <div class=" HN4M flexbox">
             <div class="W41 FL H AL">详细地址</div>
@@ -157,7 +144,6 @@
             <div class="W31 FL H AL">学历</div>
             <div id="myeducation" class="W32 FR AR color8 H ellips" data-t="check" data-id="per_education"
                  data-l="my_msg" data-s="无,小学,初中,高中,中专,大专,本科,学士,硕士,博士">
-                <!--<div id="myeducation" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             </div>
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
@@ -171,7 +157,6 @@
             <div id="myindustry" class=" W32 FR AR color8 H ellips" data-t="check" data-l="my_msg"
                  data-id="per_industry"
                  data-s="其它, 公务, 教育, 医疗, 科研设计, 农业, 食品, 纺织服饰, 轻工, 能源矿材, 化工, 五金机电, 仪器仪表, 家电, 设备制造, 建筑房产, 交通工业, 物流服务, 信息产业, 商贸, 金融, 商务服务, 居民服务, 环境管理, 文化娱乐, 餐住旅游">
-                <!--<div id="myindustry" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             </div>
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
@@ -182,8 +167,6 @@
             <input type="text" class="W32 bordBDe6  FR AR color8 H ellips ffWRYH " id="mycomp"
                    data-id="per_unit_name"
                    placeholder="" value=""/>
-            <!--<div id="mycomp" class="W32 FR AR color8 ellips" data-t="my_msg">-->
-            <!--</div>-->
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
             </div>
@@ -193,7 +176,6 @@
             <div class="W31 FL H AL">部门</div>
             <div id="mydept" class="W32 FR AR color8 H ellips" data-t="check" data-l="my_msg" data-id="per_dept"
                  data-s="生产部,销售部,财务部,技术部,品质部,采购部,行政部,人事部,物流部,企划部,外贸部,市场部,设备部,总经办">
-                <!--<div id="mydept" class="W32 FR AR color8 ellips" data-t="my_msg">-->
             </div>
             <div class="ML AR color8">
                 <div class=" AR">&#62</div>
@@ -302,8 +284,12 @@
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
+            var class_name = _wd.getCut("||", 1, v.class_name);
+            if (class_name.indexOf("班") < 0) {
+                class_name = class_name + "班";
+            }
             div.className = " AL W11 H ellips PL1M bordBD1 FL";
-            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + _wd.getCut("||", 1, v.class_name) + "班" + '</div>' +
+            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " +class_name + '</div>' +
                 '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
             document.getElementById("myAllClass").appendChild(div);
         });
@@ -414,14 +400,14 @@
         console.log(msg);
         var p = msg.result;
         if (p >= 0) {
-            _wd.info("修改成功！", "bgc5e");
+            _wd.info("修改成功！", "bgc5e",500);
             opener.location.reload();
             setTimeout(function () {
                 window.location.reload();
             }, 1000)
 
         } else {
-            _wd.info("修改失败！", "bgc24");
+            _wd.info("修改失败！", "bgc24",500);
             opener.location.reload();
             setTimeout(function () {
                 window.location.reload();

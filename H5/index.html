@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
     <meta name="keywords" content="校友录，校友会,手机校友录，慧脑校友录">
     <meta name="description" content="慧脑校友录,手机校友录，校友会">
-    <!--<link href="../img/ico/xy_ico.jpg" rel="apple-touch-icon-precomposed"/>-->
-    <!--<link rel="stylesheet" type="text/css" href="../css/witcs0.css">-->
     <link rel="stylesheet" type="text/css" href="../css/alumni.css">
     <link rel="stylesheet" type="text/css" href="../css/witcs.css">
     <script src="../js/witjs.js"></script>
@@ -20,37 +18,38 @@
     <img data-src='../images/icon/setting.png' class="FR ICON P05M"
          onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
 </div>
-<div class="absolute top0 bottom0 W11 left0 " id="mymsg">
-    <div class="absolute top0 bottom0 W11 left0  AC bgbody CHNHmin" id="mymsg_s">
-        <div class="H4M LH25 AC color8 bold bgc10" id="up_reload">下拉刷新</div>
-    <img data-src="../images/lantian.png" class="W11 AC">
-    <div class="W11 AC F3">
-        <!--头像-->
-        <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius"
-             onerror="this.src ='../images/port03.jpg' "
-             onclick="window.open('msg.html')">
-    </div>
-    <div id="class">
-        <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
-        <ul id="myclass" class="clear ffHT color1"></ul>
-        <a>
-            <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT"  onclick="_fun.show('d_add');">
-        </a>
-    </div>
-    <div id="focus">
-        <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
-        <ul id="myfocus" class="clear ffHT color1"></ul>
-        <a >
-            <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
+<div class="H4M LH25 AC color8 bold bgc10" id="up_reload">下拉刷新</div>
+<div class="W11 AC bgbody CHNHmin" id="mymsg">
+    <div class="W11" id="mymsg_s">
 
-        </a>
-    </div>
-    <div id="fill_height" class="relative bgbody">
-        <img data-src="../images/caodi.png" id="bt_img" class="absolute bottom0  left0 W11  AC ">
-    </div>
+        <img data-src="../images/lantian.png" class="W11 AC">
+        <div class="W11 AC F3">
+            <!--头像-->
+            <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius"
+                 onerror="this.src ='../images/port03.jpg' "
+                 onclick="window.open('msg.html')">
+        </div>
+        <div id="class">
+            <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
+            <ul id="myclass" class="clear ffHT color1"></ul>
+            <a>
+                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick="_fun.show('d_add');">
+            </a>
+        </div>
+        <div id="focus">
+            <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
+            <ul id="myfocus" class="clear ffHT color1"></ul>
+            <a>
+                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT"
+                     onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
+            </a>
+        </div>
+        <div id="fill_height" class="relative bgbody">
+            <img data-src="../images/caodi.png" id="bt_img" class="absolute bottom0  left0 W11  AC ">
+        </div>
+
     </div>
 </div>
-
 
 <!-- 添加班级开始 -->
 <div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
@@ -91,9 +90,7 @@
 <!-- 添加班级结束 -->
 </body>
 </html>
-<!-- <script src="../js/witjs0.js"></script> -->
 <script src="../js/wit_ajax.js"></script>
-<script src="../js/postmessage.js"></script>
 <script src="../js/witconfig.js"></script>
 <script src="../js/witjsdate.js"></script>
 <script src="../js/witjsaddr.js"></script>
@@ -102,13 +99,14 @@
 <script type="text/javascript">
     "use strict";
     autocss();
-    _wd.down_refresh("mymsg","mymsg_s");
-    // _wd.up_refresh();
+    // _wd.down_refresh("mymsg", "mymsg_s");
+    _wd.up_refresh();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    const lo_url = "Classmates.html";
-    var myObject, myPrivacy, myPersocial;
-    var _userguid, _token, _phone;
+    const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    // const lo_url = "Classmates.html";
+    var myclass, myObject, myPrivacy, myPersocial, myEduJson;
+    var _userguid, _token, _phone, _logoPic;
+    var base64img = "";
 
     function loadend() {
         loadimg();
@@ -120,10 +118,11 @@
         console.log(msg);
         var info = msg.perinfo;
         //获取班级信息
-        var myclass = info.perexpeducationjson;
+        myclass = info.perexpeducationjson;
         myObject = info.perobjectjson;
         myPrivacy = info.perprivacyobjectjson;
         myPersocial = info.persocialinforobjectjson;
+        myEduJson = info.perexpeducationjson;
         C_schoolcata("myclass", myclass);
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
@@ -136,17 +135,26 @@
                 console.log(i, v, d);
             });
             _wit.event.input_limit();
-            var myImg = document.getElementById("myImg");
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
             if (info.per_portrait_social) {
-                myImg.src = info.localpath + info.per_portrait_social;
+                _logoPic = info.localpath + info.per_portrait_social;
             } else if (info.per_portrait) {
-                myImg.src = info.localpath + info.per_portrait;
+                _logoPic = info.localpath + info.per_portrait;
             } else {
-                myImg.src = "../images/port03.jpg";
+                _logoPic = "../images/port03.jpg";
             }
+            document.getElementById("myImg").src = _logoPic;
+            var img = new Image();
+            img.src = _logoPic;
+            img.onload = function () {
+                const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
+                cvs.width = img.width;
+                cvs.height = img.height;
+                ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+                base64img = cvs.toDataURL();
+            };
             if (!myObject.per_full_name) {
                 console.log("完善信息");
                 _wd.toConfirm("请完善个人信息！", addMsg, reload)
@@ -169,23 +177,34 @@
 
     function C_schoolcata(d, c) {
         document.getElementById(d).innerHTML = "";
+        console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
             var cid = getCut("||", 2, v.class_name);
+            var class_name = getCut("||", 1, v.class_name);
+            if (class_name.indexOf("班") < 0) {
+                class_name = class_name + "班";
+            }
             div.className = "MT MA C9M F3 LH3 AC ellips PL1M PR1M shadow0 bg_contain";
             div.style = "background-image:url(../images/muban1.png)";
             div.onclick = function () {
-
                 window.open(lo_url + "?sid=" + v.unit_id + "&cid=" + cid + "&id=" + v.id);
                 // window.location.href = "Classmates.html?sid=" + v.unit_id + "&cid=" + cid;
             };
             div.innerHTML =
-                v.unit_name + " " + v.dept + " " + getCut("-", 0, v.date_end) + "届" + " " + getCut("||", 1, v.class_name) + "班";
+                v.unit_name + v.dept + getCut("-", 0, v.date_end) + "届" + class_name;
             document.getElementById(d).appendChild(div);
         });
         var fillHeight = document.querySelector("#fill_height");
-        var bt_img = document.querySelector("#bt_img").height;
-        fillHeight.style.height = bt_img+"px";
+        var bt_img = document.querySelector("#bt_img");
+        // fillHeight.style.height = bt_img + "px";
+        var msg = document.querySelector("#mymsg_s");
+        if (msg.clientHeight < CH - bt_img.height) {
+            bt_img.className = "fix bottom0  left0 W11  AC"
+        } else {
+            fillHeight.style.height = bt_img.height + "px";
+        }
+
     }
 
     function del_school(id) {
@@ -265,6 +284,7 @@
         refill(pd, o); //填充数据
         console.log(o);
         console.log(o.date_end.length);
+
         if (o.adm_div_code == "||" || o.date_start.length == 0 || o.date_end.length == 0 || o.unit_name.length == 0) {
             // _fun.toAlert("请将数据填写完整再添加！");
             _wd.info("请将数据填写完整再添加！", "bgc5e");
@@ -281,7 +301,97 @@
                 }),
                 callback: "cbExp"
             });
+            isExist(o.unit_id, getCut("||", 2, o.class_name), o.honors);
         }
+    }
+
+    //判断是否为班级成员
+    function isExist(sid, cid, h) {
+        const para = {
+            token: _token,
+            userguid: _userguid,
+            cid: cid,
+            phone: _phone
+        };
+        console.log(para);
+        _wd.ajax_formdata(_url + "/member/queryByCH.do", true, para, function (msg) {
+            var p = JSON.parse(msg);
+            console.log(p);
+            var len = p.message.length;
+            if (len === 0) {
+                // _wd.toConfirm("是否加入此班级！", addClassmate, backindex)
+                addClassmate(sid, cid, h);
+            } else {
+                console.log("成员已存在，直接进入班级！");
+            }
+        }, function (msg) {
+            _wd.info("错误！请重新登录！", "bgc24");
+        });
+    }
+
+    //添加信息到班级成员表中
+    function addClassmate(s_id, c_id, honors) {
+        console.log("开始添加成员");
+        const c = myPrivacy;
+        const o = myObject;
+        const b = myPersocial;
+        var graduation = "";
+        myEduJson.forEach(function (v) {
+            if (v.industry_code.indexOf("大学") > -1) {
+                console.log(v.unit_name);
+                graduation = v.unit_name;
+            }
+        });
+        const p = {}, para = {};
+        var a = o.per_address.split("||");
+        console.log(a.length);
+        if (a.length > 1) {
+            p.acode = a[1] || " ";
+            var addr = a[0].split("@@");
+            if (addr.length > 1) {
+                p.addr = addr[0] + addr[1] || " ";
+            }
+        }
+        p.cid = c_id;
+        p.sid = s_id;
+        p.phone = o.per_phone0 || "";
+        p.name = o.per_full_name || "";
+        p.sex = o.per_sex || 0;
+        p.zcode = "";
+        p.mail = o.per_email || "";
+        p.qq = o.per_qq || "";
+        p.wx = o.per_webchat || "";
+        p.education = c.per_education || "";
+        p.ret = 0;
+        p.graduation = graduation || "";
+        p.industry = parseInt(parseInt(o.per_industry) / 100) || "";
+        p.career = c.per_job_title || "";
+        p.honor = honors || "";
+        p.comp = o.per_unit_name || "";
+        p.dept = o.per_dept || "";
+        p.job = o.per_position || "";
+        p.birthday = b.per_birth_date || "";
+        p.site = 0;
+        p.date = new Date().getTime();
+        p.checkmember = p.checkrank = p.checkdate = 0;
+        para.json = p;
+        para.token = _token;
+        para.userguid = _userguid;
+        para.logo = base64img ? base64img.split(",")[1] : "";
+        console.log("成员信息", para);
+        _wd.ajax_formdata(_url + "/member/insert.do", true, para, function (msg) {
+            var j = JSON.parse(msg);
+            console.log(j);
+            if (j.result >= 0) {
+                setTimeout(function () {
+                    _wd.info("个人信息同步成功！", "bgc5e");
+                }, 1000)
+            } else {
+                _wd.info("个人信息同步失败！", "bgc5e");
+            }
+        }, function (msg) {
+            _wd.info("错误！请重新登录！", "bgc24");
+        });
     }
 
     function cbExp(msg, param) {
@@ -292,7 +402,7 @@
         console.log(p);
         if (j && j.result >= 0) {
             _wd.info("添加成功！", "bgc5e");
-            document.location.reload(); //当前页面
+            // document.location.reload(); //当前页面
             //其他端免回调
         } else {
             _wd.info("无法添加班级！" + j.result, "bgc24");
@@ -315,14 +425,13 @@
                 }
             }
         });
-        var classmate = parseInt(dclr.innerText) > 9 ? parseInt(dclr.innerText) : "0" + parseInt(dclr.innerText);
+        var classmate = dclr.innerText.replace(/[^0-9]/ig, "") > 9 ? dclr.innerText.replace(/[^0-9]/ig, "") : "0" + dclr.innerText.replace(/[^0-9]/ig, "");
         o.industry_code += "||" + d_type.title;
         o.unit_id = ds.title;
-        o.class_name = "||" + parseInt(dclr.innerText) + "||" + o.unit_id + date.getFullYear() + d_type.title + classmate;
+        o.class_name = "||" + _wd.getCut("：", 0, dclr.innerText) + "||" + o.unit_id + date.getFullYear() + d_type.title + classmate;
         o.adm_div_code += "||" + dc.value;
         return o;
     } //填充数据
-
 
     function selectClass() {
         var ds = document.querySelector("input[name='schoolname']").title;
@@ -333,7 +442,7 @@
         if (ds == "undefined" || dt < 0) {
             _wd.info("请将数据填写完整再添加！", "bgc5e");
         } else {
-            toClassmates(ds, date.getFullYear(), dt, event.target)
+            toClassmates(ds, date.getFullYear(), dt, event.target);
         }
     }
 
@@ -360,11 +469,11 @@
                     j.message.forEach(function (v) {
                         const div = document.createElement("div");
                         div.className = "relative W11 ALP H bgc18 ellips index10";
-                        div.innerHTML = v.name + ":班主任（" + v.master + "）";
+                        div.innerHTML = v.name + "班：班主任（" + v.master + "）";
                         div.onclick = function () {
                             _fun.hide(p);
                             console.log(this);
-                            d.innerHTML = v.name + ":班主任（" + v.master + "）";
+                            d.innerHTML = v.name + "班：班主任（" + v.master + "）";
                             d.title = v.guid;
                         };
                         df.appendChild(div);
@@ -378,8 +487,7 @@
                 _wd.info("错误！" + j.message, "bgc24");
             }
         });
-    }             //班级 关联信息
-
+    }
 
     /***
      *  云录关联（经历）

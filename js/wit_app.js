@@ -8,10 +8,11 @@ var _wd = {
      * 提示框
      * @param $t:提示内容
      * @param $c:提示框颜色
+     * @param $time 时间
      */
 
-    info: function ($t, $c) {
-        var t = $t, c = $c, d = document.querySelector("#toInfo");
+    info: function ($t, $c,$time) {
+        var t = $t, c = $c,  time = $time || 1500, d = document.querySelector("#toInfo");
         var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + c;
         if (d) {
             var div = d.querySelector("div");
@@ -32,7 +33,7 @@ var _wd = {
             else {
                 document.querySelector("#toInfo").classList.add("none");
             }
-        }, 2000);
+        }, time);
     },
     /**
      *页面加载动画
@@ -414,7 +415,6 @@ var _wd = {
         var touchDis = 0;
         var tip = document.querySelector("#up_reload");
         var cont = document.querySelector("#mymsg");
-        console.log(cont.clientHeight);
         document.body.addEventListener('touchstart', function (event) {
             var touch = event.targetTouches[0];
             // 把元素放在手指所在的位置
@@ -427,8 +427,8 @@ var _wd = {
             console.log("move",touchDis);
             if (touchDis > 0){
                 document.body.style.marginTop = touchDis+"px";
-                if (touchDis>120){
-                    tip.innerText = "正在刷新..."
+                if (touchDis>100){
+                    tip.innerText = "松开刷新"
                 }
             }
 
@@ -437,7 +437,7 @@ var _wd = {
             touchStart = 0;
             console.log(touchDis);
             console.log(document.body.style.marginTop );
-            if (touchDis > 120){
+            if (touchDis > 100){
                 window.location.reload();
 
             }
