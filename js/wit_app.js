@@ -11,8 +11,8 @@ var _wd = {
      * @param $time 时间
      */
 
-    info: function ($t, $c,$time) {
-        var t = $t, c = $c,  time = $time || 1500, d = document.querySelector("#toInfo");
+    info: function ($t, $c, $time) {
+        var t = $t, c = $c, time = $time || 1500, d = document.querySelector("#toInfo");
         var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + c;
         if (d) {
             var div = d.querySelector("div");
@@ -53,9 +53,9 @@ var _wd = {
                 return;
             }
             var div = document.createElement("div");
-            div.className =  "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
+            div.className = "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
             div.id = "toLoading";
-            div.innerHTML ='<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
+            div.innerHTML = '<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
             $this.insertBefore(document.body, div);
             $this._sto = setTimeout(function () {
                 if (div) {
@@ -93,6 +93,9 @@ var _wd = {
 
         document.getElementById("toFalse").onclick = e;
     },
+    /*
+     * 错误返回界面
+     */
     toError: function () {
         // console.log(a);
         var $this = this, d = document.querySelector("#toError");
@@ -360,12 +363,12 @@ var _wd = {
      * @param $p 包裹所有需要刷新的新节点
      * @param $s  新节点下的新节点
      */
-    down_refresh: function ($p,$s) {
-        var p = $p || "d_cont_p",s = $s || "d_cont_s";
+    down_refresh: function ($p, $s) {
+        var p = $p || "d_cont_p", s = $s || "d_cont_s";
         var scroll = document.getElementById(s);
         var outerScroller = document.getElementById(p);
 
-         // scroll.className = "absolute top0 bottom0 W11 left0";
+        // scroll.className = "absolute top0 bottom0 W11 left0";
         // outerScroller.className = "absolute top0 bottom0 W11 left0";
         var touchStart = 0;
         var touchDis = 0;
@@ -378,10 +381,10 @@ var _wd = {
         outerScroller.addEventListener('touchmove', function (event) {
             var touch = event.targetTouches[0];
             // console.log(touch.pageY + 'px');
-            if ((scroll.offsetTop + touch.pageY - touchStart) > 0){
+            if ((scroll.offsetTop + touch.pageY - touchStart) > 0) {
                 scroll.style.top = scroll.offsetTop + touch.pageY - touchStart + 'px';
-                if ((scroll.offsetTop + touch.pageY - touchStart) > 100){
-                    scroll.children[0].innerHTML ="松开刷新";
+                if ((scroll.offsetTop + touch.pageY - touchStart) > 100) {
+                    scroll.children[0].innerHTML = "松开刷新";
                 }
                 touchStart = touch.pageY;
                 touchDis = touch.pageY - touchStart;
@@ -390,12 +393,12 @@ var _wd = {
         outerScroller.addEventListener('touchend', function (event) {
             touchStart = 0;
             var top = scroll.offsetTop;
-             console.log(top);
-           console.log(outerScroller.scrollHeight);
+            console.log(top);
+            console.log(outerScroller.scrollHeight);
             if (top > 100) {
                 setTimeout(function () {
                     window.location.reload();
-                },400);
+                }, 400);
             }
             if (top > 0) {
                 var time = setInterval(function () {
@@ -410,44 +413,50 @@ var _wd = {
             // }
         }, false);
     },
-    up_refresh: function () {
+    /*
+     * 下拉刷新
+     */
+    up_refresh: function (d) {
         var touchStart = 0;
         var touchDis = 0;
         var tip = document.querySelector("#up_reload");
-        var cont = document.querySelector("#mymsg");
+        var p = document.querySelector("#" + d);
+
         document.body.addEventListener('touchstart', function (event) {
             var touch = event.targetTouches[0];
             // 把元素放在手指所在的位置
             touchStart = touch.pageY;
-            console.log("begin",touchStart);
+            console.log("begin", touchStart);
         }, false);
         document.body.addEventListener('touchmove', function (event) {
-            var touch = event.targetTouches[0];
-            touchDis = touch.pageY - touchStart;
-            console.log("move",touchDis);
-            if (touchDis > 0){
-                document.body.style.marginTop = touchDis+"px";
-                if (touchDis>100){
-                    tip.innerText = "松开刷新"
+            if (p.classList.contains("none")) {
+                var touch = event.targetTouches[0];
+                touchDis = touch.pageY - touchStart;
+                console.log("move", touchDis);
+                if (touchDis > 0) {
+                    document.body.style.marginTop = touchDis + "px";
+                    if (touchDis > 80) {
+                        tip.innerText = "松开刷新"
+                    }
                 }
             }
-
         }, false);
         document.body.addEventListener('touchend', function (event) {
-            touchStart = 0;
-            console.log(touchDis);
-            console.log(document.body.style.marginTop );
-            if (touchDis > 100){
-                window.location.reload();
-
-            }
-            if (touchDis > 0) {
-                // document.body.style.marginTop = "0px";
-         setTimeout(function () {
-             document.body.style.marginTop = "0px";
-         },100)
+            if (p.classList.contains("none")) {
+                touchStart = 0;
+                console.log(document.body.style.marginTop);
+                if (touchDis > 80) {
+                    window.location.reload();
+                }
+                if (touchDis > 0) {
+                    // document.body.style.marginTop = "0px";
+                    setTimeout(function () {
+                        document.body.style.marginTop = "0px";
+                    }, 100)
+                }
             }
         }, false);
+
     },
     /**
      * 图片加载错误返回的图片

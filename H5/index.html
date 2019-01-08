@@ -33,7 +33,7 @@
             <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
             <ul id="myclass" class="clear ffHT color1"></ul>
             <a>
-                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick="_fun.show('d_add');">
+                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick=" _fun.show('d_add');">
             </a>
         </div>
         <div id="focus">
@@ -99,21 +99,17 @@
 <script type="text/javascript">
     "use strict";
     autocss();
-    // _wd.down_refresh("mymsg", "mymsg_s");
-    _wd.up_refresh();
     const _url = "http://121.43.233.185/alumnicloudweb";
     const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
     // const lo_url = "Classmates.html";
     var myclass, myObject, myPrivacy, myPersocial, myEduJson;
     var _userguid, _token, _phone, _logoPic;
     var base64img = "";
-
     function loadend() {
         loadimg();
+        _wd.up_refresh("d_add");
         _wit.postmessage({functionname: "getuser", callback: "callback"});
-
     }
-
     function callback(msg) {
         console.log(msg);
         var info = msg.perinfo;

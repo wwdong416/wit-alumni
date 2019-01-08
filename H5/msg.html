@@ -270,6 +270,7 @@
             } else {
                 myImg.src = "../images/port03.jpg";
             }
+            myImg.src += "?t=" + new Date().getTime();
             getClassMsg();
             _wit.event.div_UI("s_select");
             _wit.event.input_limit();
@@ -289,7 +290,7 @@
                 class_name = class_name + "班";
             }
             div.className = " AL W11 H ellips PL1M bordBD1 FL";
-            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " +class_name + '</div>' +
+            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + class_name + '</div>' +
                 '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
             document.getElementById("myAllClass").appendChild(div);
         });
@@ -400,14 +401,14 @@
         console.log(msg);
         var p = msg.result;
         if (p >= 0) {
-            _wd.info("修改成功！", "bgc5e",500);
+            _wd.info("修改成功！", "bgc5e", 500);
             opener.location.reload();
             setTimeout(function () {
                 window.location.reload();
             }, 1000)
 
         } else {
-            _wd.info("修改失败！", "bgc24",500);
+            _wd.info("修改失败！", "bgc24", 500);
             opener.location.reload();
             setTimeout(function () {
                 window.location.reload();
