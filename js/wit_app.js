@@ -438,6 +438,9 @@ var _wd = {
                     if (touchDis > 80) {
                         tip.innerText = "松开刷新"
                     }
+                    if (touchDis < 79) {
+                        tip.innerText = "下拉刷新"
+                    }
                 }
             }
         }, false);
@@ -445,8 +448,9 @@ var _wd = {
             if (p.classList.contains("none")) {
                 touchStart = 0;
                 console.log(document.body.style.marginTop);
+                console.log(touchDis);
                 if (touchDis > 80) {
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 if (touchDis > 0) {
                     // document.body.style.marginTop = "0px";
