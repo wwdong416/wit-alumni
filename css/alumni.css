@@ -156,4 +156,12 @@ li {
 .OFC {
     object-fit: cover;
 }
-
+.wbka{
+    word-break: keep-all;
+}
+.toe{
+    text-overflow: ellipsis;
+}
+.wsn{
+    white-space: nowrap;
+}

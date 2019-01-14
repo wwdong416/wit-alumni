@@ -356,9 +356,6 @@ function delExp(msg, param) {
 
 //首页通知
 function cl_index() {
-    console.log(flag);
-
-
     document.getElementById("index_notice").innerHTML = "";
     if (flag) {
         var para = {
@@ -403,11 +400,12 @@ function cl_index() {
 }
 
 function fill_index(p) {
-    var f_notice = document.getElementById("first_notice");
+    var f_notice = document.getElementById("marquee_text");
     console.log(f_notice);
     if (p.length > 0) {
         //插入置顶通知，即数据库首条数据
         f_notice.innerText = "【" + p[0].title + "】" + p[0].notice;
+
         var sameTime;
         p.forEach(function (v) {
             var date = _wd.crtTimeFtt(v.date);
@@ -464,6 +462,7 @@ function fill_index(p) {
         //若无通知内容置空
         document.getElementById("index_tip").innerText = "";
     }
+    _wd.marquee("marquee","marquee_text");
 }
 
 //发布通知页面

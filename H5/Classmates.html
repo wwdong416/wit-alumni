@@ -20,8 +20,9 @@
 <div id="addBtn" class="W11 AC H none"></div>
 <!--导航栏-->
 <div class="index90 fix top0 H W11 AC ffHT  bgc9">慧脑校友录
-    <img  data-src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
-    <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON " onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
+    <img data-src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
+    <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON "
+         onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
 </div>
 <!--首页-->
 <div id="index" class="MTH F3">
@@ -29,9 +30,10 @@
         <img data-src="../images/classbg.png" class="W11">
     </div>
     <div class="W11 bgc9 MT">
-        <div class="FL B9M H9M bgc4 rad05e MTNMH ML" >
+        <div class="FL B9M H9M bgc4 rad05e MTNMH ML">
             <!--班级头像-->
-            <img class="absolute B9M H9M bgc10 P05M rad05e" data-src="../images/pic1.png"  onerror="this.src ='../images/pic1.png' " id="classLogo" onclick="class_msg()">
+            <img class="absolute B9M H9M bgc10 P05M rad05e" data-src="../images/pic1.png"
+                 onerror="this.src ='../images/pic1.png' " id="classLogo" onclick="class_msg()">
         </div>
         <div class="FL P1M ffWRYH C10M">
             <div class=" bold F3 ellips" id="class_name"></div>
@@ -41,19 +43,21 @@
     </div>
     <div class="W11 AC ofh bgc9 relative MT">
         <!--置顶通知-->
-        <div class=" W11  F2 H3M AC  MT PL1M PR1M">
-            <div class="colorR  PR1M ellips F3 W11" id="top_notice">
+        <div class=" W11  F2 H2M AC  MT PL1M PR1M">
+            <div class="colorR ellips F3 W11" id="top_notice">
                 <div class="B4M F2 bgc14 FL AC rad03e ">置顶</div>
-                <marquee  behavior="scroll" align="left" id="first_notice">
-                    欢迎来到本班级！
-                </marquee>
+
+                <div id="marquee" class="FL C6M H2M colorR block MA relative ofh">
+                    <span id="marquee_text" class="absolute top0 block wbka toe wsn">欢迎加入此班级~</span>
+                </div>
+
             </div>
         </div>
         <div class="W11 PL1M PR1M AC PB1M" id="index_notice">
             <!--首页通知-->
         </div>
     </div>
-    <div class="W11 H8M AC F2 color8 PT1M" id="index_tip">—————— 更多请看通知页面 ——————</div>
+    <div class="W11 H8M AC F2 color8 PT1M" id="index_tip">—————— 更多消息请看通知页面 ——————</div>
 </div>
 <!--通知-->
 <div id="notice" class="W11 AC ofh MTH  none F3">
@@ -93,7 +97,7 @@
         </div>
     </div>
     <div class="W11">
-        <div class="W11 ALP color8 bold LH2">
+        <div class="W11 ALP color8 MB bold LH2">
             通讯录
         </div>
         <div class="W11 bordBD1">
@@ -174,20 +178,19 @@
 <div id="dynamic" class="W11 AC  CH bgcf4  MTH none">
     <div class="CH CW bgc10">此功能暂未开放，敬请期待...</div>
     <!--<div class="W11 P1M">-->
-        <!--<img src="../images/pic2.png" alt="" class="FL radius B4M">-->
-        <!--<div class="FL">-->
-            <!--<div class="relative rad05e P05M bgc10 M talkbubble ALP2 PL1M PR1M">图片格式如何处理</div>-->
-        <!--</div>-->
+    <!--<img src="../images/pic2.png" alt="" class="FL radius B4M">-->
+    <!--<div class="FL">-->
+    <!--<div class="relative rad05e P05M bgc10 M talkbubble ALP2 PL1M PR1M">图片格式如何处理</div>-->
+    <!--</div>-->
 
-        <!--<div class="clear"></div>-->
+    <!--<div class="clear"></div>-->
     <!--</div>-->
     <!--<div class="W11 fix bottom10M ">-->
-        <!--<input type="text" class="FL MLT ML H3M W43  ALP  " placeholder="说一下...">-->
-        <!--<div class=" FR W61  bgc4 border MLT MR H3M  LH24">发送</div>-->
+    <!--<input type="text" class="FL MLT ML H3M W43  ALP  " placeholder="说一下...">-->
+    <!--<div class=" FR W61  bgc4 border MLT MR H3M  LH24">发送</div>-->
     <!--</div>-->
 </div>
 <!--bottom-->
-<!--<div class="W11 H8M AC color8 PT1M">—————— END ——————</div>-->
 <div class="W11 fix bottom0 bordTD1 H5M F1 flexbox bgc10 color333 index90" id="menu_list">
     <div class="FL W51 AC submenu" id="cl_index">
         <img class="H2M menuimg" data-src="../images/icon/index01.png" alt="">
@@ -224,6 +227,7 @@
 <script>
     "use strict";
     autocss();
+
     function loadend() {
         loadimg();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
@@ -300,8 +304,8 @@
             date_sli: []
         },
         init: function ($d, $p, $gs) {
-            var dais_wh =document.getElementById("dais_value").getAttribute("wh");
-           // console.log(dais_wh.split("*"));
+            var dais_wh = document.getElementById("dais_value").getAttribute("wh");
+            // console.log(dais_wh.split("*"));
             var n = "01";
             var d = $d, p = $p || "s_select", $ = this, gs = $gs;
             this.attr.outtype = n;
@@ -330,7 +334,7 @@
             document.getElementById('wit_date_confirm').addEventListener('click', function () {
                 var o = document.querySelector("#wit_date_opt");
                 var value = document.getElementById("dais_value");
-               // console.log(o.innerText);
+                // console.log(o.innerText);
                 var daiswh = o.innerText.split("");
                 var daish;
                 if (daiswh[12] === "1") {
@@ -341,7 +345,7 @@
                     daisWH(daiswh[6], daiswh[12]);
                     value.setAttribute("data-value", daiswh[6] + "*" + daiswh[12]);
                 }
-                console.log(daiswh[6]+"_"+daiswh[12]);
+                console.log(daiswh[6] + "_" + daiswh[12]);
                 $.toggle(p, 0);
                 toMenu("cl_information");
             }, false);
@@ -439,6 +443,7 @@
             this.attr.d_h = this.attr.rowx;
         },
     };
+
     function cl_dynamic() {
 
     }

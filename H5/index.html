@@ -137,6 +137,8 @@
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
+
+            //获取头像，首选慧联系社交头像，其次正常头像，若无则取默认头像
             if (info.per_portrait_social) {
                 _logoPic = info.localpath + info.per_portrait_social;
             } else if (info.per_portrait) {
@@ -153,7 +155,7 @@
                 cvs.height = img.height;
                 ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
                 base64img = cvs.toDataURL();
-            };
+            };//将头像转成base64，传给班级通讯录
             if (!myObject.per_full_name) {
                 console.log("完善信息");
                 _wd.toConfirm("请完善个人信息！", addMsg, reload)
@@ -173,7 +175,7 @@
     function reload() {
         window.location.reload();
     }
-
+    //展现经历
     function C_schoolcata(d, c) {
         document.getElementById(d).innerHTML = "";
         console.log(c);
@@ -188,13 +190,13 @@
             div.style = "background-image:url(../images/muban1.png)";
             div.onclick = function () {
                 console.log(cid);
+                //判断是否有cid，慧联系关联的经历缺乏cid，需要手动补充
                 if (cid) {
                     window.open(lo_url + "?sid=" + v.unit_id + "&cid=" + cid + "&id=" + v.id);
                 } else {
                     _fun.show('d_add');
                     update_exp(v);
                 }
-                // window.location.href = "Classmates.html?sid=" + v.unit_id + "&cid=" + cid;
             };
             div.innerHTML =
                 v.unit_name + v.dept + _wd.getCut("-", 0, v.date_end) + "届" + class_name;
@@ -209,7 +211,6 @@
         } else {
             fillHeight.style.height = bt_img.height + "px";
         }
-
     }
     function show_add() {
         _fun.show('d_add');

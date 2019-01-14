@@ -90,7 +90,6 @@ var _wd = {
             '</div>';
         document.body.appendChild(div);
         document.getElementById("toTrue").onclick = f;
-
         document.getElementById("toFalse").onclick = e;
     },
     /*
@@ -540,4 +539,17 @@ var _wd = {
         return this;
     },
 
+    marquee: function (p, s) {
+        var scrollWidth = document.getElementById(p).offsetWidth;
+        var textWidth = document.getElementById(s).offsetWidth;
+        var i = scrollWidth;
+        console.log(scrollWidth,textWidth);
+        setInterval(function () {
+            i--;
+            if (i < -textWidth) {
+                i = scrollWidth;
+            }
+            document.getElementById(s).style.left = i + "px";
+        }, 20);
+    }
 };
