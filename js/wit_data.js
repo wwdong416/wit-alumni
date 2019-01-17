@@ -266,15 +266,13 @@ function class_msg() {
     p.innerHTML = "";
     var div = document.createElement("div");
     div.className = "fix W11 CHmax bgc9  ofa";
-    div.innerHTML = '<div class="fix top0 H W11 AC ffHT">' +
+    div.innerHTML = '<div class="fix top0 H W11 AC ffHT">班级信息' +
         '    <div  class="FL B4M H4M F2" onclick="_wd.hide(new_page)">' +
-        '<img src="../images/icon/back_w.png" class="FL B4M H4M  P1M" > </div>' +
+        '<img src="../images/icon/back_b.png" class="FL B4M H4M  P1M" > </div>' +
         '    <div  class="FR B4M H4M F2 color8">' +
         '</div>' +
         '</div>' +
-        '<div class="H21M W11 ofh OFC"><img src="../images/pic1.png" class=" W11 H11  OFC "></div>' +
-        '<div class="F4 W11 bold P1M">班级信息</div>' +
-        '<div class=" W11 F3 bgc10">' +
+        '<div class=" W11 F3 bgc10 MTH">' +
         '<div class="bordBD1 H4M ">' +
         '<div class="FL W31 AL P1M">学校</div>' +
         '<div  class="FR W32 AR P1M color8">' + _schoolName + '</div>' +
@@ -370,6 +368,7 @@ function cl_index() {
                 if (m_Error(msg, "获取通知（展现在首页）")) {
                     var p = JSON.parse(msg).message;
                     fill_index(p);
+                    _wd.marquee("marquee","marquee_text");
                 }
             }, function (msg) {
                 _wd.info("错误！请重新登录！", "bgc24");
@@ -462,7 +461,7 @@ function fill_index(p) {
         //若无通知内容置空
         document.getElementById("index_tip").innerText = "";
     }
-    _wd.marquee("marquee","marquee_text");
+
 }
 
 //发布通知页面
@@ -863,7 +862,7 @@ function cl_information() {
             }
         }
     } else {
-        var f = {
+         f = {
             A_L: function (e) {
                 _wd.info("加入班级后才能使用此功能！", "bgc5e");
             },

@@ -101,8 +101,8 @@
     "use strict";
     autocss();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    const lo_url = "Classmates.html";
+    const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    // const lo_url = "Classmates.html";
     var myclass, myObject, myPrivacy, myPersocial, myEduJson;
     var _userguid, _token, _phone, _logoPic;
     var base64img = "";
@@ -137,6 +137,7 @@
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
+
 
             //获取头像，首选慧联系社交头像，其次正常头像，若无则取默认头像
             if (info.per_portrait_social) {
@@ -175,32 +176,43 @@
     function reload() {
         window.location.reload();
     }
+
     //展现经历
     function C_schoolcata(d, c) {
         document.getElementById(d).innerHTML = "";
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
-            var cid = _wd.getCut("||", 2, v.class_name);
-            var class_name = _wd.getCut("||", 1, v.class_name);
-            if (class_name.indexOf("班") < 0) {
-                class_name = class_name + "班";
-            }
-            div.className = "MT MA C9M F3 LH3 AC ellips PL1M PR1M shadow0 bg_contain";
-            div.style = "background-image:url(../images/muban1.png)";
-            div.onclick = function () {
-                console.log(cid);
-                //判断是否有cid，慧联系关联的经历缺乏cid，需要手动补充
-                if (cid) {
-                    window.open(lo_url + "?sid=" + v.unit_id + "&cid=" + cid + "&id=" + v.id);
-                } else {
-                    _fun.show('d_add');
-                    update_exp(v);
+            var class_name = "未知班", date_end = "未知",cid = "";
+            if (v.class_name.indexOf("||") > -1) {
+                 cid = _wd.getCut("||", 2, v.class_name);
+                 console.log(cid);
+                class_name = _wd.getCut("||", 1, v.class_name);
+                if (class_name.indexOf("班") < 0) {
+                    class_name = class_name + "班";
                 }
-            };
-            div.innerHTML =
-                v.unit_name + v.dept + _wd.getCut("-", 0, v.date_end) + "届" + class_name;
-            document.getElementById(d).appendChild(div);
+                if (v.date_end) {
+                    if (v.date_end.indexOf("-") > -1) {
+                        date_end = _wd.getCut("-", 0, v.date_end);
+                    }
+                }
+                div.className = "MT MA C9M F3 LH3 AC ellips PL1M PR1M shadow0 bg_contain";
+                div.style = "background-image:url(../images/muban1.png)";
+                div.onclick = function () {
+                    console.log(cid);
+                    //判断是否有cid，慧联系关联的经历缺乏cid，需要手动补充
+                    if (cid) {
+                        window.open(lo_url + "?sid=" + v.unit_id + "&cid=" + cid + "&id=" + v.id);
+                    } else {
+                        _fun.show('d_add');
+                        update_exp(v);
+                    }
+                };
+                div.innerHTML =
+                    v.unit_name + v.dept + date_end + "届" + class_name;
+                document.getElementById(d).appendChild(div);
+            }
+
         });
         var fillHeight = document.querySelector("#fill_height");
         var bt_img = document.querySelector("#bt_img");
@@ -212,13 +224,15 @@
             fillHeight.style.height = bt_img.height + "px";
         }
     }
+
     function show_add() {
         _fun.show('d_add');
-        document.getElementById("d_add").setAttribute("data-id","none");
+        document.getElementById("d_add").setAttribute("data-id", "none");
         document.getElementById("add_sublime").innerText = "添加";
         document.getElementById("add_tip").innerText = "填写班级信息";
 
     }
+
     function update_exp(v) {
         document.getElementById("add_sublime").innerText = "修改";
         document.getElementById("add_tip").innerText = "完善班级信息";
@@ -234,7 +248,7 @@
         dl.querySelector("input[data-id='date_end']").value = v.date_end;
         dl.querySelector("input[data-id='date_end']").dataset.yl = v.date_end;
         dl.querySelector("textarea[data-id='honors']").value = v.honors || "";
-        dl.setAttribute("data-id",v.id);
+        dl.setAttribute("data-id", v.id);
     }
 
 
@@ -312,7 +326,7 @@
             _wd.info("请将数据填写完整！", "bgc5e");
         }
         else {
-            if (dl_id === "none"){
+            if (dl_id === "none") {
                 _wit.postmessage({
                     functionname: "createexp",
                     witparams: {
@@ -344,6 +358,7 @@
             isExist(o.unit_id, _wd.getCut("||", 2, o.class_name), o.honors);
         }
     }
+
     function updateExp(msg, param) {
         console.log(msg);
         var j = msg,
@@ -353,10 +368,11 @@
             setTimeout(function () {
                 document.location.reload(); //当前页面
             }, 1000)
-        }else {
+        } else {
             _wd.info("无法添加班级！" + j.result, "bgc24");
         }
     }
+
     function cbExp(msg, param) {
         console.log("正在添加");
         console.log(msg);
@@ -487,7 +503,6 @@
     }
 
 
-
     function selectClass() {
         var ds = document.querySelector("input[name='schoolname']").title;
         var dt = document.querySelector("input[name='industrycode']").title;
@@ -541,7 +556,7 @@
 //                    a.style.top = d.offsetTop + H + "px";
                 })
             } else {
-                _wd.info("错误！没有找到相应班级！" , "bgc24");
+                _wd.info("错误！没有找到相应班级！", "bgc24");
             }
         });
     }

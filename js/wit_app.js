@@ -449,7 +449,7 @@ var _wd = {
                 console.log(document.body.style.marginTop);
                 console.log(touchDis);
                 if (touchDis > 80) {
-                    // window.location.reload();
+                    window.location.reload();
                 }
                 if (touchDis > 0) {
                     // document.body.style.marginTop = "0px";
@@ -542,14 +542,20 @@ var _wd = {
     marquee: function (p, s) {
         var scrollWidth = document.getElementById(p).offsetWidth;
         var textWidth = document.getElementById(s).offsetWidth;
+        console.log(document.getElementById(s));
         var i = scrollWidth;
-        console.log(scrollWidth,textWidth);
-        setInterval(function () {
+        console.log(scrollWidth, textWidth);
+
+        function change() {
             i--;
             if (i < -textWidth) {
                 i = scrollWidth;
             }
             document.getElementById(s).style.left = i + "px";
-        }, 20);
+            window.requestAnimationFrame(change);
+        }
+        window.requestAnimationFrame(change);
+
     }
 };
+
