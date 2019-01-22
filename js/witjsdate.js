@@ -69,11 +69,12 @@ var wit_date = {
             this.attr.date = new Date(d.dataset.yl);
         } else if (d.title && d.title != "") {
             this.attr.date = new Date(d.title);
-        } else if (localStorage.lastDate) {
+        } else if (localStorage.lastDate && localStorage.lastDate != "Invalid Date") {
             this.attr.date = new Date(localStorage.lastDate);
         } else {
             this.attr.date = new Date();
         }
+
         this.attr.outtype = n;
         this.attr.year = this.attr.date.getFullYear();
         this.attr.month = this.attr.date.getMonth() + 1;
@@ -98,6 +99,7 @@ var wit_date = {
             s = s.rtrim("-").rtrim(":");
             var standard = new Date(yl).Format(s);
             d.dataset.yl = yl;
+            d.title = standard;
             localStorage.lastDate = yl;
             wit_date.call_back(d, {opt: opt, yl: yl, nl: nl, std: standard});
             $.toggle(p, 0);

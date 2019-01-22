@@ -42,7 +42,7 @@ var _wd = {
      * @param $modal 是否有模态框
      */
     toLoading: function ($time, $img, $modal) {
-        var $this = this, img = $img || "../images/icon/loading2.gif", d = document.querySelector("#toLoading"),
+        var $this = this, img = $img || "../images/icon/loading1.gif", d = document.querySelector("#toLoading"),
             time = $time || 2000, modal = $modal;
         if (d) {
             document.body.removeChild(d);

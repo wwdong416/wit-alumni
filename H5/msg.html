@@ -285,14 +285,24 @@
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
-            var class_name = _wd.getCut("||", 1, v.class_name);
-            if (class_name.indexOf("班") < 0) {
-                class_name = class_name + "班";
+            var class_name = "未知班", date_end = "未知",cid = "";
+            if (v.class_name.indexOf("||") > -1) {
+                cid = _wd.getCut("||", 3, v.class_name);
+                console.log(cid);
+                class_name = _wd.getCut("||", 2, v.class_name);
+                if (class_name.indexOf("班") < 0) {
+                    class_name = class_name + "班";
+                }
+                if (v.date_end) {
+                    if (v.date_end.indexOf("-") > -1) {
+                        date_end = _wd.getCut("-", 0, v.date_end);
+                    }
+                }
+                div.className = " AL W11 H ellips PL1M bordBD1 FL";
+                div.innerHTML = '<div class="FL W65 ellips">' +  v.unit_name + v.dept + date_end + "届" + class_name + '</div>' +
+                    '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
+                document.getElementById("myAllClass").appendChild(div);
             }
-            div.className = " AL W11 H ellips PL1M bordBD1 FL";
-            div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + " " + v.dept + " " + _wd.getCut("-", 0, v.date_end || "") + "届" + " " + class_name + '</div>' +
-                '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
-            document.getElementById("myAllClass").appendChild(div);
         });
     }
 

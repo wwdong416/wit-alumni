@@ -18,10 +18,12 @@
     <img data-src='../images/icon/setting.png' class="FR ICON P05M"
          onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
 </div>
-<div class="H4M LH25 AC color8 bold bgc10" id="up_reload">下拉刷新</div>
-<div class="W11 AC bgbody CHNHmin" id="mymsg">
-    <div class="W11" id="mymsg_s">
+<div class="H4M fix topH none LH25 AC W11 color8 bold bgc9" id="up_reload">下拉刷新
 
+</div>
+<div id="wrap" class="bgc9 MTH">
+<div class="W11 AC bgbody CHNHmin" id="mymsg">
+    <div class="W11 " id="mymsg_s">
         <img data-src="../images/lantian.png" class="W11 AC">
         <div class="W11 AC F3">
             <!--头像-->
@@ -88,6 +90,7 @@
         <div class="clear"></div>
     </div>
 </div>
+</div>
 <!-- 添加班级结束 -->
 </body>
 </html>
@@ -97,6 +100,7 @@
 <script src="../js/witjsaddr.js"></script>
 <script src="../js/wit_app.js"></script>
 <script src="../js/lib/MD5.js"></script>
+<script src="../js/wit_scroll.js"></script>
 <script type="text/javascript">
     "use strict";
     autocss();
@@ -109,7 +113,8 @@
 
     function loadend() {
         loadimg();
-        _wd.up_refresh("d_add");
+         // _wd.up_refresh("d_add");
+        re_scroll();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
     }
 
@@ -185,9 +190,9 @@
             var div = document.createElement("div");
             var class_name = "未知班", date_end = "未知",cid = "";
             if (v.class_name.indexOf("||") > -1) {
-                 cid = _wd.getCut("||", 2, v.class_name);
+                 cid = _wd.getCut("||", 3, v.class_name);
                  console.log(cid);
-                class_name = _wd.getCut("||", 1, v.class_name);
+                class_name = _wd.getCut("||", 2, v.class_name);
                 if (class_name.indexOf("班") < 0) {
                     class_name = class_name + "班";
                 }
@@ -406,10 +411,11 @@
                 }
             }
         });
-        var classmate = dclr.innerText.replace(/[^0-9]/ig, "") > 9 ? dclr.innerText.replace(/[^0-9]/ig, "") : "0" + dclr.innerText.replace(/[^0-9]/ig, "");
+        var classmate = _wd.getCut("：", 0, dclr.innerText);
+        classmate = _wd.getCut("班", 0, classmate);
         o.industry_code += "||" + d_type.title;
         o.unit_id = ds.title;
-        o.class_name = "||" + _wd.getCut("：", 0, dclr.innerText) + "||" + dcl.title;
+        o.class_name = "||"+"||" +classmate  + "||" + dcl.title;
         o.adm_div_code += "||" + dc.value;
         return o;
     } //填充数据
