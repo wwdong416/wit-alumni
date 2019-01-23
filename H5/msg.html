@@ -290,8 +290,12 @@
                 cid = _wd.getCut("||", 3, v.class_name);
                 console.log(cid);
                 class_name = _wd.getCut("||", 2, v.class_name);
-                if (class_name.indexOf("班") < 0) {
-                    class_name = class_name + "班";
+                if (class_name){
+                    if (class_name.indexOf("班") < 0) {
+                        class_name = class_name + "班";
+                    }
+                }else {
+                    class_name = "未知班";
                 }
                 if (v.date_end) {
                     if (v.date_end.indexOf("-") > -1) {

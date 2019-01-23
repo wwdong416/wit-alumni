@@ -15,7 +15,7 @@ var class_id = _wd.getUrl_sid().id;
 
 var _userguid, _token, _phone, _editor, _schoolName, _className;
 
-var flag;
+var flag = false;
 
 var myclass, myObject, myPrivacy, myPersocial, myEduJson;
 
@@ -76,7 +76,7 @@ function init(msg) {
             console.log(i, v, d);
         });
         _wit.event.input_limit();
-        console.log(flag);
+        // console.log(flag);
         isMsg();
         class_message();
     } else {
@@ -137,7 +137,7 @@ function addClassmate() {
     const c = myPrivacy;
     const o = myObject;
     const b = myPersocial;
-    var graduation = "", honors;
+    var graduation = "", honors = "";
     myEduJson.forEach(function (v) {
         if (v.industry_code.indexOf("大学") > -1) {
             console.log(v.unit_name);
@@ -404,7 +404,6 @@ function fill_index(p) {
     if (p.length > 0) {
         //插入置顶通知，即数据库首条数据
         f_notice.innerText = "【" + p[0].title + "】" + p[0].notice;
-
         var sameTime;
         p.forEach(function (v) {
             var date = _wd.crtTimeFtt(v.date);

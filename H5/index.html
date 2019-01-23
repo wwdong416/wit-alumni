@@ -12,84 +12,82 @@
     <title>校友录</title>
 </head>
 <body class="ofa bgc10" onload="loadend()" onresize="autocss()">
+<div id="wrap" class="bgc9">
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
 <div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
     <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
     <img data-src='../images/icon/setting.png' class="FR ICON P05M"
          onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
 </div>
-<div class="H4M fix topH none LH25 AC W11 color8 bold bgc9" id="up_reload">下拉刷新
+<div class="H4M fix topH none LH25 AC W11 color8 bold bgc9" id="up_reload">下拉刷新</div>
+    <div class="W11 AC bgbody CHNHmin MTH" id="mymsg">
+        <div class="W11 " id="mymsg_s">
+            <img data-src="../images/lantian.png" class="W11 AC">
+            <div class="W11 AC F3">
+                <!--头像-->
+                <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius"
+                     onerror="this.src ='../images/port03.jpg' "
+                     onclick="window.open('msg.html')">
+            </div>
+            <div id="class">
+                <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
+                <ul id="myclass" class="clear ffHT color1"></ul>
+                <a>
+                    <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick="show_add()">
+                </a>
+            </div>
+            <div id="focus">
+                <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
+                <ul id="myfocus" class="clear ffHT color1"></ul>
+                <a>
+                    <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT"
+                         onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
+                </a>
+            </div>
+            <div id="fill_height" class="relative bgbody">
+                <img data-src="../images/caodi.png" id="bt_img" class="absolute bottom0  left0 W11  AC ">
+            </div>
 
-</div>
-<div id="wrap" class="bgc9 MTH">
-<div class="W11 AC bgbody CHNHmin" id="mymsg">
-    <div class="W11 " id="mymsg_s">
-        <img data-src="../images/lantian.png" class="W11 AC">
-        <div class="W11 AC F3">
-            <!--头像-->
-            <img id="myImg" data-src="../images/port03.jpg" class="B6M H6M radius"
-                 onerror="this.src ='../images/port03.jpg' "
-                 onclick="window.open('msg.html')">
         </div>
-        <div id="class">
-            <p id="class_p" class="bold F5 LH2 P1 ffKT color1">我的班级</p>
-            <ul id="myclass" class="clear ffHT color1"></ul>
-            <a>
-                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT" onclick="show_add()">
-            </a>
-        </div>
-        <div id="focus">
-            <p class="bold F5 LH2 P1 ffKT color1">我的关注</p>
-            <ul id="myfocus" class="clear ffHT color1"></ul>
-            <a>
-                <img data-src="../images/icon/add.png" alt="" class="AC MA H2M MT"
-                     onclick="_wd.info('此功能暂未开放，敬请期待！','bgc5e')">
-            </a>
-        </div>
-        <div id="fill_height" class="relative bgbody">
-            <img data-src="../images/caodi.png" id="bt_img" class="absolute bottom0  left0 W11  AC ">
-        </div>
-
     </div>
-</div>
 
-<!-- 添加班级开始 -->
-<div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
-    <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
-    <div class="relative W11 MT2H  rad05e LSP ffWRYH">
-        <div class="CW H AC" id="add_tip">填写班级信息</div>
-        <input name="industrycode" data-id="industry_code" placeholder="学校类别"
-               class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio"
-               data-finp="clearschoolname"
-               data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
-        <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
-               class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title=""
-               onmousedown="creat_addr(3,0);"/>
-        <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
-               class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
-               data-uid="undefined" readonly/>
-        <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
-        <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
-               class=" rad05e FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
-        <div class="FL MT B1M H AC color1">-</div>
-        <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
-               class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
-        <div name="group" data-id="class_name" id="d_class"
-             class="color75 rad05e  FL MLT A1T2 H ALP bord_select"
-             data-in="title"
-             required onclick="selectClass();">选择班级
-        </div>
-        <textarea data-id="honors" class="FL rad05e MLT A1T2 HN4M F4 ALP color75 bord0"
-                  placeholder="请输入成绩和荣誉"></textarea>
-        <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
-        <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" id="add_sublime"
-             onclick="addEdu(this.parentNode);">
-            添加
-        </div>
+    <!-- 添加班级开始 -->
+    <div id="d_add" class="none W11 ffWRYH CH fix index100 top0 bgca8b">
+        <div class="CW CH fix ofa " onclick="_fun.hide(this.parentNode);"></div>
+        <div class="relative W11 MT2H  rad05e LSP ffWRYH">
+            <div class="CW H AC" id="add_tip">填写班级信息</div>
+            <input name="industrycode" data-id="industry_code" placeholder="学校类别"
+                   class="rad05e clear FL MLT B10M H AL bgc107 bord_select" readonly="" data-t="radio"
+                   data-finp="clearschoolname"
+                   data-s="幼儿园,小学,初中,高中,中职,大学,研博,培训,特殊,其他" title="-1" value=""/>
+            <input name="admdivcode" data-d="title" data-id="adm_div_code" placeholder="选择学校地域" readonly=""
+                   class="rad05e FL MLT C13MT2 H ALP bgc10 bord0 bord_select" value="" title=""
+                   onmousedown="creat_addr(3,0);"/>
+            <input name="schoolname" data-id="unit_name" placeholder="选择学校" type="text"
+                   class="rad05e FL MLT A1T2 H ALP bord_select" value="" onclick="toSchool()" title="undefined"
+                   data-uid="undefined" readonly/>
+            <!-- <div name="del" class="FR MRT B4M H AC radius bgc15 none">删</div> -->
+            <input name="selectdate" data-id="date_start" placeholder="入学日期" readonly
+                   class=" rad05e FL MLT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+            <div class="FL MT B1M H AC color1">-</div>
+            <input name="selectdate" data-id="date_end" placeholder="毕业日期" readonly
+                   class="rad05e FL MT A21 H ALP border bord_select" onclick="wit_date.init(this,0, '012');"/>
+            <div name="group" data-id="class_name" id="d_class"
+                 class="color75 rad05e  FL MLT A1T2 H ALP bord_select"
+                 data-in="title"
+                 required onclick="selectClass();">选择班级
+            </div>
+            <textarea data-id="honors" class="FL rad05e MLT A1T2 HN4M F4 ALP color75 bord0"
+                      placeholder="请输入成绩和荣誉"></textarea>
+            <div class="rad05e FL MLT B9M H F4 AC bgc36 radH border MB" onclick="_fun.hide('d_add')">返回</div>
+            <div name="submit" class="rad05e FR MRT B9M H F4 AC bgc36 radH border MB" id="add_sublime"
+                 onclick="addEdu(this.parentNode);">
+                添加
+            </div>
 
-        <div class="clear"></div>
+            <div class="clear"></div>
+        </div>
     </div>
-</div>
 </div>
 <!-- 添加班级结束 -->
 </body>
@@ -105,15 +103,15 @@
     "use strict";
     autocss();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    // const lo_url = "Classmates.html";
+    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    const lo_url = "Classmates.html";
     var myclass, myObject, myPrivacy, myPersocial, myEduJson;
     var _userguid, _token, _phone, _logoPic;
     var base64img = "";
 
     function loadend() {
         loadimg();
-         // _wd.up_refresh("d_add");
+        // _wd.up_refresh("d_add");
         re_scroll();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
     }
@@ -142,8 +140,6 @@
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
-
-
             //获取头像，首选慧联系社交头像，其次正常头像，若无则取默认头像
             if (info.per_portrait_social) {
                 _logoPic = info.localpath + info.per_portrait_social;
@@ -152,9 +148,11 @@
             } else {
                 _logoPic = "../images/port03.jpg";
             }
-            document.getElementById("myImg").src = _logoPic;
+            var myImg = document.getElementById("myImg");
+            myImg.src = _logoPic;
             var img = new Image();
-            img.src = _logoPic;
+            img.src =  myImg.src;
+            img.setAttribute('crossOrigin', 'anonymous');
             img.onload = function () {
                 const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
                 cvs.width = img.width;
@@ -188,13 +186,16 @@
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
-            var class_name = "未知班", date_end = "未知",cid = "";
+            var class_name = "未知班", date_end = "未知", cid = "";
             if (v.class_name.indexOf("||") > -1) {
-                 cid = _wd.getCut("||", 3, v.class_name);
-                 console.log(cid);
+                cid = _wd.getCut("||", 3, v.class_name);
                 class_name = _wd.getCut("||", 2, v.class_name);
-                if (class_name.indexOf("班") < 0) {
-                    class_name = class_name + "班";
+                if (class_name){
+                    if (class_name.indexOf("班") < 0) {
+                        class_name = class_name + "班";
+                    }
+                }else {
+                    class_name = "未知班";
                 }
                 if (v.date_end) {
                     if (v.date_end.indexOf("-") > -1) {
@@ -217,7 +218,6 @@
                     v.unit_name + v.dept + date_end + "届" + class_name;
                 document.getElementById(d).appendChild(div);
             }
-
         });
         var fillHeight = document.querySelector("#fill_height");
         var bt_img = document.querySelector("#bt_img");
@@ -235,7 +235,12 @@
         document.getElementById("d_add").setAttribute("data-id", "none");
         document.getElementById("add_sublime").innerText = "添加";
         document.getElementById("add_tip").innerText = "填写班级信息";
-
+        var dl = document.getElementById("d_add");
+        var input = dl.querySelectorAll("input,textarea");
+        console.log(input);
+        Array.prototype.forEach.call(input, function (v) {
+            v.value = "";
+        });
     }
 
     function update_exp(v) {
@@ -359,8 +364,7 @@
                     callback: "updateExp"
                 });
             }
-
-            isExist(o.unit_id, _wd.getCut("||", 2, o.class_name), o.honors);
+            isExist(o.unit_id, _wd.getCut("||", 3, o.class_name), o.honors);
         }
     }
 
@@ -371,7 +375,7 @@
         if (j && j.result >= 0) {
             _wd.info("修改成功！", "bgc5e");
             setTimeout(function () {
-                document.location.reload(); //当前页面
+                 document.location.reload(); //当前页面
             }, 1000)
         } else {
             _wd.info("无法添加班级！" + j.result, "bgc24");
@@ -387,7 +391,7 @@
         if (j && j.result >= 0) {
             _wd.info("添加成功！", "bgc5e");
             setTimeout(function () {
-                document.location.reload(); //当前页面
+                 // document.location.reload(); //当前页面
             }, 1000)
             //其他端免回调
         } else {
@@ -415,7 +419,7 @@
         classmate = _wd.getCut("班", 0, classmate);
         o.industry_code += "||" + d_type.title;
         o.unit_id = ds.title;
-        o.class_name = "||"+"||" +classmate  + "||" + dcl.title;
+        o.class_name = "||" + "||" + classmate + "||" + dcl.title;
         o.adm_div_code += "||" + dc.value;
         return o;
     } //填充数据
@@ -492,6 +496,7 @@
         para.token = _token;
         para.userguid = _userguid;
         para.logo = base64img ? base64img.split(",")[1] : "";
+        console.log(base64img);
         console.log("成员信息", para);
         _wd.ajax_formdata(_url + "/member/insert.do", true, para, function (msg) {
             var j = JSON.parse(msg);
