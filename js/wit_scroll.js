@@ -29,8 +29,6 @@ function MyScroll(selector, options) {
     slider.addEventListener('touchstart', start, false);
     slider.addEventListener('touchmove', move, false);
     slider.addEventListener('touchend', end, false);
-    console.log(slider);
-
     function start(e) {
         // e.preventDefault();
         that.eventQueue.forEach(function (json) {

@@ -263,14 +263,7 @@
             });
             var myImg = document.getElementById("myImg");
             console.log(myImg);
-            if (info.per_portrait_social) {
-                myImg.src = info.localpath + info.per_portrait_social;
-            } else if (info.per_portrait) {
-                myImg.src = info.localpath + info.per_portrait;
-            } else {
-                myImg.src = "../images/port03.jpg";
-            }
-            myImg.src += "?t=" + new Date().getTime();
+            myImg.src = "data:image/png;base64," + info.localphotobase64;
             getClassMsg();
             _wit.event.div_UI("s_select");
             _wit.event.input_limit();

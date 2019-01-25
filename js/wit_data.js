@@ -14,8 +14,8 @@ var id = _wd.getUrl_sid().cid;
 var class_id = _wd.getUrl_sid().id;
 
 var _userguid, _token, _phone, _editor, _schoolName, _className;
-
-var flag = false;
+//flag表示成员状态  0：未加入班级 1：加入班级，审核状态 2：审核通过
+var flag = 0;
 
 var myclass, myObject, myPrivacy, myPersocial, myEduJson;
 
@@ -58,20 +58,7 @@ function init(msg) {
         _token = info.token;
         _editor = info.per_full_name;
         _phone = info.user_phone;
-        if (info.per_portrait_social) {
-            _logoPic = info.localpath + info.per_portrait_social;
-        } else {
-            _logoPic = info.localpath + info.per_portrait;
-        }
-        var img = new Image();
-        img.src = _logoPic;
-        img.onload = function () {
-            const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
-            cvs.width = img.width;
-            cvs.height = img.height;
-            ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
-            base64img = cvs.toDataURL();
-        };
+        base64img = info.localphotobase64;
         _wit.event.input_UI("s_select", function (i, v, d) {
             console.log(i, v, d);
         });
@@ -99,11 +86,17 @@ function isMsg() {
             var len = p.message.length;
             if (len === 0) {
                 console.log("成员未加入");
-                flag = false;
+                flag = 0;
                 // _wd.toConfirm("是否加入此班级！", addClassmate, backindex)
             } else {
                 console.log("成员已存在，直接进入班级！");
-                flag = true;
+                var check = p.message[0].checkrank;
+                console.log(check);
+                if (check >= 1) {
+                    flag = 2;
+                } else {
+                    flag = 1;
+                }
             }
             toMenu("cl_index");
         }
@@ -123,6 +116,17 @@ function noJoin() {
     div.onclick = function () {
         _wd.toConfirm("是否加入此班级！", addClassmate)
     };
+    cont.appendChild(div);
+}
+
+function noChecked() {
+    var cont = document.getElementById("tip");
+    cont.classList.remove("none");
+    cont.innerHTML = "";
+    document.getElementById("index_tip").innerText = "";
+    var div = document.createElement("div");
+    div.className = "fix topH W11 MA rad03e bgc104";
+    div.innerHTML = '等待审核通过！';
     cont.appendChild(div);
 }
 
@@ -150,6 +154,7 @@ function addClassmate() {
         }
     });
     const p = {}, para = {};
+    const hy = ["其它", "公务", "教育", "医疗", "科研设计", "农业", "食品", "纺织服饰", "轻工", "能源矿材", "化工", "五金机电", "仪器仪表", "家电", "设备制造", "建筑房产", "交通工业", "物流服务", "信息产业", "商贸", "金融", "商务服务", "居民服务", "环境管理", "文化娱乐", "餐住旅游"];
     var a = o.per_address.split("||");
     console.log(a.length);
     if (a.length > 1) {
@@ -171,7 +176,7 @@ function addClassmate() {
     p.education = c.per_education || "";
     p.ret = 0;
     p.graduation = graduation || "";
-    p.industry = parseInt(parseInt(o.per_industry) / 100) || "";
+    p.industry = hy[parseInt(parseInt(o.per_industry) / 100)] || "";
     p.career = c.per_job_title || "";
     p.honor = honors || "";
     p.comp = o.per_unit_name || "";
@@ -184,7 +189,7 @@ function addClassmate() {
     para.json = p;
     para.token = _token;
     para.userguid = _userguid;
-    para.logo = base64img ? base64img.split(",")[1] : "";
+    para.logo = base64img || "";
     console.log("成员信息", para);
     console.log(base64img);
     _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
@@ -355,7 +360,7 @@ function delExp(msg, param) {
 //首页通知
 function cl_index() {
     document.getElementById("index_notice").innerHTML = "";
-    if (flag) {
+    if (flag === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -368,14 +373,20 @@ function cl_index() {
                 if (m_Error(msg, "获取通知（展现在首页）")) {
                     var p = JSON.parse(msg).message;
                     fill_index(p);
-                    _wd.marquee("marquee","marquee_text");
+                    _wd.marquee("marquee", "marquee_text");
                 }
             }, function (msg) {
                 _wd.info("错误！请重新登录！", "bgc24");
             });
         }
     } else {
-        noJoin();
+        if (flag === 0) {
+            noJoin();
+        }
+        if (flag === 1) {
+            noChecked();
+        }
+
         document.getElementById("index_tip").innerText = "————加入班级查看更多信息！————";
         var para1 = {
             token: _token,
@@ -390,6 +401,7 @@ function cl_index() {
                 if (m_Error(msg, "获取班务通知（展现在首页）")) {
                     var p = JSON.parse(msg).message;
                     fill_index(p);
+                    _wd.marquee("marquee", "marquee_text");
                 }
             }, function (msg) {
                 _wd.info("错误！请重新登录！", "bgc24");
@@ -460,12 +472,11 @@ function fill_index(p) {
         //若无通知内容置空
         document.getElementById("index_tip").innerText = "";
     }
-
 }
 
 //发布通知页面
 function Re_notice() {
-    if (flag) {
+    if (flag === 2) {
         document.getElementById("re_notice").innerHTML = "";
         var div = document.createElement("div");
         div.className = " W11 index99 fix bgc9 CH";
@@ -565,7 +576,7 @@ function cl_notice() {
 
 //获取通知列表
 function getNoticeList(page) {
-    if (flag) {
+    if (flag === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -727,7 +738,7 @@ function get_information_logo() {
 
 //改变座位
 function change_info_logo(s) {
-    if (flag) {
+    if (flag === 2) {
         if (s.src.indexOf("classmatespic.png") > 0) {
             var site = parseInt(s.id.replace(/[^0-9]/ig, ""));
             _wd.toConfirm("确定入坐此位置？", function () {
@@ -844,7 +855,7 @@ function cl_information() {
     }, function (msg) {
         _wd.info("错误！请重新登录！", "bgc24");
     });
-    if (flag) {
+    if (flag === 2) {
         var f = {
             A_L: function (e) {
                 window.open("tel://" + e.e1);
@@ -861,7 +872,7 @@ function cl_information() {
             }
         }
     } else {
-         f = {
+        f = {
             A_L: function (e) {
                 _wd.info("加入班级后才能使用此功能！", "bgc5e");
             },
@@ -885,8 +896,6 @@ function classmatesMember(p) {
         '<div class="FL B4M H4M F2" onclick="_wd.hide(classmates_page)"> <img  src=\'../images/icon/back_b.png\' class="FL B4M H4M P1M" /></div>' +
         '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
         '</div>';
-
-    const hy = ["其它", "公务", "教育", "医疗", "科研设计", "农业", "食品", "纺织服饰", "轻工", "能源矿材", "化工", "五金机电", "仪器仪表", "家电", "设备制造", "建筑房产", "交通工业", "物流服务", "信息产业", "商贸", "金融", "商务服务", "居民服务", "环境管理", "文化娱乐", "餐住旅游"];
     const para = {
         token: _token,
         userguid: _userguid,
@@ -990,7 +999,7 @@ function classmatesMember(p) {
                 '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
                 '        <div class="bordBDe6  H4M flexbox">' +
                 '            <div class="W31 FL  AL">行业</div>' +
-                '                <div  class="W32 FR AR color8 ellips">' + hy[p[0].industry] +
+                '                <div  class="W32 FR AR color8 ellips">' + p[0].industry +
                 '            </div>' +
                 '        </div>' +
                 '        <div class="bordBDe6 H4M flexbox">' +
@@ -1043,7 +1052,7 @@ var ph_more_btn_wrd = 1;//文件页数
 
 //档案
 function cl_photo() {
-    if (flag) {
+    if (flag === 2) {
         getGra_ph();
         ph_more_btn_img = 1;
         ph_more_btn_vdo = 1;
@@ -1173,7 +1182,7 @@ function add_photoindex(by_photos) {
 
 //点击毕业照，判断是否存在，否则新建
 ph_touch.onclick = function () {
-    if (flag) {
+    if (flag === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -1512,7 +1521,7 @@ function ph_type_list(type) {
 
 //新建相册页面
 function newPhoto(type) {
-    if (flag) {
+    if (flag === 2) {
         var cont = document.getElementById("ph_new");
         cont.innerHTML = "";
         var h_tag = "";

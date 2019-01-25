@@ -13,13 +13,13 @@
 </head>
 <body class="ofa bgc10" onload="loadend()" onresize="autocss()">
 <div id="wrap" class="bgc9">
-<div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
-<div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
-    <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
-    <img data-src='../images/icon/setting.png' class="FR ICON P05M"
-         onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
-</div>
-<div class="H4M fix topH none LH25 AC W11 color8 bold bgc9" id="up_reload">下拉刷新</div>
+    <div id="s_select" class="none index999 fix bottom0 W11 CH callnone"></div>
+    <div class="index99 fix top0 H W11 AC ffHT color1 nav">慧脑校友录
+        <img data-src='../images/icon/xy2.png' class="FL B4M H4M" onclick=""/>
+        <img data-src='../images/icon/setting.png' class="FR ICON P05M"
+             onclick=" _wit.postmessage({functionname: 'setting', callback: ''});"/>
+    </div>
+    <div class="H4M fix topH none LH25 AC W11 color8 bold bgc9" id="up_reload">下拉刷新</div>
     <div class="W11 AC bgbody CHNHmin MTH" id="mymsg">
         <div class="W11 " id="mymsg_s">
             <img data-src="../images/lantian.png" class="W11 AC">
@@ -103,8 +103,8 @@
     "use strict";
     autocss();
     const _url = "http://121.43.233.185/alumnicloudweb";
-    // const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
-    const lo_url = "Classmates.html";
+    const lo_url = "http://www.witknow.com/ljj/school/H5/Classmates.html";
+    // const lo_url = "Classmates.html";
     var myclass, myObject, myPrivacy, myPersocial, myEduJson;
     var _userguid, _token, _phone, _logoPic;
     var base64img = "";
@@ -129,6 +129,7 @@
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
 
+
     function init(msg) {
         console.log(msg);
         if (msg.result >= 0) {
@@ -140,26 +141,10 @@
             _userguid = info.user_guid;
             _token = info.token;
             _phone = info.user_phone;
-            //获取头像，首选慧联系社交头像，其次正常头像，若无则取默认头像
-            if (info.per_portrait_social) {
-                _logoPic = info.localpath + info.per_portrait_social;
-            } else if (info.per_portrait) {
-                _logoPic = info.localpath + info.per_portrait;
-            } else {
-                _logoPic = "../images/port03.jpg";
-            }
+            base64img = info.localphotobase64;
+            //获取头像
             var myImg = document.getElementById("myImg");
-            myImg.src = _logoPic;
-            var img = new Image();
-            img.src =  myImg.src;
-            img.setAttribute('crossOrigin', 'anonymous');
-            img.onload = function () {
-                const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
-                cvs.width = img.width;
-                cvs.height = img.height;
-                ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
-                base64img = cvs.toDataURL();
-            };//将头像转成base64，传给班级通讯录
+            myImg.src = "data:image/png;base64," + info.localphotobase64;
             if (!myObject.per_full_name) {
                 console.log("完善信息");
                 _wd.toConfirm("请完善个人信息！", addMsg, reload)
@@ -190,11 +175,11 @@
             if (v.class_name.indexOf("||") > -1) {
                 cid = _wd.getCut("||", 3, v.class_name);
                 class_name = _wd.getCut("||", 2, v.class_name);
-                if (class_name){
+                if (class_name) {
                     if (class_name.indexOf("班") < 0) {
                         class_name = class_name + "班";
                     }
-                }else {
+                } else {
                     class_name = "未知班";
                 }
                 if (v.date_end) {
@@ -375,7 +360,7 @@
         if (j && j.result >= 0) {
             _wd.info("修改成功！", "bgc5e");
             setTimeout(function () {
-                 document.location.reload(); //当前页面
+                document.location.reload(); //当前页面
             }, 1000)
         } else {
             _wd.info("无法添加班级！" + j.result, "bgc24");
@@ -391,7 +376,7 @@
         if (j && j.result >= 0) {
             _wd.info("添加成功！", "bgc5e");
             setTimeout(function () {
-                 // document.location.reload(); //当前页面
+                 document.location.reload(); //当前页面
             }, 1000)
             //其他端免回调
         } else {
@@ -461,6 +446,7 @@
             }
         });
         const p = {}, para = {};
+        const hy = ["其它", "公务", "教育", "医疗", "科研设计", "农业", "食品", "纺织服饰", "轻工", "能源矿材", "化工", "五金机电", "仪器仪表", "家电", "设备制造", "建筑房产", "交通工业", "物流服务", "信息产业", "商贸", "金融", "商务服务", "居民服务", "环境管理", "文化娱乐", "餐住旅游"];
         var a = o.per_address.split("||");
         console.log(a.length);
         if (a.length > 1) {
@@ -482,7 +468,7 @@
         p.education = c.per_education || "";
         p.ret = 0;
         p.graduation = graduation || "";
-        p.industry = parseInt(parseInt(o.per_industry) / 100) || "";
+        p.industry = hy[parseInt(parseInt(o.per_industry) / 100)] || "";
         p.career = c.per_job_title || "";
         p.honor = honors || "";
         p.comp = o.per_unit_name || "";
@@ -495,7 +481,7 @@
         para.json = p;
         para.token = _token;
         para.userguid = _userguid;
-        para.logo = base64img ? base64img.split(",")[1] : "";
+        para.logo = base64img || "";
         console.log(base64img);
         console.log("成员信息", para);
         _wd.ajax_formdata(_url + "/member/insert.do", true, para, function (msg) {
@@ -508,7 +494,7 @@
             } else {
                 _wd.info("个人信息同步失败！", "bgc5e");
             }
-        }, function (msg) {
+        }, function () {
             _wd.info("错误！请重新登录！", "bgc24");
         });
     }
