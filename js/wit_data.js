@@ -89,12 +89,13 @@ function isMsg() {
                 flag = 0;
                 // _wd.toConfirm("是否加入此班级！", addClassmate, backindex)
             } else {
-                console.log("成员已存在，直接进入班级！");
                 var check = p.message[0].checkrank;
                 console.log(check);
                 if (check >= 1) {
+                    console.log("成员已存在，直接进入班级！");
                     flag = 2;
                 } else {
+                    console.log("成员正在审核中...");
                     flag = 1;
                 }
             }
@@ -196,17 +197,17 @@ function addClassmate() {
         if (m_Error(msg, "插入此班级")) {
             console.log(msg);
             var j = JSON.parse(msg);
-            // if (j.result >= 0) {
+            if (j.result >= 0) {
             _wd.info("添加成功！", "bgc5e");
             setTimeout(function () {
                 window.location.reload();
             }, 1000)
-            // } else {
-            //     _wd.info("添加失败！", "bgc5e");
-            //     setTimeout(function () {
-            //         _wit.winclose();
-            //     }, 1000)
-            // }
+            } else {
+                _wd.info("添加失败！请重试！", "bgc5e");
+                setTimeout(function () {
+                    _wit.winclose();
+                }, 1000)
+            }
         }
     }, function (msg) {
         _wd.info("错误！请重新登录！", "bgc24");
@@ -240,7 +241,7 @@ function class_message() {
                         if (p.length > 0) {
                             //获取班级和班主任
                             _className = p[0].name;
-                            master = p[0].master;
+                            master = p[0].master || "未知";
                             sdate = p[0].sdate;
                             document.getElementById("class_name").innerText = _schoolName + sdate + "届" + _className + "班";
                             document.getElementById("class_master").innerText = "班主任：" + master;
@@ -271,9 +272,9 @@ function class_msg() {
     p.innerHTML = "";
     var div = document.createElement("div");
     div.className = "fix W11 CHmax bgc9  ofa";
-    div.innerHTML = '<div class="fix top0 H W11 AC ffHT">班级信息' +
+    div.innerHTML = '<div class="fix top0 H W11 AC bgct1 ffHT">班级信息' +
         '    <div  class="FL B4M H4M F2" onclick="_wd.hide(new_page)">' +
-        '<img src="../images/icon/back_b.png" class="FL B4M H4M  P1M" > </div>' +
+        '<img src="../images/icon/back_w.png" class="FL B4M H4M  P1M" > </div>' +
         '    <div  class="FR B4M H4M F2 color8">' +
         '</div>' +
         '</div>' +
@@ -312,10 +313,10 @@ function del_school() {
     console.log(class_id);
     _wit.postmessage({
         functionname: "deleteexp",
-        witparams: JSON.stringify({
+        witparams: {
             type: 0,
             id: class_id
-        }),
+        },
         callbackparam: JSON.stringify({
             type: 0,
             id: class_id
@@ -332,31 +333,23 @@ function delExp(msg, param) {
     if (j && j.result >= 0) {
         _wd.info("删除成功！", "bgc5e");
         setTimeout(function () {
-            opener.location.reload();
-            _wit.winclose();
+            // window.history.go(-1);
+            // window.location.href='../index.html';
+            _wit.postmessage({functionname: 'exitclass', callback: 'p_fresh'});
         }, 1000);
-        //其他端免回调
-    } else {//pc端
-        var o = p.json;
-        console.log(o);
-        console.log(p.type);
-        _wd.toLoading();
-        p.type === 0 && externalfun.deleteexp(function (msg) {
-            console.log(msg);
-            _wd.toLoading(-1);
-            var j = JSON.parse(msg);
-            if (j.result >= 0) {
-                _wd.info("删除成功！", "bgc5e");
-                setTimeout(function () {
-                    opener.location.reload();
-                    _wit.winclose();
-                }, 1000);
-
-            }
-        }, p.id, 0);
     }
 }
-
+function p_fresh(msg) {
+    console.log("正在刷新父窗口");
+    console.log(msg);
+    // var j = msg;
+    // if (msg.result < 0) {
+    //     opener.location.reload();
+    //     _wit.winclose();
+    // }else {
+    //     _wit.winclose();
+    // }
+}
 //首页通知
 function cl_index() {
     document.getElementById("index_notice").innerHTML = "";
@@ -412,7 +405,7 @@ function cl_index() {
 
 function fill_index(p) {
     var f_notice = document.getElementById("marquee_text");
-    console.log(f_notice);
+    // console.log(f_notice);
     if (p.length > 0) {
         //插入置顶通知，即数据库首条数据
         f_notice.innerText = "【" + p[0].title + "】" + p[0].notice;
@@ -480,7 +473,7 @@ function Re_notice() {
         document.getElementById("re_notice").innerHTML = "";
         var div = document.createElement("div");
         div.className = " W11 index99 fix bgc9 CH";
-        div.innerHTML = '<div class="top0 H W11 AC ffHT bgc9 ">发布通知' +
+        div.innerHTML = '<div class="top0 H W11 AC ffHT bgct1 ">发布通知' +
             '    <div  class="FL B4M H4M F2" onclick="dais.toggle(re_notice,0)"> 取消</div>' +
             '    <div  class="FR B4M H4M F2 color8" id="n_release" onclick="in_notice()"> 发布</div>' +
             '</div>' +
@@ -715,14 +708,13 @@ function get_information_logo() {
     };
     _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg, "获取班级成员头像")) {
-            console.log(JSON.parse(msg));
             var p = JSON.parse(msg).message;
             var logoPath = JSON.parse(msg).logoPath;
             p.forEach(function (v) {
                 if (v.site > 0) {
                     var logo = document.getElementById("c_headimg" + v.site);
                     logo.src = logoPath + s_guid + "/" + id + "/" + MD5(v.phone) + ".jpg";
-                    console.log(logo.src);
+                    // console.log(logo.src);
                     var logo_w = logo.width;
                     if (logo.height > logo_w) {
                         logo.height = logo_w;
@@ -775,25 +767,25 @@ function change_site(site) {
                 para.phone = _phone;
                 console.log("成员信息", para);
                 _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
-                    var d = document.querySelector("#toConfirm");
+                    // var d = document.querySelector("#toConfirm");
                     var j = JSON.parse(msg);
                     if (j.result >= 0) {
                         _wd.info("入座成功！", "bgc5e");
                         // get_information_logo();
                         toMenu("cl_information");
-                        if (d) {
-                            document.body.removeChild(d);
-                        } else {
-                            window.location.reload();
-                        }
+                        // if (d) {
+                        //     document.body.removeChild(d);
+                        // } else {
+                        //     window.location.reload();
+                        // }
                     } else {
                         _wd.info("入座失败！", "bgc24");
                         toMenu("cl_information");
-                        if (d) {
-                            document.body.removeChild(d);
-                        } else {
-                            window.location.reload();
-                        }
+                        // if (d) {
+                        //     document.body.removeChild(d);
+                        // } else {
+                        //     window.location.reload();
+                        // }
                     }
                 });
             }
@@ -808,7 +800,6 @@ function cl_information() {
     // daisWH();
     daisWH();//设置默认座位表
     // get_information_logo();
-    console.log("infor");
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
     var para = {
@@ -818,7 +809,6 @@ function cl_information() {
         page: 1,
         pagesize: 200
     };
-    console.log(para);
     _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg, "获取班级成员")) {
             console.log(JSON.parse(msg));
@@ -826,13 +816,14 @@ function cl_information() {
             var logoPath = JSON.parse(msg).logoPath;
             // console.log(p);
             p.forEach(function (v) {
-                console.log(logoPath + MD5(v.phone));
+                // console.log(logoPath + MD5(v.phone));
                 var div = document.createElement("div");
                 div.className = " CW H7M ofh bordBD1";
                 div.innerHTML = '<li class="absolute CW H7M bordBD1 bgc10 ofh index9">' +
                     '<img class="FL B5M H5M OFC rad03e M" src="' + logoPath + s_guid + "/" + id + "/" + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
-                    '<div class="FL W21 color876 bold ofh F3">' + v.name + '</div> ' +
+
+                    '<div class="FL W21 '+ (v.phone? "color876" : "colorA")+' bold ofh F3">' + v.name + '</div> '+
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +
                     '<div class="FL W11 color8 F3 ellips AL">' + v.comp +
                     '</div></div>' +
@@ -892,8 +883,8 @@ function classmatesMember(p) {
     cont.innerHTML = "";
     var div = document.createElement("div");
     div.className = "fix top0 F3  W11 CHmax bgc9 ofa";
-    var msgHtml = '<div class="fix index100 top0 H bgc9 W11 AC ffHT ">成员信息' +
-        '<div class="FL B4M H4M F2" onclick="_wd.hide(classmates_page)"> <img  src=\'../images/icon/back_b.png\' class="FL B4M H4M P1M" /></div>' +
+    var msgHtml = '<div class="fix index100 top0 H bgct1 W11 AC ffHT ">成员信息' +
+        '<div class="FL B4M H4M F2" onclick="_wd.hide(classmates_page)"> <img  src=\'../images/icon/back_w.png\' class="FL B4M H4M P1M" /></div>' +
         '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
         '</div>';
     const para = {
@@ -1234,8 +1225,8 @@ ph_touch.onclick = function () {
                             cont.innerHTML = "";
                             var div = document.createElement("div");
                             div.className = "fix top0  W11 CHmax bgc9 ofa";
-                            div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT ">毕业照' +
-                                '<div class="FL B4M H4M F2" onclick="_wd.hide(new_page)"> <img  src="../images/icon/back_b.png" class="FL B4M H4M P1M" /></div>' +
+                            div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">毕业照' +
+                                '<div class="FL B4M H4M F2" onclick="_wd.hide(new_page)"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
                                 '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
                                 '</div>' +
                                 '<div class="bgc10 W11 MTH">' +
@@ -1296,7 +1287,7 @@ ph_touch.onclick = function () {
                                 var div = document.createElement("div");
                                 div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
                                 div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT ">' +
-                                    '<div class="FL B4M H4M F2" onclick="_wd.hide(\'ph_upload\')"> <img  src="../images/icon/back_b.png" class="FL B4M H4M P1M" /></div>' +
+                                    '<div class="FL B4M H4M F2" onclick="_wd.hide(\'ph_upload\')"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
                                     '<div class="FR B4M H4M F2 color8 " id="ph_upload_btn" >上传</div>' +
                                     '</div>' +
                                     '<div class="bgc10 W11 P05M MTH" id="ch_list">' +
@@ -1539,7 +1530,7 @@ function newPhoto(type) {
         var in_place = h_tag.substring(2, h_tag.length);
         var div = document.createElement("div");
         div.className = "W11";
-        div.innerHTML = '      <div class="top0 H W11 AC bgc9 ffHT">' + h_tag +
+        div.innerHTML = '      <div class="top0 H W11 AC bgct1 ffHT">' + h_tag +
             '            <div class="FL B4M H4M F2" onclick="dais.toggle(ph_new,0)">取消</div>' +
             '            <div class="FR B4M H4M F2 color8" onclick=""></div>' +
             '        </div>' +
@@ -1687,8 +1678,8 @@ function addPhotos(o) {
     var div = document.createElement("div");
     div.className = "index100 absolute top0 left0  bgc9 W11 CHmin ofh";
     div.id = "detail_ph";
-    div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT " id="ph_name">' + record_name +
-        '<div class="FL B4M H4M F2" id="ph_return_up"> <img  src="../images/icon/back_b.png" class="FL B4M H4M P1M" /></div>' +
+    div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT " id="ph_name">' + record_name +
+        '<div class="FL B4M H4M F2" id="ph_return_up"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
         '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
         '</div>' +
         '<div class="bgc10 W11 MTH P1M">' +
@@ -1751,7 +1742,7 @@ function addPhotos(o) {
         var div = document.createElement("div");
         div.id = "ph_up_list" + record_id;
         div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
-        div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT ">' +
+        div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">' +
             '<div class="FL B4M H4M F2" id="up_return">取消</div>' +
             '<div class="FR B4M H4M F2 color8 " id="ph_upload_btn" >上传</div>' +
             '</div>' +

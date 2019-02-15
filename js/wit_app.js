@@ -90,6 +90,9 @@ var _wd = {
             '</div>';
         document.body.appendChild(div);
         document.getElementById("toTrue").onclick = f;
+        div.querySelector("#toTrue").addEventListener("click", function () {
+            document.body.removeChild(div);
+        });
         document.getElementById("toFalse").onclick = e;
     },
     /*
@@ -542,7 +545,7 @@ var _wd = {
     marquee: function (p, s) {
         var scrollWidth = document.getElementById(p).offsetWidth;
         var textWidth = document.getElementById(s).offsetWidth;
-        console.log(document.getElementById(s));
+        // console.log(document.getElementById(s));
         var i = scrollWidth;
         console.log(scrollWidth, textWidth);
 

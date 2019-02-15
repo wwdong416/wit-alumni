@@ -49,9 +49,10 @@ function MyScroll(selector, options) {
             }
         });
         console.log(document.documentElement.scrollTop);
+        console.log(document.body.scrollTop);
         // console.log(document.documentElement.scrollTop,slider.offsetHeight , wrapper.offsetHeight);
         //当外包元素的scrollTop值为0时才有下拉效果
-        if (document.documentElement.scrollTop === 0 && e.targetTouches[0].clientY - disY > 0) {
+        if (document.documentElement.scrollTop === 0 && document.body.scrollTop === 0 && e.targetTouches[0].clientY - disY > 0) {
             top = e.targetTouches[0].clientY - disY;
             slider.style.transform = 'translateY(' + top + 'px)';
             document.getElementById("up_reload").classList.remove("none");
@@ -64,23 +65,25 @@ function MyScroll(selector, options) {
     function end() {
         that.eventQueue.forEach(function (json) {
             if (json.type === 'scrollend') {
-
                 json.fn();
             }
         });
         if (top > 100) {
-            document.getElementById("up_reload").innerHTML = "  <img class='MT' src=\"../images/icon/loading3.gif\" alt=\"\">";
+            document.getElementById("up_reload").innerHTML = "  <img class='MT' src=\"images/icon/loading3.gif\" alt=\"\">";
         }
-        setTimeout(
-            function () {
-                if (top > 100) {
-                    window.location.reload();
-                }
-                top = 0;
-                slider.style.transition = '500ms';
-                slider.style.transform = 'translateY(' + top + 'px)';
-            },500
-        )
+        if (top > 100) {
+            top = 0;
+            slider.style.transition = '500ms';
+            slider.style.transform = 'translateY(' + H + 'px)';
+            setTimeout(function () {
+                window.location.reload();
+            },1000)
+        }else {
+            top = 0;
+            slider.style.transition = '500ms';
+            slider.style.transform = 'translateY(' + top + 'px)';
+        }
+
     }
 }
 

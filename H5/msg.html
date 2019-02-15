@@ -18,7 +18,7 @@
 
     input:focus {
         background: #FFF;
-        text-align: center;
+        /*text-align: center;*/
     }
 
     textarea:focus {
@@ -31,9 +31,9 @@
 <div id="s_select" class="none index999 fix bottom0 W11 CH callnone "></div>
 <div id="re_page" class="none index99 fix bottom0 W11 CH callnone"></div>
 <div class="W11  bgc9  ffWRYH">
-    <div class="index9 fix top0 H W11 AC ffHT  bgc9">个人信息
-        <img src='../images/icon/back_b.png' class="FL P1M B4M H4M" onclick="_wit.winclose();"/>
-        <div class="H4M FR F3 colorff PR1M" onclick="save();">保存</div>
+    <div class="index9 fix top0 H W11 AC ffHT  bgct1">个人信息
+        <img src='../images/icon/back_w.png' class="FL P1M B4M H4M" onclick="_wit.winclose();"/>
+        <div class="H4M FR F3  PR1M" onclick="save();">保存</div>
     </div>
     <div class=" W11 MTH PL1M PR1M bgc10  bordBDe6">
         <div class="H6M flexbox">
@@ -130,7 +130,7 @@
         </div>
         <div class=" HN4M flexbox">
             <div class="W41 FL H AL">详细地址</div>
-            <textarea class=" FL W43  F4 AR  color8 ffWRYH " rows="2" style="resize:none" id="myaddr1"
+            <textarea class=" FL W43  F4 AR  color8 ffWRYH HN4M " rows="2" style="resize:none" id="myaddr1"
                       title=""></textarea>
             <div class=" AR color8">
                 <div class=" AR">&#62</div>
@@ -206,7 +206,7 @@
     </div>
     <div class=" H1M W11 bordBDe6"></div>
     <div class=" W11  bgc119  bordBDe6">
-        <details>
+        <details open>
             <summary class="FL H AL W11 PL1M bordBD1 ">已加班级</summary>
             <div id="myAllClass"></div>
         </details>
@@ -278,16 +278,16 @@
         console.log(c);
         c.forEach(function (v) {
             var div = document.createElement("div");
-            var class_name = "未知班", date_end = "未知",cid = "";
+            var class_name = "未知班", date_end = "未知", cid = "";
             if (v.class_name.indexOf("||") > -1) {
                 cid = _wd.getCut("||", 3, v.class_name);
                 console.log(cid);
                 class_name = _wd.getCut("||", 2, v.class_name);
-                if (class_name){
+                if (class_name) {
                     if (class_name.indexOf("班") < 0) {
                         class_name = class_name + "班";
                     }
-                }else {
+                } else {
                     class_name = "未知班";
                 }
                 if (v.date_end) {
@@ -296,7 +296,7 @@
                     }
                 }
                 div.className = " AL W11 H ellips PL1M bordBD1 FL";
-                div.innerHTML = '<div class="FL W65 ellips">' +  v.unit_name + v.dept + date_end + "届" + class_name + '</div>' +
+                div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + v.dept + date_end + "届" + class_name + '</div>' +
                     '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
                 document.getElementById("myAllClass").appendChild(div);
             }
@@ -476,6 +476,14 @@
     }
 
     function del_school(id) {
+        // console.log(id);
+        _wd.toConfirm("确定删除此班级经历？", function () {
+            delScl(id);
+        });
+
+    }
+
+    function delScl(id) {
         console.log(id);
         _wit.postmessage({
             functionname: "deleteexp",
@@ -497,7 +505,7 @@
         var j = msg,
             p = JSON.parse(param);
         if (j && j.result >= 0) {
-            _wd.toLoading();
+            // _wd.toLoading();
             _wit.postmessage({functionname: "getuser", callback: "callback"});
             setTimeout(function () {
                 opener.location.reload();
