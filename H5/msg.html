@@ -507,10 +507,10 @@
         if (j && j.result >= 0) {
             // _wd.toLoading();
             _wit.postmessage({functionname: "getuser", callback: "callback"});
-            setTimeout(function () {
-                opener.location.reload();
-                _wd.info("删除成功！", "bgc5e");
-            }, 1000)
+
+            opener.location.reload();
+            _wd.info("删除成功！", "bgc5e");
+
             // document.location.reload(); //当前页面
             //其他端免回调
         } else {

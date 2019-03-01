@@ -1444,7 +1444,7 @@ var _fun = {
         }, time || 1500);
     },              //自定义错误——自动生成
     toLoading: function ($time, $img, $modal) {
-        var $this = this, img = $img || "../img/other/witing2.gif", d = document.querySelector("#toLoading"), time = $time || 5000, modal = $modal;
+        var $this = this, img = $img || "../images/icon/witing2.gif", d = document.querySelector("#toLoading"), time = $time || 5000, modal = $modal;
         if (d) {
             document.body.removeChild(d);
             clearTimeout($this._sto);

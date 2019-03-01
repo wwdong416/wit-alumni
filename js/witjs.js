@@ -5,7 +5,7 @@ var MYWIT = {}, browser = "ie", orient, DPR, CW, CH, SW, SH, N, M, H, FA = 0, fl
 
 function getbrowser() {//判断网页在何种设备中打开
     var AgentInfo = navigator.appVersion.toLowerCase(),
-        Agents = ["window","windows phone", "android", "iphone", "ipad", "macintosh"];
+        Agents = ["windows phone", "android", "iphone", "ipad", "macintosh"];
     browsername = ["witknow", "micromessenger", "qq", "firefox", "chrome", "safari", "applewebkit", "opera"];
     for (var i = 0; i < browsername.length; i++) {
         if (AgentInfo.indexOf(browsername[i]) >= 0)browser = browsername[i]
@@ -23,16 +23,10 @@ function getbrowser() {//判断网页在何种设备中打开
     }
 }
 getbrowser();
+DPR = flag == 4 ? 1 : window.devicePixelRatio;
+SW = window.screen.availWidth;
+SH = window.screen.availHeight;
 
-
-
-if (window.localStorage) {
-    MYWIT.TND = localStorage.TND || "日间";
-    MYWIT.FLR = localStorage.FLR || "右手";
-    MYWIT.WFD = localStorage.WFD || "标屏";
-    MYWIT.bgct1s = localStorage.skincolor1 || "#07C";
-    MYWIT.bgct2s = localStorage.skincolor2 || "#4AF";
-}
 //navigator.onLine==true;是否在线
 function autocss() {
     var WN, WN1, W1, Cmin, Cmax, navlength, strcss;
@@ -41,6 +35,11 @@ function autocss() {
     CH = document.documentElement.clientHeight || window.innerHeight;
     DPR = SW / CW * SH / CH > DPR ? DPR : 1;
     if (window.localStorage) {
+        MYWIT.TND = localStorage.TND || "日间";
+        MYWIT.FLR = localStorage.FLR || "右手";
+        MYWIT.WFD = localStorage.WFD || "标屏";
+        MYWIT.bgct1s = localStorage.skincolor1 || "#07C";
+        MYWIT.bgct2s = localStorage.skincolor2 || "#4AF";
         if (localStorage.getItem("witknow_m")) {
             FA = JSON.parse(localStorage.getItem("witknow_m"));
         }
@@ -62,7 +61,8 @@ function autocss() {
     } else {
         M = Math.min(Math.max(CW, CH) / 54, Math.min(CW, CH) / 36)
     }
-    M = M || 10;
+    M = Math.max(M, 10);
+    //_fun.toAlert(M);
     H = M * 4;
     N = Math.floor(CW / (M * 7));
     F_scale = 100;
@@ -81,7 +81,7 @@ function autocss() {
     strcss += ".M {margin:" + M + "px;} .M05 {margin:" + M * 0.5 + "px;}.MLT {margin-left:" + M + "px; margin-top:" + M + "px;}.MRT {margin-top:" + M + "px; margin-right:" + M + "px;}"
     strcss += ".MT {margin-top:" + M + "px;}.MT05 {margin-top:" + 0.5 * M + "px;}.MT2 {margin-top:" + 2 * M + "px;}.MT07{margin-top:" + M * 0.7 + "px;} .MTH" +
         " {margin-top:" + H + "px; } .MTHM { margin-top:" + M * 5 + "px; } .MT2H { margin-top:" + M * 8 + "px; }"
-    strcss += ".MTNH {margin-top:" + (-M * 4) + "px; }.MTN2H {margin-top:" + (-M * 8) + "px; }.MTNM {margin-top:" + (-M) + "px; }.MTNMH{margin-top:" + (-M * 5) + "px;}.MTN2M{margin-top:" + (-M * 2) + "px;}.MTN36M{margin-top:" + (-M * 36) + "px; }.MTN10M{margin-top:" + (-M * 10) + "px; }"
+    strcss += ".MTNH {margin-top:" + (-M * 4) + "px; }.MTN2H {margin-top:" + (-M * 8) + "px; }.MTNM {margin-top:" + (-M) + "px; }.MTNMH{margin-top:" + (-M * 5) + "px;}.MTN2M{margin-top:" + (-M * 2) + "px;}.MTN36M{margin-top:" + (-M * 36) + "px; }"
     strcss += ".MB {margin-bottom:" + M + "px;}.MBH {margin-bottom:" + M * 4 + "px;} .MBNH{margin-bottom:" + (-H) + "px;}";
     strcss += ".ML {margin-left:" + M + "px;} .MLH {margin-left:" + H + "px;} .MLNM {margin-left:" + (-M) + "px;}.MLN2M{margin-left:" + (-M * 2) + "px; }" +
         " .MLNH{margin-left:" + (-H) + "px;}.MLNW {margin-left:" + (-CW) + "px;} " +
@@ -130,7 +130,7 @@ function autocss() {
     strcss += ".B1M { width:" + M + "px;}.B2M { width:" + M * 2 + "px;}.B3M { width:" + M * 3 + "px;}.B4M {width:" + M * 4 + "px;}.B5M {width:" + M * 5 + "px;}.B6M{width:" + M * 6 + "px;}.B7M { width:" + M * 7 + "px;}.B8M { width:" + M * 8 + "px;}.B9M { width:" + M * 9 + "px;}"
     strcss += ".B10M { width:" + M * 10 + "px;}.B12M { width:" + M * 12 + "px;}.B13M { width:" + M * 13 + "px;}.B14M { width:" + M * 14 + "px;}.B15M { width:" + M * 15 + "px;}.B16M { width:" + M * 16 + "px;}.B18M { width:" + M * 18 + "px;}.B19M { width:" + M * 19 + "px;}"
     strcss += ".B24M { width:" + M * 24 + "px;}.B32M { width:" + M * 32 + "px;}.B34M { width:" + M * 34 + "px;}.B36M { width:" + M * 36 + "px;}.B38M { width:" + M * 38 + "px;}"
-    strcss += ".B64M { width:" + M * 64 + "px;}.B06M { width:" + M * 0.6 + "px;} .B05M { width:" + M * 0.5 + "px;}"
+    strcss += ".B64M { width:" + M * 64 + "px;}.B06M { width:" + M * 0.6 + "px;} .B05M { width:" + M * 0.6 + "px;}"
 //补余大小按键，有间距
     strcss += ".CW { width:" + CW + "px;} .C2W { width:" + CW * 2 + "px;} .CWS{width:" + (CW + 17) + "px;} .CW1T2 {width:" + (CW < CH ? 100 : 50) + "%;}";
     strcss += ".C3M { width:" + (CW - M * 3) + "px;}.C4M { width:" + (CW - M * 4) + "px;}.C6M { width:" + (CW - M * 6) + "px;}.C8M { width:" + (CW - M * 8) + "px;}" +

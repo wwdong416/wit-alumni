@@ -12,18 +12,19 @@ var _wd = {
      */
 
     info: function ($t, $c, $time) {
-        var t = $t, c = $c, time = $time || 1500, d = document.querySelector("#toInfo");
-        var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + c;
+        var t = $t, time = $time || 1500, d = document.querySelector("#toInfo");
+        var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + $c;
         if (d) {
             var div = d.querySelector("div");
             d.classList.remove("none");
+
             if (div.style.display == "none") div.style.display = "";
-            div.innerHTML = '<div class="' + className + '" style="width:50%;top:50%;left:0; right: 0">' + t + '</div>';
+            div.innerHTML = '<div class="' + className + '" style="width:50%;top:80%;left:0; right: 0">' + t + '</div>';
         } else {
             var div = document.createElement("div");
             div.className = "CW CH fix index999";
             div.id = "toInfo";
-            div.innerHTML = '<div class="' + className + '" style="width:50%;top:50%;left:0; right: 0">' + t + '</div>';
+            div.innerHTML = '<div class="' + className + '" style="width:50%;top:80%;left:0; right: 0">' + t + '</div>';
             document.body.appendChild(div);
         }
         setTimeout(function () {
@@ -42,7 +43,7 @@ var _wd = {
      * @param $modal 是否有模态框
      */
     toLoading: function ($time, $img, $modal) {
-        var $this = this, img = $img || "../images/icon/loading1.gif", d = document.querySelector("#toLoading"),
+        var $this = this, img = $img || "../images/icon/witing2.gif", d = document.querySelector("#toLoading"),
             time = $time || 2000, modal = $modal;
         if (d) {
             document.body.removeChild(d);
@@ -55,7 +56,7 @@ var _wd = {
             var div = document.createElement("div");
             div.className = "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
             div.id = "toLoading";
-            div.innerHTML = '<img src="' + img + '" class="B4M relative ' + (modal ? "" : "top40") + '">';
+            div.innerHTML = '<img src="' + img + '" class="B8M relative ' + (modal ? "" : "top40") + '">';
             $this.insertBefore(document.body, div);
             $this._sto = setTimeout(function () {
                 if (div) {
@@ -106,7 +107,7 @@ var _wd = {
         } else {
             var div = document.createElement("div");
             div.className = "fix index999 AC CW bgc10";
-            div.style.height = CH - 9 * M + "px";
+            div.style.height = CH - 4 * M + "px";
             div.id = "toError";
             div.innerHTML = '<div class="relative top40">' +
                 '<div class=" W11 MA">' +
@@ -576,6 +577,32 @@ var _wd = {
             canvas = null;
         };
         img.src = url;
+    },
+    //正序：排序方法
+    ForwardRankingDate: function (data, p) {
+        for (i = 0; i < data.length - 1; i++) {
+            for (j = 0; j < data.length - 1 - i; j++) {
+                if (data[j][p] > data[j + 1][p]) {
+                    var temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+        return data;
+    },
+    //反序：按日期排序方法
+    ReverseRankingDate: function (data, p) {
+        for (i = 0; i < data.length - 1; i++) {
+            for (j = 0; j < data.length - 1 - i; j++) {
+                if (data[j][p] < data[j + 1][p]) {
+                    var temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+        return data;
     }
 };
 

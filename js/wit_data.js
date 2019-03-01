@@ -5,7 +5,7 @@
  */
 // var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
 var url = "http://121.43.233.185/alumnicloudweb";
-// var url = "http://192.168.10.5:8080";
+// var url = "http://192.168.10.23:8080";
 //获取学校id
 var s_guid = _wd.getUrl_sid().sid;
 //获取班级id
@@ -14,8 +14,8 @@ var id = _wd.getUrl_sid().cid;
 var class_id = _wd.getUrl_sid().id;
 
 var _userguid, _token, _phone, _editor, _schoolName, _className;
-//flag表示成员状态  0：未加入班级 1：加入班级，审核状态 2：审核通过
-var flag = 0;
+//flagCheck表示成员状态  0：未加入班级 1：加入班级，审核状态 2：审核通过
+var flagCheck = 0;
 
 var myclass, myObject, myPrivacy, myPersocial, myEduJson;
 
@@ -63,7 +63,7 @@ function init(msg) {
             console.log(i, v, d);
         });
         _wit.event.input_limit();
-        // console.log(flag);
+        // console.log(flagCheck);
         isMsg();
         class_message();
     } else {
@@ -86,17 +86,17 @@ function isMsg() {
             var len = p.message.length;
             if (len === 0) {
                 console.log("成员未加入");
-                flag = 0;
+                flagCheck = 0;
                 // _wd.toConfirm("是否加入此班级！", addClassmate, backindex)
             } else {
                 var check = p.message[0].checkrank;
                 console.log(check);
                 if (check >= 1) {
                     console.log("成员已存在，直接进入班级！");
-                    flag = 2;
+                    flagCheck = 2;
                 } else {
                     console.log("成员正在审核中...");
-                    flag = 1;
+                    flagCheck = 1;
                 }
             }
             toMenu("cl_index");
@@ -126,8 +126,8 @@ function noChecked() {
     cont.innerHTML = "";
     document.getElementById("index_tip").innerText = "";
     var div = document.createElement("div");
-    div.className = "fix topH W11 MA rad03e bgc104";
-    div.innerHTML = '等待审核通过！';
+    div.className = "fix topH W11 MA rad03e F2 bgc104";
+    div.innerHTML = '等待管理员审核！(点击右上角进入班级后台进行审核！)';
     cont.appendChild(div);
 }
 
@@ -198,10 +198,10 @@ function addClassmate() {
             console.log(msg);
             var j = JSON.parse(msg);
             if (j.result >= 0) {
-            _wd.info("添加成功！", "bgc5e");
-            setTimeout(function () {
-                window.location.reload();
-            }, 1000)
+                _wd.info("添加成功！", "bgc5e");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000)
             } else {
                 _wd.info("添加失败！请重试！", "bgc5e");
                 setTimeout(function () {
@@ -226,6 +226,7 @@ function class_message() {
     _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
         if (m_Error(msg, "获取学校信息")) {
             var p = JSON.parse(msg).message;
+            console.log(p);
             if (p.length > 0) {
                 _schoolName = p[0].name;//获取学校名称
                 var para = {
@@ -238,30 +239,48 @@ function class_message() {
                 _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
                     if (m_Error(msg, "获取班级信息")) {
                         var p = JSON.parse(msg).message;
+                        console.log(p);
                         if (p.length > 0) {
                             //获取班级和班主任
                             _className = p[0].name;
+                            if (_className.indexOf("班") < 0) {
+                                _className = _className + "班";
+                            }
                             master = p[0].master || "未知";
                             sdate = p[0].sdate;
-                            document.getElementById("class_name").innerText = _schoolName + sdate + "届" + _className + "班";
+                            document.getElementById("class_name").innerText = _schoolName + sdate + "届" + _className;
                             document.getElementById("class_master").innerText = "班主任：" + master;
+
+                           i_class.onclick = function(){
+                               window.open(location.href.replace('H5/Classmates','com/manager')+"&t="+p[0].type);
+                           }
+
                         }
                         else {
-                            _wd.toConfirm("此学校未加入该应用，请联系管理员！", backindex, backindex)
+                            _wd.toConfirm("班级数据异常，是否重新添加！", openClass, backindex)
                         }
                     }
                 }, function (msg) {
                     _wd.info("错误！请重新登录！", "bgc24");
                     _wd.toError();
                 });
-            } else {
-                _wd.toConfirm("此学校未加入该应用，请联系管理员！", backindex, backindex)
+            }
+            else {
+                _wd.toConfirm("此学校信息异常，是否重新添加！", openSchool, backindex)
             }
         }
     }, function (msg) {
         _wd.info("错误！请重新登录！", "bgc24");
         _wd.toError();
     });
+}
+
+function openClass() {
+    window.open("http://witknow.com/ljj/school/a/class.html?sid=" + s_guid);
+}
+
+function openSchool() {
+    window.open("http://witknow.com/ljj/school/a/school.html");
 }
 
 // 班级详情
@@ -291,7 +310,7 @@ function class_msg() {
         '</div>' +
         '<div class="bordBD1 H4M ">' +
         '<div class="FL W31 AL P1M">班级</div>' +
-        '<div  class="FR W32 AR P1M color8">' + _className + '班</div>' +
+        '<div  class="FR W32 AR P1M color8">' + _className + '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
         '<div class=" H4M ">' +
@@ -299,7 +318,7 @@ function class_msg() {
         '<div  class="FR W32 AR P1M color8">' + master + '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
-        '<div class="fix bottom0 W11 H AC bgc14" id="del_calss" >退出该班级</div>' +
+        '<div class="fix bottom0 M B34M H AC bgc14" id="del_calss" >退出该班级</div>' +
         '</div>';
     p.appendChild(div);
     _wd.show(p);
@@ -333,27 +352,20 @@ function delExp(msg, param) {
     if (j && j.result >= 0) {
         _wd.info("删除成功！", "bgc5e");
         setTimeout(function () {
-            // window.history.go(-1);
-            // window.location.href='../index.html';
             _wit.postmessage({functionname: 'exitclass', callback: 'p_fresh'});
         }, 1000);
     }
 }
+
 function p_fresh(msg) {
     console.log("正在刷新父窗口");
     console.log(msg);
-    // var j = msg;
-    // if (msg.result < 0) {
-    //     opener.location.reload();
-    //     _wit.winclose();
-    // }else {
-    //     _wit.winclose();
-    // }
 }
+
 //首页通知
 function cl_index() {
     document.getElementById("index_notice").innerHTML = "";
-    if (flag === 2) {
+    if (flagCheck === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -373,10 +385,10 @@ function cl_index() {
             });
         }
     } else {
-        if (flag === 0) {
+        if (flagCheck === 0) {
             noJoin();
         }
-        if (flag === 1) {
+        if (flagCheck === 1) {
             noChecked();
         }
 
@@ -469,7 +481,7 @@ function fill_index(p) {
 
 //发布通知页面
 function Re_notice() {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         document.getElementById("re_notice").innerHTML = "";
         var div = document.createElement("div");
         div.className = " W11 index99 fix bgc9 CH";
@@ -569,7 +581,7 @@ function cl_notice() {
 
 //获取通知列表
 function getNoticeList(page) {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -662,16 +674,16 @@ if (moreNotice) {
  * 座位表的图片
  * */
 function daisWH(value_w, value_h) {
-    var daisBtn = document.getElementById("dais_value");
-    var wh = daisBtn.getAttribute("data-value");
-    if (wh) {
-        value_w = wh.split("*")[0];
-        value_h = wh.split("*")[1];
-    } else {
-        value_w = 7;
-        value_h = 8;
-    }
-    daisBtn.setAttribute("wh", value_w + "*" + value_h);
+    // var daisBtn = document.getElementById("dais_value");
+    // var wh = daisBtn.getAttribute("data-value");
+    // if (wh) {
+    //     value_w = wh.split("*")[0];
+    //     value_h = wh.split("*")[1];
+    // } else {
+    value_w = 7;
+    value_h = 8;
+    // }
+    // daisBtn.setAttribute("wh", value_w + "*" + value_h);
     console.log("座位表：列" + value_w + " 行" + value_h);
     var cont = "";
     for (var i = 1; i <= value_h * value_w; i++) {
@@ -730,7 +742,7 @@ function get_information_logo() {
 
 //改变座位
 function change_info_logo(s) {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         if (s.src.indexOf("classmatespic.png") > 0) {
             var site = parseInt(s.id.replace(/[^0-9]/ig, ""));
             _wd.toConfirm("确定入坐此位置？", function () {
@@ -773,19 +785,9 @@ function change_site(site) {
                         _wd.info("入座成功！", "bgc5e");
                         // get_information_logo();
                         toMenu("cl_information");
-                        // if (d) {
-                        //     document.body.removeChild(d);
-                        // } else {
-                        //     window.location.reload();
-                        // }
                     } else {
                         _wd.info("入座失败！", "bgc24");
                         toMenu("cl_information");
-                        // if (d) {
-                        //     document.body.removeChild(d);
-                        // } else {
-                        //     window.location.reload();
-                        // }
                     }
                 });
             }
@@ -814,19 +816,27 @@ function cl_information() {
             console.log(JSON.parse(msg));
             var p = JSON.parse(msg).message;
             var logoPath = JSON.parse(msg).logoPath;
-            // console.log(p);
+            console.log(p);
             p.forEach(function (v) {
-                // console.log(logoPath + MD5(v.phone));
+
                 var div = document.createElement("div");
+                var checkBtn = "";
+                var checkBgc = "bgc10";
+                console.log(flagCheck, v.checkrank);
+                // if (flagCheck === 2 && v.checkrank < 1) {
+                //     checkBtn = '<div class="FR  rad03e ACP bgc15">认证</div>';
+                //     checkBgc = "bgc9";
+                // }
+
                 div.className = " CW H7M ofh bordBD1";
-                div.innerHTML = '<li class="absolute CW H7M bordBD1 bgc10 ofh index9">' +
+                div.innerHTML = '<li class="absolute CW H7M bordBD1 ' + checkBgc + ' ofh index9">' +
                     '<img class="FL B5M H5M OFC rad03e M" src="' + logoPath + s_guid + "/" + id + "/" + MD5(v.phone) + '.jpg" onerror="this.src =\'../images/port03.jpg\' " alt=""> ' +
                     '<div class="FL  C8M MT05 LH2"> ' +
-
-                    '<div class="FL W21 '+ (v.phone? "color876" : "colorA")+' bold ofh F3">' + v.name + '</div> '+
+                    '<div class="FL W21 ' + (v.phone ? "color876" : "colorA") + ' bold ofh F3">' + v.name + '</div> ' +
                     '<div class="FR W21 AR color8 F3 ofh">' + v.dept + v.job + '</div> ' +
-                    '<div class="FL W11 color8 F3 ellips AL">' + v.comp +
-                    '</div></div>' +
+                    '<div class="FL W43 color8 F3 ellips AL">' + v.comp + '</div>' +
+                    checkBtn +
+                    '</div>' +
                     '<div class="none" id="tel">' + v.phone + '</div>' +
                     '</li>' +
                     '<div class="absolute left0 B7M H7M F4 AC  bgc36 color1 " style="line-height: ' + 7 * M + 'px">详情</div>' +
@@ -846,7 +856,7 @@ function cl_information() {
     }, function (msg) {
         _wd.info("错误！请重新登录！", "bgc24");
     });
-    if (flag === 2) {
+    if (flagCheck === 2) {
         var f = {
             A_L: function (e) {
                 window.open("tel://" + e.e1);
@@ -1043,7 +1053,7 @@ var ph_more_btn_wrd = 1;//文件页数
 
 //档案
 function cl_photo() {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         getGra_ph();
         ph_more_btn_img = 1;
         ph_more_btn_vdo = 1;
@@ -1085,7 +1095,6 @@ function getGra_ph() {
     _wd.ajax_formdata(url + "/recordGroup/queryByType.do", true, para, function (msg) {
         if (m_Error(msg, "获取毕业照")) {
             var p = JSON.parse(msg).message;
-            console.log(JSON.parse(msg));
             if (p.length > 0) {
                 _gra_id = p[0].id;
                 var para1 = {
@@ -1096,7 +1105,6 @@ function getGra_ph() {
                     page: 1,
                     pagesize: 10
                 };
-                console.log(para1);
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para1, function (msg) {
                     if (m_Error(msg, "获取毕业照图片路路径")) {
                         var p = JSON.parse(msg).message;
@@ -1173,7 +1181,7 @@ function add_photoindex(by_photos) {
 
 //点击毕业照，判断是否存在，否则新建
 ph_touch.onclick = function () {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         var para = {
             token: _token,
             userguid: _userguid,
@@ -1385,6 +1393,7 @@ function get_cl_Photo(page, type) {
     _wd.ajax_formdata(url + "/recordGroup/queryByType.do", true, para, function (msg) {
         if (m_Error(msg, "获取所有档案")) {
             var p = JSON.parse(msg).message;
+            // console.log(p);
             if (p.length > 6) {
                 var more_div = document.createElement("div");
                 more_div.className = " FL ML";
@@ -1439,6 +1448,36 @@ function get_cl_Photo(page, type) {
                 div.onclick = function () {
                     addPhotos(v);
                 };
+                var imgHtml = "";
+                switch (type) {
+                    case 1:
+                        imgSrc = "../images/icon/null_pic.png";
+                        imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">';
+                        break;
+                    case 2:
+                        imgSrc = "../images/icon/null_video.png";
+                        imgHtml =
+                            '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">';
+                        break;
+                    case 4:
+                        imgSrc = "../images/icon/null_flw.png";
+                        imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">';
+                        break;
+                }
+                div.innerHTML = '<div class="pic44  bgc9 AC ofh">' + imgHtml +
+                    '</div>' +
+                    '<div class="F2 ellips A41 PB1M AC color8 " data-id="cl_ph_name">' + v.name + '</div>';
+                switch (type) {
+                    case 1:
+                        ph_img.appendChild(div);
+                        break;
+                    case 2:
+                        ph_video.appendChild(div);
+                        break;
+                    case 4:
+                        ph_word.appendChild(div);
+                        break;
+                }
                 var imgurl = "";
                 var para = {
                     token: _token,
@@ -1451,43 +1490,20 @@ function get_cl_Photo(page, type) {
                 _wd.ajax_formdata(url + "/record/queryByGid.do", true, para, function (msg) {
                     if (m_Error(msg, "获取每个文件夹第一张图片")) {
                         var p = JSON.parse(msg);
-                        var imgSrc = "";
-                        var imgHtml = "";
+                        var img = div.querySelector("img");
                         imgurl = p.logoPath + s_guid + "/" + id + "/";
-                        switch (type) {
-                            case 1:
-                                if (p.message.length > 0) {//相册中含有图片的使用相册首张作为封面
-                                    imgSrc = imgurl + p.message[0].src;
-                                    imgHtml = '<img class="W11 H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
-                                } else {//若为空相册则用默认封面，根据type值区分，并且样式上添加P1M
-                                    imgSrc = "../images/icon/null_pic.png";
-                                    imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
-                                }
-                                break;
-                            case 2:
-                                imgSrc = "../images/icon/null_video.png";
-                                imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
-                                break;
-                            case 4:
-                                imgSrc = "../images/icon/null_flw.png";
-                                imgHtml = '<img class="W11 P1M H11 OFC"  src="' + imgSrc + '" alt="" onerror="_wd.noFind_Pic(this)">'
-                                break;
+                        if (p.message.length > 0 && type === 1) {//相册中含有图片的使用相册首张作为封面
+                            img.classList.remove("P1M");
+                            img.src = imgurl + p.message[0].src;
+                            // console.log(img.src);
                         }
-
-                        div.innerHTML = '<div class="pic44  bgc9 AC ofh">' + imgHtml +
-                            '</div>' +
-                            '<div class="F2 ellips A41 PB1M AC color8 " data-id="cl_ph_name">' + v.name + '</div>';
-                        switch (type) {
-                            case 1:
-                                ph_img.appendChild(div);
-                                break;
-                            case 2:
-                                ph_video.appendChild(div);
-                                break;
-                            case 4:
-                                ph_word.appendChild(div);
-                                break;
-                        }
+                        // else if (p.message.length > 0 && type === 2){
+                        //     img.classList.remove("P1M");
+                        //     getVideoBlob(imgurl + p.message[0].src,function (s) {
+                        //         img.src = s;
+                        //     });
+                        //
+                        // }
                     }
                 }, function (msg) {
                     _wd.info("错误！请重新登录！", "bgc24");
@@ -1497,6 +1513,55 @@ function get_cl_Photo(page, type) {
     }, function (msg) {
         _wd.info("错误！请重新登录！", "bgc24");
     });
+}
+
+function getVideoBlob(url, callback) {
+    var xhr = new XMLHttpRequest();
+    var video = document.createElement("video");
+    xhr.open('get', url, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+        if (this.status === 200) {
+            spiderVideoResponse = this.response;
+            // 将response赋值为Video的src 或者也可以使用preView转换为base64的格式
+            // 截取第一帧的图片方法跟第一种情况一样，而且还解决了获取图片时跨域的问题 一举两得
+            video.src = URL.createObjectURL(this.response);
+        }
+    };
+    xhr.send();
+    var scale = 0.8;
+    console.log(video);
+    var init = function () {
+        video.addEventListener('loadeddata', captureImage);
+    };
+    var captureImage = function () {
+        var canvas = document.createElement("canvas");//创建一个canvas
+        canvas.width = video.videoWidth * scale;//设置canvas的宽度为视频的宽度
+        canvas.height = video.videoHeight * scale;//设置canvas的高度为视频的高度
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);//绘制图像
+        src = canvas.toDataURL("image/png");//将绘制的图像用img显示出来
+        callback(src);//返回图片
+    };
+    init();
+}
+
+function getVideoImg() {
+    var video = document.querySelector("#ph_list>video");
+    console.log(video);
+    var scale = 0.8;
+    var initialize = function () {
+        video.addEventListener('loadeddata', captureImage);
+    };
+    var captureImage = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth * scale;
+        canvas.height = video.videoHeight * scale;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        video.poster = canvas.toDataURL("image/png");
+        console.log(video);
+    };
+
+    initialize();
 }
 
 function ph_type_list(type) {
@@ -1512,7 +1577,7 @@ function ph_type_list(type) {
 
 //新建相册页面
 function newPhoto(type) {
-    if (flag === 2) {
+    if (flagCheck === 2) {
         var cont = document.getElementById("ph_new");
         cont.innerHTML = "";
         var h_tag = "";
@@ -1608,7 +1673,6 @@ function ph_addMore($id, $page, $type) {
                 }
                 p.forEach(function (v) {
                     var div = document.createElement("div");
-
                     switch ($type) {
                         case 1:
                             div.className = "pic33 FL ML ofh AC";
@@ -1616,15 +1680,21 @@ function ph_addMore($id, $page, $type) {
                                 '<img class=" W11 H11 P05M OFC"  src="' + imgurl + v.src + '" alt="" onerror="_wd.noFind_Pic(this)" onclick="toFull_img(this)">';
                             break;
                         case 2:
-                            div.className = "AC H21M";
-                            div.innerHTML = '<div class="W11"><div class="W11 ALP ellips">' + v.name + '</div>' +
-                                '<video class="W11 H11 "  src="' + imgurl + v.src + '" controls="controls"></video>' +
+                            // getVideoBlob( imgurl + v.src,function (s) {
+                            div.className = "AC H24M MB ";
+                            div.innerHTML = '<div class="W11"><div class="W11 AL P1M ellips">' + v.name + '</div>' +
+                                '<video class="W11 H21M " controls="controls"  preload="none" >' +
+                                ' <source src="' + imgurl + v.src + '">' +
+                                '</video>' +
                                 '</div>';
+                            // });
                             break;
                         case 4:
                             div.className = "FL  W11 ellips bordBD1 P1M F2";
                             div.innerHTML =
-                                ' <li class=" W11 H2M F3" ><span class="W65 FL AL ellips" >' + v.name + '</span><a class="W61 FR H2M B2M" href="' + imgurl + v.src + '" download="' + v.name + '"><img class="W61 FR H2M B2M" src="../images/icon/download.png"/></a></li> ' +
+                                ' <li class=" W11 H2M F3" ><span class="W65 FL AL ellips" >' + v.name + '</span>' +
+                                '<a class="W61 FR H2M B2M" href="' + imgurl + v.src + '" download="' + v.name + '">' +
+                                '<img class="W61 FR H2M B2M" src="../images/icon/download.png"/></a></li> ' +
                                 '<li class="W11 F2 AL color8"> ' +
                                 '<div class="FL">上传者：' + v.phone + '</div>' +
                                 '<div class="FR">日期：' + _wd.crtTimeFtt(v.date) + '</div>' +
@@ -1645,28 +1715,40 @@ function ph_addMore($id, $page, $type) {
 * 点击相册照片全屏显示
 * */
 function toFull_img(pic) {
-    var s = document.getElementById("s_select");
-    s.innerHTML = "";
-    s.classList.remove("none");
-    _wd.show(s);
-    var div = document.createElement("div");
-    div.className = "fix   W11 CHmax  ofa";
-    div.id = "full_img";
-    div.innerHTML = '<img src="' + pic.src + '" style="width: 100%;height: 100%">';
-    s.appendChild(div);
-    s.onclick = function () {
-        _wd.hide(s);
+    if (pic.classList.contains("P2M")) {
+        _wd.info("图片加载失败！", "bgc24");
+    } else {
+        var s = document.getElementById("s_select");
+        s.innerHTML = "";
+        s.classList.remove("none");
+        _wd.show(s);
+        var div = document.createElement("div");
+        div.className = "fix   W11 CHmax  ofa";
+        div.id = "full_img";
+        div.innerHTML = '<img src="' + pic.src + '" style="width: 100%;height: 100%">';
+        s.appendChild(div);
+        s.onclick = function () {
+            _wd.hide(s);
+        };
+        var img = document.querySelector("#full_img>img");
+        if (CH - img.clientHeight > 0) {
+            img.style.paddingTop = (CH - img.clientHeight) / 2 + "px";
+        }
     }
-    var img = document.querySelector("#full_img>img");
-    // console.log(img.clientHeight + "_" + CH);
-    // console.log(document.getElementById("full_img").height);
-    if (CH - img.clientHeight > 0) {
-        img.style.paddingTop = (CH - img.clientHeight) / 2 + "px";
-    }
+}
 
+function cb_video(msg) {
+    console.log(msg);
+    var j = msg;
+    if (j && j.result >= 0) {
+        toMenu("cl_photo");
+    } else {
+
+    }
 }
 
 function addPhotos(o) {
+
     console.log(o);
     var record_id = o.id;
     var record_name = o.name;
@@ -1678,21 +1760,39 @@ function addPhotos(o) {
     var div = document.createElement("div");
     div.className = "index100 absolute top0 left0  bgc9 W11 CHmin ofh";
     div.id = "detail_ph";
+    var upLoad = "";
+    if (o.type === 2) {
+        upLoad = '<div  class="MA rad03e bgcff P05M C4M AC relative color1" id="add_photo_video" >上传视频</div>';
+    } else {
+        upLoad = '<div  class="MA rad03e bgcff P05M C4M AC relative color1" id="add_photo" >上传' + ph_type_list(o.type) +
+            '</div>';
+    }
     div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT " id="ph_name">' + record_name +
         '<div class="FL B4M H4M F2" id="ph_return_up"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
         '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
         '</div>' +
         '<div class="bgc10 W11 MTH P1M">' +
-        '<div  class="MA rad03e bgcff P05M C4M AC relative color1" id="add_photo" >上传' + ph_type_list(o.type) +
-        '</div>' +
-        '<div class=" W11 color8 P05M F2 AL" id="ph_title">' + o.memo +
-        '</div>' +
+        upLoad +
         '<input type="file" id="up_photo" multiple="multiple" accept="image/*" class="none" capture="camera" >' +
         '<div class="clear">' +
         '</div></div>' +
+        '<div class=" W11 color8 P05M F2 bgc10 AL PL2M" id="ph_title">' + o.memo +
+        '</div>' +
         '<div class="W11 bgc10" id="ph_list">' +
         '</div>' +
         '<div class="W11 H4M AC color8 F2 PT1M" id="ph_addMore">点击加载更多...</div>';
+    if (o.type === 2) {
+        div.querySelector("#add_photo_video").onclick = function () {
+            _wit.postmessage({
+                functionname: 'getresourcefiles',
+                witparams: {
+                    type: 2,
+                    json: JSON.stringify(o)
+                },
+                callback: 'cb_video'
+            });
+        };
+    }
     cont.appendChild(div);
     _wd.show(cont);
     document.getElementById("photo").classList.add("CHNH");
@@ -1718,172 +1818,154 @@ function addPhotos(o) {
         ph_more_number++;
         ph_addMore(record_id, ph_more_number, o.type);
     };
-    var input = document.getElementById("up_photo");
-    input.value = "";
-    var result;
-    var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
-    var fd;  //FormData方式发送请求
-    var oSelect = document.getElementById("add_photo");
-    // var oAdd = document.getElementById("add");
-    var oInput = document.getElementById("up_photo");
-    if (typeof FileReader === 'undefined') {
-        // alert("抱歉，你的浏览器不支持 FileReader");
-        input.setAttribute('disabled', 'disabled');
-    } else {
-        input.addEventListener('change', readFile, false);
-    }
+    if (o.type !== 2) {
+        var input = document.getElementById("up_photo");
+        input.value = "";
+        var result;
+        var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
+        var fd;  //FormData方式发送请求
+        var oSelect = document.getElementById("add_photo");
+        // var oAdd = document.getElementById("add");
+        var oInput = document.getElementById("up_photo");
+        if (typeof FileReader === 'undefined') {
+            // alert("抱歉，你的浏览器不支持 FileReader");
+            input.setAttribute('disabled', 'disabled');
+        } else {
+            input.addEventListener('change', readFile, false);
+        }
 
-    function readFile() {
-        fd = new FormData();
-        var iLen = this.files.length;
-        var index = 0;
-        var cont = document.getElementById("ph_upload");
-        // cont.innerHTML = "";
-        var div = document.createElement("div");
-        div.id = "ph_up_list" + record_id;
-        div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
-        div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">' +
-            '<div class="FL B4M H4M F2" id="up_return">取消</div>' +
-            '<div class="FR B4M H4M F2 color8 " id="ph_upload_btn" >上传</div>' +
-            '</div>' +
-            // '<div class="H4M AC W11  colorA MTH" onclick="add_up_morePic()">添加照片</div>' +
-            // '<div class="F2 AC W11 MT colorA" id="dbclick_delete"></div>' +
-            '<div class="bgc10 W11 P05M MTH" id="ch_list">' +
-            '</div>';
-        cont.appendChild(div);
-        _wd.show(cont);
-        document.getElementById("detail_ph").classList.add("H1M");
-        document.getElementById("up_return").onclick = function () {
-            _wd.deleteChild("ph_upload", "ph_up_list" + record_id);
-            document.getElementById("detail_ph").classList.remove("H1M");
+        function readFile() {
+            fd = new FormData();
+            var iLen = this.files.length;
+            var index = 0;
+            var cont = document.getElementById("ph_upload");
+            // cont.innerHTML = "";
+            var div = document.createElement("div");
+            div.id = "ph_up_list" + record_id;
+            div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
+            div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">' +
+                '<div class="FL B4M H4M F2" id="up_return">取消</div>' +
+                '<div class="FR B4M H4M F2  " id="ph_upload_btn" >上传</div>' +
+                '</div>' +
+                // '<div class="H4M AC W11  colorA MTH" onclick="add_up_morePic()">添加照片</div>' +
+                // '<div class="F2 AC W11 MT colorA" id="dbclick_delete"></div>' +
+                '<div class="bgc10 W11 P05M MTH" id="ch_list">' +
+                '</div>';
+            cont.appendChild(div);
+            _wd.show(cont);
+            document.getElementById("detail_ph").classList.add("H1M");
+            document.getElementById("up_return").onclick = function () {
+                _wd.deleteChild("ph_upload", "ph_up_list" + record_id);
+                document.getElementById("detail_ph").classList.remove("H1M");
+            };
+            // dais.toggle("ph_upload", 1);
+            for (var i = 0; i < iLen; i++) {
+                var reader = new FileReader();
+                reader.index = i;
+                fd.append("files", this.files[i]);
+                var file_name = this.files[i].name;
+                var file_size = this.files[i].size;
+                var file_type = this.files[i].type;
+                if (file_type === "") {
+                    file_type = /\.[^\.]+$/.exec(file_name);
+                }
+                console.log(file_name, file_type);
+                if (o.type === 1) {
+                    reader.readAsDataURL(this.files[i]);  //转成base64
+                    reader.fileName = this.files[i].name;
+                    reader.onload = function (e) {
+                        var imgMsg = {
+                            name: this.fileName,//获取文件名
+                            base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
+                        };
+                        dataArr.push(imgMsg);
+                        result = ' <img class=" W11 H11 P05M OFC" src="' + this.result + '" onclick="toFull_img(this)"/> ';
+                        // '<img class=" index99 relative H1M B1M topM" src="../images/icon/delete.png" id="delete_ph' + imgMsg.name + '" alt="">' +
+                        var div1 = document.createElement('div');
+                        // div1.index = index;
+                        div1.innerHTML = result;
+                        div1.className = "FL M05 pic33 ofh";
+                        // div1.id = "delete_p" + imgMsg.name;
+                        document.getElementById("ch_list").appendChild(div1);
+                    }
+                }
+                /*    else if (o.type === 2) {
+                        var videoSize = 0;
+                        if (this.files[i].size > 1024 * 1024) {
+                            videoSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                        }
+                        else {
+                            videoSize = (Math.round(this.files[i].size * 100 / 1024) / 100).toString() + 'KB';
+                        }
+                        result = ' <li class=" W11" >' + this.files[i].name + '</li> ' +
+                            '<li class="W11 F2 AL color8">' + videoSize + '</li>';
+                        var div2 = document.createElement('div');
+                        div2.innerHTML = result;
+                        div2.className = "FL  W11 ellips bordBD1";
+                        document.getElementById("ch_list").appendChild(div2);
+                    }*/
+                else if (o.type === 4) {
+                    var fileSize = 0;
+                    if (this.files[i].size > 1024 * 1024) {
+                        fileSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                    }
+                    else {
+                        fileSize = (Math.round(this.files[i].size * 100 / 1024) / 100).toString() + 'KB';
+                    }
+                    result = ' <li class=" W11" >' + this.files[i].name + '</li> ' +
+                        '<li class="W11 F2 AL color8">' + fileSize + '</li>';
+                    var div3 = document.createElement('div');
+                    div3.innerHTML = result;
+                    div3.className = "FL  W11 ellips bordBD1";
+                    document.getElementById("ch_list").appendChild(div3);
+                }
+            }
+            document.getElementById("ph_upload_btn").onclick = function () {
+
+                if (file_size < 20971521) {
+                    fd.append("json", JSON.stringify({
+                        cid: id,
+                        sid: s_guid,
+                        gid: record_id,
+                        phone: _phone,
+                        type: o.type,
+                        name: file_name,
+                        src: "",
+                        memo: file_type,
+                        date: new Date().getTime(),
+                        replay: ""
+                    }));
+                    fd.append("token", _token);
+                    fd.append("userguid", _userguid);
+                    console.log(fd);
+                    _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
+                        // console.log(msg);
+                        // return;
+                        if (m_Error(msg, "上传")) {
+                            _wd.hide("re_photo");
+                            _wd.deleteChild("ph_upload", "ph_up_list" + record_id);
+                            toMenu("cl_photo");
+                            document.getElementById("photo").classList.remove("CHNH");
+                        }
+                    }, function (msg) {
+                        _wd.info("无法上传，请重试！" + msg, "bgc24");
+                    });
+                } else {
+                    _wd.info("请上传小于20M的文件！", "bgc24");
+                }
+
+            }
+        }
+
+        oSelect.onclick = function () {
+            oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
+            //清空已选图片
+            dataArr = [];
+            index = 0;
+            oInput.click();
         };
-        // dais.toggle("ph_upload", 1);
-
-        for (var i = 0; i < iLen; i++) {
-            var reader = new FileReader();
-            reader.index = i;
-            fd.append("files", this.files[i]);
-            console.log(this.files[i]);
-            var file_name = this.files[i].name;
-            var file_size = this.files[i].size;
-            var file_type = this.files[i].type;
-            if (file_type === "") {
-                file_type = /\.[^\.]+$/.exec(file_name);
-            }
-            console.log(file_name, file_type);
-            if (o.type === 1) {
-                reader.readAsDataURL(this.files[i]);  //转成base64
-                reader.fileName = this.files[i].name;
-                reader.onload = function (e) {
-                    var imgMsg = {
-                        name: this.fileName,//获取文件名
-                        base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
-                    };
-                    dataArr.push(imgMsg);
-                    result = ' <img class=" W11 H11 P05M OFC" src="' + this.result + '" onclick="toFull_img(this)"/> ';
-                    // '<img class=" index99 relative H1M B1M topM" src="../images/icon/delete.png" id="delete_ph' + imgMsg.name + '" alt="">' +
-                    var div1 = document.createElement('div');
-                    // div1.index = index;
-                    div1.innerHTML = result;
-                    var upload_btn = document.getElementById("ph_upload_btn");
-                    if (div1.innerHTML.length > 0) {
-                        // document.getElementById("dbclick_delete").innerText = "长按图片删除！";
-                        upload_btn.classList.add("colorff");
-                        upload_btn.classList.remove("color8");
-                    } else {
-                        upload_btn.classList.add("color8");
-                        upload_btn.classList.remove("colorff");
-                    }
-                    div1.className = "FL M05 pic33 ofh";
-                    // div1.id = "delete_p" + imgMsg.name;
-                    document.getElementById("ch_list").appendChild(div1);
-                }
-            } else if (o.type === 2) {
-                var videoSize = 0;
-                if (this.files[i].size > 1024 * 1024) {
-                    videoSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-                }
-                else {
-                    videoSize = (Math.round(this.files[i].size * 100 / 1024) / 100).toString() + 'KB';
-                }
-                result = ' <li class=" W11" >' + this.files[i].name + '</li> ' +
-                    '<li class="W11 F2 AL color8">' + videoSize + '</li>';
-                var div1 = document.createElement('div');
-                div1.innerHTML = result;
-                var upload_btn = document.getElementById("ph_upload_btn");
-                if (div1.innerHTML.length > 0) {
-                    upload_btn.classList.add("colorff");
-                    upload_btn.classList.remove("color8");
-                } else {
-                    upload_btn.classList.add("color8");
-                    upload_btn.classList.remove("colorff");
-                }
-                div1.className = "FL  W11 ellips bordBD1";
-                document.getElementById("ch_list").appendChild(div1);
-            } else if (o.type === 4) {
-                var fileSize = 0;
-                if (this.files[i].size > 1024 * 1024) {
-                    fileSize = (Math.round(this.files[i].size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-                }
-                else {
-                    fileSize = (Math.round(this.files[i].size * 100 / 1024) / 100).toString() + 'KB';
-                }
-                result = ' <li class=" W11" >' + this.files[i].name + '</li> ' +
-                    '<li class="W11 F2 AL color8">' + fileSize + '</li>';
-                var div1 = document.createElement('div');
-                div1.innerHTML = result;
-                var upload_btn = document.getElementById("ph_upload_btn");
-                if (div1.innerHTML.length > 0) {
-                    upload_btn.classList.add("colorff");
-                    upload_btn.classList.remove("color8");
-                } else {
-                    upload_btn.classList.add("color8");
-                    upload_btn.classList.remove("colorff");
-                }
-                div1.className = "FL  W11 ellips bordBD1";
-                document.getElementById("ch_list").appendChild(div1);
-            }
-        }
-        document.getElementById("ph_upload_btn").onclick = function () {
-            if (file_size < 20971521) {
-                fd.append("json", JSON.stringify({
-                    cid: id,
-                    sid: s_guid,
-                    gid: record_id,
-                    phone: _phone,
-                    type: o.type,
-                    name: file_name,
-                    src: "",
-                    memo: file_type,
-                    date: new Date().getTime(),
-                    replay: ""
-                }));
-                fd.append("token", _token);
-                fd.append("userguid", _userguid);
-                _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
-                    if (m_Error(msg, "上传")) {
-                        _wd.hide("re_photo");
-                        _wd.deleteChild("ph_upload", "ph_up_list" + record_id);
-                        toMenu("cl_photo");
-                        document.getElementById("photo").classList.remove("CHNH");
-                    }
-                }, function (msg) {
-                    _wd.info("无法上传，请重试！" + msg, "bgc24");
-                });
-            } else {
-                _wd.info("请上传小于20M的文件！", "bgc24");
-            }
-
-        }
     }
 
-    oSelect.onclick = function () {
-        oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
-        //清空已选图片
-        dataArr = [];
-        index = 0;
-        oInput.click();
-    };
 }
 
 

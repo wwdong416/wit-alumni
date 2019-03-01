@@ -19,11 +19,11 @@
 <div id="classmates_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <div id="addBtn" class="W11 AC H none"></div>
 <div id="tip" class="W11 AC H none"></div>
+
 <!--导航栏-->
-<div class="index90 fix top0 H W11 AC ffHT  bgct1">慧脑校友录
+<div class="index90 fix top0 H W11 AC ffHT  bgct1">慧脑校友云
     <img data-src='../images/icon/back_w.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
-    <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON "
-         onclick="window.open(location.href.replace('H5/Classmates','com/manager'))"/>
+    <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON " id="i_class"/>
 </div>
 <!--首页-->
 <div id="index" class="MTH F3">
@@ -80,9 +80,9 @@
         <div class="W11 AC inlineB MT">
             <div class="FL ML AL color8  bold ">座位表</div>
             <div class="FR ">
-                <div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);" id="dais_value">
-                    调整座位
-                </div>
+                <!--<div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);" id="dais_value">-->
+                    <!--调整座位-->
+                <!--</div>-->
             </div>
             <div class="clear H3M"></div>
         </div>
@@ -290,159 +290,159 @@
     }
 
     //调整座位表
-    var dais = {
-
-        attr: {
-            outtype: "",
-            outtext: "",
-            date_show_gs: "",
-            H: 0,
-            rowx: [],
-            rowy: [],
-            d_h: 0,
-            d_w: 0,
-            date_sli: []
-        },
-        init: function ($d, $p, $gs) {
-            var dais_wh = document.getElementById("dais_value").getAttribute("wh");
-            // console.log(dais_wh.split("*"));
-            var n = "01";
-            var d = $d, p = $p || "s_select", $ = this, gs = $gs;
-            this.attr.outtype = n;
-            this.attr.date_sli = ['row_x', 'row_y'];
-            this.attr.rowx = [4, 5, 6, 7, 8];
-            this.attr.rowy = [4, 5, 6, 7, 8, 9, 10];
-            this.attr.H = (M ? M : 10) * 4;
-            this.attr.d_h = dais_wh.split("*")[0];
-            this.attr.d_w = dais_wh.split("*")[1];
-            var cont = '<div id="UI_bk" class="W11 H11 bgca04"></div>' +
-                '<div id="UI_content" class="index99 fix bottom0 FL W11 H35M bgc7 AC" >' +
-                '<div id="wit_date_opt" class="FL MLT A54 H AC bgc10 bord0" ></div>' +
-                '<div id="wit_date_confirm" class="FR MRT A51 H AC bgc104">确认</div>' +
-                '<div id="wit_scr" class="FL ML A11 H28M" ><div class="no_event index999 absolute bottom13M W11 H bgc118 alpha2"></div>';
-            if (typeof d != "object") {
-                console.warn("params 1 不合格！请传递触发的dom对象！");
-                return;
-            }
-            this.attr.date_show_gs = gs ? gs : "列行";
-            for (var i in n.split("")) {
-                cont += '<div id="' + this.attr.date_sli[n.charAt(i)] + '" name="s" class="ofa FL MT H11 W' + n.length + '1 bgc' + (8 + Number(i)) + '" ></div>'
-            }
-            document.getElementById(p).innerHTML = cont + "</div>";
-            this.toggle(p, 1);
-            this.C_scrolli(0, this.attr.d_h, this.attr.d_w);
-            document.getElementById('wit_date_confirm').addEventListener('click', function () {
-                var o = document.querySelector("#wit_date_opt");
-                var value = document.getElementById("dais_value");
-                // console.log(o.innerText);
-                var daiswh = o.innerText.split("");
-                var daish;
-                if (daiswh[12] === "1") {
-                    daish = 10;
-                    daisWH(daiswh[6], daish);
-                    value.setAttribute("data-value", daiswh[6] + "*" + daish);
-                } else {
-                    daisWH(daiswh[6], daiswh[12]);
-                    value.setAttribute("data-value", daiswh[6] + "*" + daiswh[12]);
-                }
-                console.log(daiswh[6] + "_" + daiswh[12]);
-                $.toggle(p, 0);
-                toMenu("cl_information");
-            }, false);
-            document.getElementById("UI_bk").addEventListener("click", function () {
-                $.toggle(p, 0);
-            }, false);
-        },
-        toggle: function (d, syn) {
-            d = typeof d == "string" ? document.getElementById(d) : d;
-            if (syn) {
-                d.style.display = "";
-                d.classList.remove("none");
-                document.body.style.overflow = "hidden";
-            } else {
-                d.style.display = "none";
-                d.classList.add("none");
-                document.body.style.overflow = "auto";
-            }
-        },
-        C_scrolli: function (k, x1, y1) {
-            var x;
-            var len = 0;
-            if (k == 0) {
-                x = this.attr.rowx;
-                if (x1) {
-                    var num = parseInt(x1);
-                    len = this.attr.rowx.indexOf(num);
-                }
-                // console.log(x1, this.attr.rowx, len);
-            } else if (k == 1) {
-                x = this.attr.rowy;
-                if (y1) {
-                    var num1 = parseInt(y1);
-                    len = this.attr.rowy.indexOf(num1);
-                }
-                // console.log(y1, this.attr.rowy, len);
-            }
-            var content = "<ul class='FL W11 color333 bold'><li class='W11 H' ></li><li class='W11 H' ></li><li class='W11 H' ></li>";
-            for (var i in x) {
-                content += "<li class='W11 H AC ' data-v=" + x[i] + " onclick='dais.turn()' >" + x[i] + "</li>"
-            }
-            content = content + "<li class='W11 H ' ></li><li class='W11 H' ></li><li class='W11 H' ></li></ul>";
-            var node = k + 1;
-            if (node < 3) {
-                var scrp = document.getElementById("wit_scr").children[node];
-                scrp.innerHTML = content;
-                scrp.scrollTop = this.attr.H * len;
-                scrp.addEventListener('touchend', this.alladjust, false);
-                scrp.addEventListener('scroll', this.scrolladjust, false);
-            }
-            if (k < this.attr.outtype.length - 1) {
-                this.attr.rowx = this.attr.d_h;
-                // console.log(this.attr.rowx);
-                this.C_scrolli(k + 1, x1, y1);
-                // console.log(x1, y1);
-            } else {
-                this.attr.rowy = this.attr.d_w;
-                // console.log(this.attr.rowy);
-                this.displaydate();
-            }
-        },  //生成滚轮
-        turn: function () {
-            var litop = event.srcElement.offsetTop - event.srcElement.parentNode.offsetTop;
-            var ppobj = event.srcElement.parentNode.parentNode;
-            ppobj.scrollTop = litop - H * 3;
-            if (ppobj.id == "row_x") {
-                this.attr.rowx = event.srcElement.dataset.v;
-                this.displaydate();
-            } else {
-                this.attr.rowy = event.srcElement.dataset.v;
-                this.displaydate();
-            }
-        },
-        //调整滚动后位置
-        alladjust: function () {
-            var obj = event.srcElement.parentNode.parentNode;
-            setTimeout(function () {
-                obj.childNodes[0].childNodes[Math.round(obj.scrollTop / dais.attr.H) + 3].click();
-            }, 500);
-        },
-        //滚轮调整
-        scrolladjust: function () {
-            var obj = event.srcElement;
-            setTimeout(function () {
-                obj.childNodes[0].childNodes[Math.round(obj.scrollTop / dais.attr.H) + 3].click()
-            }, 500);
-        },
-        //显示到输出
-        displaydate: function () {
-            var outtext = "座位调整为：";
-            outtext += this.attr.rowx + " 列 × " + this.attr.rowy + " 行";
-            this.attr.outtext = outtext;
-            document.getElementById("wit_date_opt").innerHTML = this.attr.outtext;
-            this.attr.d_w = this.attr.rowy;
-            this.attr.d_h = this.attr.rowx;
-        },
-    };
+    // var dais = {
+    //
+    //     attr: {
+    //         outtype: "",
+    //         outtext: "",
+    //         date_show_gs: "",
+    //         H: 0,
+    //         rowx: [],
+    //         rowy: [],
+    //         d_h: 0,
+    //         d_w: 0,
+    //         date_sli: []
+    //     },
+    //     init: function ($d, $p, $gs) {
+    //         var dais_wh = document.getElementById("dais_value").getAttribute("wh");
+    //         // console.log(dais_wh.split("*"));
+    //         var n = "01";
+    //         var d = $d, p = $p || "s_select", $ = this, gs = $gs;
+    //         this.attr.outtype = n;
+    //         this.attr.date_sli = ['row_x', 'row_y'];
+    //         this.attr.rowx = [4, 5, 6, 7, 8];
+    //         this.attr.rowy = [4, 5, 6, 7, 8, 9, 10];
+    //         this.attr.H = (M ? M : 10) * 4;
+    //         this.attr.d_h = dais_wh.split("*")[0];
+    //         this.attr.d_w = dais_wh.split("*")[1];
+    //         var cont = '<div id="UI_bk" class="W11 H11 bgca04"></div>' +
+    //             '<div id="UI_content" class="index99 fix bottom0 FL W11 H35M bgc7 AC" >' +
+    //             '<div id="wit_date_opt" class="FL MLT A54 H AC bgc10 bord0" ></div>' +
+    //             '<div id="wit_date_confirm" class="FR MRT A51 H AC bgc104">确认</div>' +
+    //             '<div id="wit_scr" class="FL ML A11 H28M" ><div class="no_event index999 absolute bottom13M W11 H bgc118 alpha2"></div>';
+    //         if (typeof d != "object") {
+    //             console.warn("params 1 不合格！请传递触发的dom对象！");
+    //             return;
+    //         }
+    //         this.attr.date_show_gs = gs ? gs : "列行";
+    //         for (var i in n.split("")) {
+    //             cont += '<div id="' + this.attr.date_sli[n.charAt(i)] + '" name="s" class="ofa FL MT H11 W' + n.length + '1 bgc' + (8 + Number(i)) + '" ></div>'
+    //         }
+    //         document.getElementById(p).innerHTML = cont + "</div>";
+    //         this.toggle(p, 1);
+    //         this.C_scrolli(0, this.attr.d_h, this.attr.d_w);
+    //         document.getElementById('wit_date_confirm').addEventListener('click', function () {
+    //             var o = document.querySelector("#wit_date_opt");
+    //             var value = document.getElementById("dais_value");
+    //             // console.log(o.innerText);
+    //             var daiswh = o.innerText.split("");
+    //             var daish;
+    //             if (daiswh[12] === "1") {
+    //                 daish = 10;
+    //                 daisWH(daiswh[6], daish);
+    //                 value.setAttribute("data-value", daiswh[6] + "*" + daish);
+    //             } else {
+    //                 daisWH(daiswh[6], daiswh[12]);
+    //                 value.setAttribute("data-value", daiswh[6] + "*" + daiswh[12]);
+    //             }
+    //             console.log(daiswh[6] + "_" + daiswh[12]);
+    //             $.toggle(p, 0);
+    //             toMenu("cl_information");
+    //         }, false);
+    //         document.getElementById("UI_bk").addEventListener("click", function () {
+    //             $.toggle(p, 0);
+    //         }, false);
+    //     },
+    //     toggle: function (d, syn) {
+    //         d = typeof d == "string" ? document.getElementById(d) : d;
+    //         if (syn) {
+    //             d.style.display = "";
+    //             d.classList.remove("none");
+    //             document.body.style.overflow = "hidden";
+    //         } else {
+    //             d.style.display = "none";
+    //             d.classList.add("none");
+    //             document.body.style.overflow = "auto";
+    //         }
+    //     },
+    //     C_scrolli: function (k, x1, y1) {
+    //         var x;
+    //         var len = 0;
+    //         if (k == 0) {
+    //             x = this.attr.rowx;
+    //             if (x1) {
+    //                 var num = parseInt(x1);
+    //                 len = this.attr.rowx.indexOf(num);
+    //             }
+    //             // console.log(x1, this.attr.rowx, len);
+    //         } else if (k == 1) {
+    //             x = this.attr.rowy;
+    //             if (y1) {
+    //                 var num1 = parseInt(y1);
+    //                 len = this.attr.rowy.indexOf(num1);
+    //             }
+    //             // console.log(y1, this.attr.rowy, len);
+    //         }
+    //         var content = "<ul class='FL W11 color333 bold'><li class='W11 H' ></li><li class='W11 H' ></li><li class='W11 H' ></li>";
+    //         for (var i in x) {
+    //             content += "<li class='W11 H AC ' data-v=" + x[i] + " onclick='dais.turn()' >" + x[i] + "</li>"
+    //         }
+    //         content = content + "<li class='W11 H ' ></li><li class='W11 H' ></li><li class='W11 H' ></li></ul>";
+    //         var node = k + 1;
+    //         if (node < 3) {
+    //             var scrp = document.getElementById("wit_scr").children[node];
+    //             scrp.innerHTML = content;
+    //             scrp.scrollTop = this.attr.H * len;
+    //             scrp.addEventListener('touchend', this.alladjust, false);
+    //             scrp.addEventListener('scroll', this.scrolladjust, false);
+    //         }
+    //         if (k < this.attr.outtype.length - 1) {
+    //             this.attr.rowx = this.attr.d_h;
+    //             // console.log(this.attr.rowx);
+    //             this.C_scrolli(k + 1, x1, y1);
+    //             // console.log(x1, y1);
+    //         } else {
+    //             this.attr.rowy = this.attr.d_w;
+    //             // console.log(this.attr.rowy);
+    //             this.displaydate();
+    //         }
+    //     },  //生成滚轮
+    //     turn: function () {
+    //         var litop = event.srcElement.offsetTop - event.srcElement.parentNode.offsetTop;
+    //         var ppobj = event.srcElement.parentNode.parentNode;
+    //         ppobj.scrollTop = litop - H * 3;
+    //         if (ppobj.id == "row_x") {
+    //             this.attr.rowx = event.srcElement.dataset.v;
+    //             this.displaydate();
+    //         } else {
+    //             this.attr.rowy = event.srcElement.dataset.v;
+    //             this.displaydate();
+    //         }
+    //     },
+    //     //调整滚动后位置
+    //     alladjust: function () {
+    //         var obj = event.srcElement.parentNode.parentNode;
+    //         setTimeout(function () {
+    //             obj.childNodes[0].childNodes[Math.round(obj.scrollTop / dais.attr.H) + 3].click();
+    //         }, 500);
+    //     },
+    //     //滚轮调整
+    //     scrolladjust: function () {
+    //         var obj = event.srcElement;
+    //         setTimeout(function () {
+    //             obj.childNodes[0].childNodes[Math.round(obj.scrollTop / dais.attr.H) + 3].click()
+    //         }, 500);
+    //     },
+    //     //显示到输出
+    //     displaydate: function () {
+    //         var outtext = "座位调整为：";
+    //         outtext += this.attr.rowx + " 列 × " + this.attr.rowy + " 行";
+    //         this.attr.outtext = outtext;
+    //         document.getElementById("wit_date_opt").innerHTML = this.attr.outtext;
+    //         this.attr.d_w = this.attr.rowy;
+    //         this.attr.d_h = this.attr.rowx;
+    //     },
+    // };
 
     function cl_dynamic() {
 
