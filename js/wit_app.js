@@ -289,6 +289,18 @@ var _wd = {
             div.classList.add("none");
         }
     },
+    up_down:function(p,s){
+        console.log(s);
+        var div = document.getElementById(p);
+        var u  = s.querySelector("b");
+        if (div.className.indexOf("none") > -1) {
+            div.classList.remove("none");
+            u.innerHTML = " &#9650";
+        } else {
+            div.classList.add("none");
+            u.innerHTML = " &#9660";
+        }
+    },
     /**
      * 添加清除浮动
      * @id 目标id

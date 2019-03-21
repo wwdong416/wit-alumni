@@ -13,7 +13,7 @@ var id = _wd.getUrl_sid().cid;
 //获取班级在表中的id（退出此班级用）
 
 
-var _userguid, _token, _phone, _editor, _schoolName, _className;
+var _userguid, _token, _phone, _editor, _className;
 //flagCheck表示成员状态  0：未加入班级 1：加入班级，审核状态 2：审核通过
 var flagCheck = 0;
 
@@ -225,11 +225,14 @@ function class_message() {
             console.log(p);
             if (p.length > 0) {
                 //获取班级和班主任
-                _className = p[0].name;
-                document.getElementById("class_name").innerText = _className+"校友会";
+                var _className = p[0].name;
+                var _master = p[0].master;
+                document.getElementById("class_name").innerText = _className + "校友会";
+                document.getElementById("class_master").innerText = "管理员：" + _master;
                 document.getElementById("i_class").onclick = function () {
                     window.open(location.href.replace('H5/Classmates', 'com/manager') + "&t=" + p[0].type);
-                }
+                };
+                class_msg(p);
             }
             else {
                 _wd.toConfirm("校友会数据异常，是否重新添加！", openClass, backindex)
@@ -250,8 +253,8 @@ function openSchool() {
 }
 
 // 班级详情
-function class_msg() {
-    // console.log(s);
+function class_msg(s) {
+    console.log(s);
     // console.log(c);
     var p = document.getElementById("new_page");
     p.innerHTML = "";
@@ -259,29 +262,31 @@ function class_msg() {
     div.className = "fix W11 CHmax bgc9  ofa";
     div.innerHTML = '<div class="fix top0 H W11 AC bgct1 ffHT">校友会信息' +
         '    <div  class="FL B4M H4M F2" onclick="_wd.hide(new_page)">' +
-        '<img src="../images/icon/back_w.png" class="FL B4M H4M  P1M" > </div>' +
+        '<img src="../images/icon/back_w.png" class="FL B4M H4M  P1M"> </div>' +
         '    <div  class="FR B4M H4M F2 color8">' +
         '</div>' +
         '</div>' +
         '<div class=" W11 F3 bgc10 MTH">' +
-        '<div class="bordBD1 H4M ">' +
-        '<div class="FL W31 AL P1M">学校</div>' +
-        '<div  class="FR W32 AR P1M color8">'  + '</div>' +
-        '<div class="clear"></div>' +
-        '</div>' +
-        '<div class="bordBD1 H4M ">' +
-        '<div class="FL W31 AL P1M">学校对外电话</div>' +
-        '<div  class="FR W32 AR P1M color8">' +   '</div>' +
-        '<div class="clear"></div>' +
-        '</div>' +
+        '<div class="H21M"><img src="../images/class.jpg" alt="" class="W11 OFC H21M"  onclick="toFull_img(this)"></div>' +
+        '<div class=" MT2 M F4 bold ellips">' + s[0].name + '</div>' +
         '<div class="bordBD1 H4M ">' +
         '<div class="FL W31 AL P1M">管理员</div>' +
-        '<div  class="FR W32 AR P1M color8">' +   '</div>' +
+        '<div  class="FR W32 AR P1M color8">' + s[0].master + '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
+        '<div class="bordBD1 H4M ">' +
+        '<div class="FL W31 AL P1M">电话</div>' +
+        '<div  class="FR W32 AR P1M color8">' + s[0].phone + '</div>' +
+        '<div class="clear"></div>' +
+        '</div>' +
+        // '<div class="bordBD1 H4M ">' +
+        // '<div class="FL W31 AL P1M">管理员</div>' +
+        // '<div  class="FR W32 AR P1M color8">' + '</div>' +
+        // '<div class="clear"></div>' +
+        // '</div>' +
         '</div>';
     p.appendChild(div);
-    _wd.show(p);
+    // _wd.show(p);
 
 }
 
@@ -616,7 +621,6 @@ if (moreNotice) {
 }
 
 
-
 //添加通讯录
 function cl_information() {
     // daisWH();
@@ -815,7 +819,7 @@ function classmatesMember(p) {
             }
             var addr = "";
             if (p[0].addr) {
-                addr = p[0].addr.split("@@")[0]+p[0].addr.split("@@")[1];
+                addr = p[0].addr.split("@@")[0] + p[0].addr.split("@@")[1];
             } else {
                 addr = "";
             }
