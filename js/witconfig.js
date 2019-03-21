@@ -1,7 +1,7 @@
 ﻿/* Author: ljj
  特殊配置
  */
-
+"use strict";
 var _cefQuery = typeof cefQuery != "undefined" ? true : false;
 var _externalfun = typeof externalfun != "undefined" ? true : false;
 var _sex_img = '../img/a/sex.jpg';
@@ -18,7 +18,7 @@ var _wit = {
     imagepath: _externalfun ? externalfun.getitem("imagepath") : localStorage.getItem("imagepath"),
     imgpath: _externalfun ? externalfun.getimagepath() : localStorage.getItem("imgpath"),
     path: {
-        local: "http://192.168.1.101:8080/",
+        local: "http://192.168.1.105:8080/",
         server: "http://121.43.233.185/"
     },
     cookie: function ($fun) {
@@ -444,8 +444,8 @@ var _wit = {
     event: {
         input_del: function ($cb) {
             var list = document.querySelectorAll("input[data-t~='clear']"), cb = $cb || function () {
-                    console.log("clear call back;");
-                };
+                console.log("clear call back;");
+            };
             Array.prototype.forEach.call(list, function (v, i) {
                 var del = v.nextElementSibling && v.nextElementSibling.title == "quick";
                 if (!del) {
@@ -494,7 +494,7 @@ var _wit = {
                     };
                     v.oninput = function () {
                         //v.value = v.value.replace(/\D/g, "");
-                        v.value = Number(v.value);
+                        v.value = v.value.length > 0 ? Number(v.value) : "";
                         if (input) input();
                     }
                 }
@@ -523,7 +523,7 @@ var _wit = {
             var list = document.querySelectorAll("input[data-t]"),
                 d = typeof $d == "string" ? document.querySelector("#" + $d) : $d;
             var f = $f || function () {
-                };
+            };
             Array.prototype.forEach.call(list, function (v) {
                 var t = v.dataset.t;
                 if (!t || ["radio", "radios", "check", "checks"].indexOf(t) < 0) return;
@@ -651,7 +651,7 @@ var _wit = {
             var list = document.querySelectorAll("div[data-t]"),
                 d = typeof $d == "string" ? document.querySelector("#" + $d) : $d;
             var f = $f || function () {
-                };
+            };
             Array.prototype.forEach.call(list, function (v) {
                 var t = v.dataset.t;
                 if (!t || ["radio", "radios", "check", "checks"].indexOf(t) < 0) return;
@@ -829,6 +829,12 @@ var _wit = {
             callback: "window.close"
         });
     },
+    error: function () {
+        if (!this.witknow) {
+            _fun.toError("http://www.witknow.com/", "请下载慧脑浏览器！");
+            return;
+        }
+    },
     /*———————————base—————————————*/
     $: function ($q) {
         var q = $q.trim();
@@ -926,7 +932,7 @@ var _fun = {
         var d = $dom, attr = $attrObject || {attr: {on: "", off: ""}}, syn = $allOff,
             fun = $callback || function () {
 
-                }, initIndex = $initIndex;
+            }, initIndex = $initIndex;
         if (typeof d == "string") d = document.querySelector("#" + d);
         d.dataset.radio = initIndex == void 0 ? -1 : initIndex;
         var dl = d.children;
@@ -1020,9 +1026,9 @@ var _fun = {
     radioFun: function ($p, $t, $y, $n) {
         var t = $t, p = $p, y = $y || function () {
 
-            }, n = $n || function () {
+        }, n = $n || function () {
 
-            }, l;
+        }, l;
         typeof t == "string" && (t = document.getElementById(t));
         typeof p == "string" && (p = document.getElementById(p));
         l = p.children;
@@ -1444,7 +1450,7 @@ var _fun = {
         }, time || 1500);
     },              //自定义错误——自动生成
     toLoading: function ($time, $img, $modal) {
-        var $this = this, img = $img || "../images/icon/witing2.gif", d = document.querySelector("#toLoading"), time = $time || 5000, modal = $modal;
+        var $this = this, img = $img || "../img/other/witing2.gif", d = document.querySelector("#toLoading"), time = $time || 5000, modal = $modal;
         if (d) {
             document.body.removeChild(d);
             clearTimeout($this._sto);
@@ -1494,10 +1500,10 @@ var _fun = {
         var div = document.createElement("div"), d = document.querySelector("#s_downList");
         if (!d) {
             div.id = "s_downList";
-            div.className = "W11 CH fix top0 bgca index99 none";
+            div.className = "W11 CH fix top0 bgca index999 none";
             div.innerHTML = '<div class="absolute"></div>';
-            a.parentNode.insertBefore(div, a);
-//            document.body.appendChild(div);
+            //a.parentNode.insertBefore(div, a);
+            document.body.appendChild(div);
             d = document.querySelector("#s_downList");
         }
         d.onclick = function () {
@@ -1577,15 +1583,15 @@ var _fun = {
                 else {
                     !noloading && $this.toLoading(0);
                     var funerr = error || function () {
-                            $this.toAlert("网络异常！", 1500);
-                        };
+                        $this.toAlert("网络异常！", 1500);
+                    };
                     funerr();
                 }
             }
         };
         xmlhttp.send(form);
     },
-    fetch: function (url, p, cfg = 1) {
+    fetch: function (url, p, cfg) {
         var form = new FormData();
         if (p instanceof FormData) {
             form = p;
@@ -1599,18 +1605,18 @@ var _fun = {
             }
         }
         return p && fetch(url, {
-                method: "post",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: form
-            }) || fetch(url);
+            method: "post",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: form
+        }) || fetch(url);
     },
     //异常处理
     using: function (fun, err) {
         err = err || function () {
 
-            };
+        };
         try {
             fun();
         } catch (ex) {
@@ -1622,9 +1628,9 @@ var _fun = {
 
 ~function () {
     String.prototype.toggle = function (array) {
-        var ret = $this = this, len = array.length;
+        var ret = this, len = array.length;
         array.some(function (v, ix) {
-            if ($this == v) ret = array[(ix + 1) % len];
+            if (ret == v) ret = array[(ix + 1) % len];
         });
         return ret;
     };
@@ -1632,17 +1638,17 @@ var _fun = {
         //return this.replace(/(^\s*)|(\s*$)/g, "");
         //return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
         v = (v || "\\s").replace(/(\W)/g, "\\$1").replace("\\\\", "\\");
-        return this.replace(new RegExp("^" + v + "*" + "|" + v + "*$", "g"), "");
+        return this.replace(new RegExp("^(" + v + ")*" + "|(" + v + ")*$", "g"), "");
     };
     String.prototype.ltrim = function (v) {
         //return this.replace(/(^\s*)/g, "");
         v = (v || "\\s").replace(/(\W)/g, "\\$1").replace("\\\\", "\\");
-        return this.replace(new RegExp("^" + v + "*", "g"), "");
+        return this.replace(new RegExp("^(" + v + ")*", "g"), "");
     };
     String.prototype.rtrim = function (v) {
         //return this.replace(/\s*$/g, "");
         v = (v || "\\s").replace(/(\W)/g, "\\$1").replace("\\\\", "\\");
-        return this.replace(new RegExp(v + "*$", "g"), "");
+        return this.replace(new RegExp("(" + v + ")*$", "g"), "");
     };
     String.prototype.params = function (v) {
         var s = this, o = {}, t = v || "&";

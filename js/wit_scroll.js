@@ -48,7 +48,7 @@ function MyScroll(selector, options) {
                 json.fn();
             }
         });
-        console.log(document.documentElement.scrollTop);
+         console.log(document.documentElement.scrollTop);
         console.log(document.body.scrollTop);
         // console.log(document.documentElement.scrollTop,slider.offsetHeight , wrapper.offsetHeight);
         //当外包元素的scrollTop值为0时才有下拉效果

@@ -76,7 +76,7 @@ var _wd = {
         var t = $t, d = document.querySelector("#toConfirm"), f = $f, e = $e || function () {
             document.body.removeChild(div);
         };
-        var className = "AC fix ffWRYH F3 MA color8 rad05e  PT1M bgc10";
+        var className = "AC fix ffWRYH F3 MA color8 PT05M rad05e  bgc10";
         if (d) {
             document.body.removeChild(d);
         }
@@ -85,9 +85,9 @@ var _wd = {
         div.id = "toConfirm";
         div.innerHTML = '<div class="' + className + '" style="width:50%;top:45%;left:0; right: 0">' +
             '<div class="P1M">' + t + '</div>' +
-            '<div class="MT bordTD1">' +
-            '<div class="FL  W21 bordRD1 colorR P1M" id="toTrue">确认</div>' +
-            '<div class="W21  FR bordLD1 P1M" id="toFalse">取消</div></div>' +
+            '<div class="MT05 bordTD1">' +
+            '<div class="FL  W21 bordRD1 colorC bold P1M" id="toTrue">确认</div>' +
+            '<div class="W21  FR bordLD1 bold P1M" id="toFalse">取消</div></div>' +
             '</div>';
         document.body.appendChild(div);
         document.getElementById("toTrue").onclick = f;
@@ -603,6 +603,59 @@ var _wd = {
             }
         }
         return data;
-    }
+    },
+    getVideoBlob: function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        var video = document.createElement("video");
+        xhr.open('get', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                spiderVideoResponse = this.response;
+                // 将response赋值为Video的src 或者也可以使用preView转换为base64的格式
+                // 截取第一帧的图片方法跟第一种情况一样，而且还解决了获取图片时跨域的问题 一举两得
+                video.src = URL.createObjectURL(this.response);
+            }
+        };
+        xhr.send();
+        var scale = 0.8;
+        console.log(video);
+        var init = function () {
+            video.addEventListener('loadeddata', captureImage);
+        };
+        var captureImage = function () {
+            var canvas = document.createElement("canvas");//创建一个canvas
+            canvas.width = video.videoWidth * scale;//设置canvas的宽度为视频的宽度
+            canvas.height = video.videoHeight * scale;//设置canvas的高度为视频的高度
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);//绘制图像
+            src = canvas.toDataURL("image/png");//将绘制的图像用img显示出来
+            callback(src);//返回图片
+        };
+        init();
+    },
+
+    getVideoImg: function () {
+        var video = document.querySelector("#ph_list>video");
+        console.log(video);
+        var scale = 0.8;
+        var initialize = function () {
+            video.addEventListener('loadeddata', captureImage);
+        };
+        var captureImage = function () {
+            var canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth * scale;
+            canvas.height = video.videoHeight * scale;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            video.poster = canvas.toDataURL("image/png");
+            console.log(video);
+        };
+
+        initialize();
+    },
+    //通过地址title判断是否为直辖市
+    isProvince_level:function (id) {
+
+        return ["11", "12", "31", "50"].indexOf(id.substr(0, 2)) >= 0;
+    },
 };
 

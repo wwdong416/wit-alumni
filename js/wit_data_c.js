@@ -3,6 +3,7 @@
  * @date 2018/11/2
  * @Description:数据交互接口
  */
+// var _userguid = "10086", _token = "a7ed951bc954130d23c318ed4136cb61";
 var url = "http://121.43.233.185/alumnicloudweb";
 // var url = "http://192.168.10.23:8080";
 //获取学校id
@@ -10,7 +11,7 @@ var s_guid = _wd.getUrl_sid().sid;
 //获取班级id
 var id = _wd.getUrl_sid().cid;
 //获取班级在表中的id（退出此班级用）
-var class_id = _wd.getUrl_sid().id;
+
 
 var _userguid, _token, _phone, _editor, _schoolName, _className;
 //flagCheck表示成员状态  0：未加入班级 1：加入班级，审核状态 2：审核通过
@@ -20,7 +21,7 @@ var myclass, myObject, myPrivacy, myPersocial, myEduJson;
 
 var base64img = "";
 
-console.log(class_id, s_guid, id);
+console.log(s_guid, id);
 
 //返回值失败的情况
 
@@ -78,7 +79,7 @@ function isMsg() {
         cid: id,
         phone: _phone
     };
-    _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
+    _wd.ajax_formdata(url + "/areaMember/queryByCH.do", true, para, function (msg) {
         if (m_Error(msg, "获取本人在此班级信息")) {
             var p = JSON.parse(msg);
             console.log(p);
@@ -101,7 +102,7 @@ function isMsg() {
             toMenu("cl_index");
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -112,10 +113,10 @@ function noJoin() {
     document.getElementById("index_tip").innerText = "";
     var div = document.createElement("div");
     div.className = "fix topH W11 MA rad03e bgc104";
-    div.innerHTML = '加入此班级！';
-    div.onclick = function () {
-        _wd.toConfirm("是否加入此班级！", addClassmate)
-    };
+    div.innerHTML = '加入此校友会！';
+    // div.onclick = function () {
+    //     _wd.toConfirm("是否加入此校友会！", addClassmate)
+    // };
     cont.appendChild(div);
 }
 
@@ -126,7 +127,7 @@ function noChecked() {
     document.getElementById("index_tip").innerText = "";
     var div = document.createElement("div");
     div.className = "fix topH W11 MA rad03e F2 bgc104";
-    div.innerHTML = '等待管理员审核！(点击右上角进入班级后台进行审核！)';
+    div.innerHTML = '等待管理员审核！(点击右上角进入校友会后台进行审核！)';
     cont.appendChild(div);
 }
 
@@ -158,8 +159,8 @@ function addClassmate() {
     var a = o.per_address.split("||");
     console.log(a.length);
     if (a.length > 1) {
-        p.acode = a[1] || "";
-        p.addr = a[0] || "";
+        p.acode = a[1];
+        p.addr = a[0]
     }
     p.cid = id;
     p.sid = s_guid;
@@ -190,8 +191,8 @@ function addClassmate() {
     para.logo = base64img || "";
     console.log("成员信息", para);
     console.log(base64img);
-    _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
-        if (m_Error(msg, "插入此班级")) {
+    _wd.ajax_formdata(url + "/areaMember/insert.do", true, para, function (msg) {
+        if (m_Error(msg, "插入此校友会")) {
             console.log(msg);
             var j = JSON.parse(msg);
             if (j.result >= 0) {
@@ -207,7 +208,7 @@ function addClassmate() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -216,56 +217,26 @@ function class_message() {
     var para = {
         token: _token,
         userguid: _userguid,
-        guid: s_guid,
-        page: 1,
-        pagesize: 1
+        guid: id,
     };
-    _wd.ajax_formdata(url + "/school/queryByGuid.do", true, para, function (msg) {
-        if (m_Error(msg, "获取学校信息")) {
+    _wd.ajax_formdata(url + "/areaSchool/queryByGuid.do", true, para, function (msg) {
+        if (m_Error(msg, "获取校友会信息")) {
             var p = JSON.parse(msg).message;
             console.log(p);
             if (p.length > 0) {
-                _schoolName = p[0].name;//获取学校名称
-                var para = {
-                    token: _token,
-                    userguid: _userguid,
-                    guid: id,
-                    page: 1,
-                    pagesize: 1
-                };
-                _wd.ajax_formdata(url + "/class/queryByGuid.do", true, para, function (msg) {
-                    if (m_Error(msg, "获取班级信息")) {
-                        var p = JSON.parse(msg).message;
-                        console.log(p);
-                        if (p.length > 0) {
-                            //获取班级和班主任
-                            _className = p[0].name;
-                            if (_className.indexOf("班") < 0) {
-                                _className = _className + "班";
-                            }
-                            master = p[0].master || "未知";
-                            sdate = p[0].sdate;
-                            document.getElementById("class_name").innerText = _schoolName + sdate + "届" + _className;
-                            document.getElementById("class_master").innerText = "班主任：" + master;
-                            document.getElementById("i_class").onclick = function () {
-                                window.open(location.href.replace('H5/Classmates', 'com/manager') + "&t=" + p[0].type);
-                            }
-                        }
-                        else {
-                            _wd.toConfirm("班级数据异常，是否重新添加！", openClass, backindex)
-                        }
-                    }
-                }, function (msg) {
-                    _wd.info("错误！请重新登录！" + msg, "bgc24");
-                    _wd.toError();
-                });
+                //获取班级和班主任
+                _className = p[0].name;
+                document.getElementById("class_name").innerText = _className+"校友会";
+                document.getElementById("i_class").onclick = function () {
+                    window.open(location.href.replace('H5/Classmates', 'com/manager') + "&t=" + p[0].type);
+                }
             }
             else {
-                _wd.toConfirm("此学校信息异常，是否重新添加！", openSchool, backindex)
+                _wd.toConfirm("校友会数据异常，是否重新添加！", openClass, backindex)
             }
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
         _wd.toError();
     });
 }
@@ -286,7 +257,7 @@ function class_msg() {
     p.innerHTML = "";
     var div = document.createElement("div");
     div.className = "fix W11 CHmax bgc9  ofa";
-    div.innerHTML = '<div class="fix top0 H W11 AC bgct1 ffHT">班级信息' +
+    div.innerHTML = '<div class="fix top0 H W11 AC bgct1 ffHT">校友会信息' +
         '    <div  class="FL B4M H4M F2" onclick="_wd.hide(new_page)">' +
         '<img src="../images/icon/back_w.png" class="FL B4M H4M  P1M" > </div>' +
         '    <div  class="FR B4M H4M F2 color8">' +
@@ -295,54 +266,31 @@ function class_msg() {
         '<div class=" W11 F3 bgc10 MTH">' +
         '<div class="bordBD1 H4M ">' +
         '<div class="FL W31 AL P1M">学校</div>' +
-        '<div  class="FR W32 AR P1M color8">' + _schoolName + '</div>' +
+        '<div  class="FR W32 AR P1M color8">'  + '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
         '<div class="bordBD1 H4M ">' +
-        '<div class="FL W31 AL P1M">年届</div>' +
-        '<div  class="FR W32 AR P1M color8">' + sdate + '届</div>' +
+        '<div class="FL W31 AL P1M">学校对外电话</div>' +
+        '<div  class="FR W32 AR P1M color8">' +   '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
         '<div class="bordBD1 H4M ">' +
-        '<div class="FL W31 AL P1M">班级</div>' +
-        '<div  class="FR W32 AR P1M color8">' + _className + '</div>' +
+        '<div class="FL W31 AL P1M">管理员</div>' +
+        '<div  class="FR W32 AR P1M color8">' +   '</div>' +
         '<div class="clear"></div>' +
         '</div>' +
-        '<div class=" H4M ">' +
-        '<div class="FL W31 AL P1M">班主任</div>' +
-        '<div  class="FR W32 AR P1M color8">' + master + '</div>' +
-        '<div class="clear"></div>' +
-        '</div>' +
-        '<div class="fix bottom0 M C4M H AC bgc13" id="del_calss" >退出该班级</div>' +
         '</div>';
     p.appendChild(div);
     _wd.show(p);
-    document.getElementById("del_calss").onclick = function () {
-        _wd.toConfirm("确定删除该班级经历?", del_school)
-    }
+
 }
 
-//删除已加入的学校
-function del_school() {
-    console.log(class_id);
-    _wit.postmessage({
-        functionname: "deleteexp",
-        witparams: {
-            type: 0,
-            id: class_id
-        },
-        callbackparam: JSON.stringify({
-            type: 0,
-            id: class_id
-        }),
-        callback: "delExp"
-    });
-}
 
 function delExp(msg, param) {
     console.log("正在删除");
-    console.log(msg, param);
-    var j = msg;
+    console.log(msg);
+    var j = msg,
+        p = JSON.parse(param);
     if (j && j.result >= 0) {
         _wd.info("删除成功！", "bgc5e");
         setTimeout(function () {
@@ -375,18 +323,19 @@ function cl_index() {
                     _wd.marquee("marquee", "marquee_text");
                 }
             }, function (msg) {
-                _wd.info("错误！请重新登录！" + msg, "bgc24");
+                _wd.info("错误！请重新登录！", "bgc24");
             });
         }
     } else {
         if (flagCheck === 0) {
             noJoin();
+            _wd.toConfirm("是否加入此校友会！", addClassmate);
         }
         if (flagCheck === 1) {
             noChecked();
         }
 
-        document.getElementById("index_tip").innerText = "————加入班级查看更多信息！————";
+        document.getElementById("index_tip").innerText = "————加入校友会查看更多信息！————";
         var para1 = {
             token: _token,
             userguid: _userguid,
@@ -403,7 +352,7 @@ function cl_index() {
                     _wd.marquee("marquee", "marquee_text");
                 }
             }, function (msg) {
-                _wd.info("错误！请重新登录！" + msg, "bgc24");
+                _wd.info("错误！请重新登录！", "bgc24");
             });
         }
     }
@@ -511,7 +460,7 @@ function Re_notice() {
             }
         };
     } else {
-        _wd.info("加入班级后才能发布通知！", "bgc5e");
+        _wd.info("加入校友会后才能发布通知！", "bgc5e");
     }
 }
 
@@ -549,7 +498,7 @@ function in_notice() {
             // console.log(JSON.parse(msg));
             if (m_Error(msg, "发布通知")) {
                 var p = JSON.parse(msg).result;
-                if (p === 1) {
+                if (p == 1) {
                     _wd.hide("re_notice");
                     // dais.toggle(re_notice, 0);
                     toMenu("cl_notice");
@@ -561,7 +510,7 @@ function in_notice() {
                 }
             }
         }, function (msg) {
-            _wd.info("错误！请重新登录！" + msg, "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     }
 }
@@ -591,7 +540,7 @@ function getNoticeList(page) {
                 fill_notice(p, page);
             }
         }, function (msg) {
-            _wd.info("错误！请重新登录！" + msg, "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     } else {
         var para1 = {
@@ -608,7 +557,7 @@ function getNoticeList(page) {
                 fill_notice(p, page);
             }
         }, function (msg) {
-            _wd.info("错误！请重新登录！" + msg, "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     }
 }
@@ -666,137 +615,12 @@ if (moreNotice) {
     };
 }
 
-/**
- * 座位表的图片
- * */
-function daisWH(value_w, value_h) {
-    // var daisBtn = document.getElementById("dais_value");
-    // var wh = daisBtn.getAttribute("data-value");
-    // if (wh) {
-    //     value_w = wh.split("*")[0];
-    //     value_h = wh.split("*")[1];
-    // } else {
-    value_w = 7;
-    value_h = 8;
-    // }
-    // daisBtn.setAttribute("wh", value_w + "*" + value_h);
-    console.log("座位表：列" + value_w + " 行" + value_h);
-    var cont = "";
-    for (var i = 1; i <= value_h * value_w; i++) {
-        cont += "<img class='A" + value_w + "1 rad03e ML AL' src='../images/icon/classmatespic.png' onerror=\"this.src ='../images/nofindpic.png' \" id=c_headimg" + i + " onclick='change_info_logo(this)'>"
-    }//绘制座位表
-    document.getElementById("daislist").innerHTML = cont;
-    get_information_logo();
-}
 
-/*座位的展开与隐藏*/
-function openAll() {
-    var daislist = document.getElementById("daislist");
-    var daislistclass = daislist.className;
-    var bq_open = document.getElementById("open_all");
-    var class_name = "ofh H16M W11";
-    if (daislistclass.indexOf("ofh H16M") > -1) {
-        daislist.className = "W11";
-        bq_open.src = "../images/icon/close.png";
-    }
-    else {
-        daislist.className = class_name;
-        bq_open.src = "../images/icon/open.png";
-    }
-}
-
-//座位表插入头像
-function get_information_logo() {
-    var para = {
-        token: _token,
-        userguid: _userguid,
-        cid: id,
-        page: 1,
-        pagesize: 200
-    };
-    _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
-        if (m_Error(msg, "获取班级成员头像")) {
-            var p = JSON.parse(msg).message;
-            var logoPath = JSON.parse(msg).logoPath;
-            p.forEach(function (v) {
-                if (v.site > 0) {
-                    var logo = document.getElementById("c_headimg" + v.site);
-                    logo.src = logoPath + s_guid + "/" + id + "/" + MD5(v.phone) + ".jpg";
-                    // console.log(logo.src);
-                    var logo_w = logo.width;
-                    if (logo.height > logo_w) {
-                        logo.height = logo_w;
-                        logo.classList.add("OFC");
-                    }
-                }
-            });
-        }
-    }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
-    });
-}
-
-//改变座位
-function change_info_logo(s) {
-    if (flagCheck === 2) {
-        if (s.src.indexOf("classmatespic.png") > 0) {
-            var site = parseInt(s.id.replace(/[^0-9]/ig, ""));
-            _wd.toConfirm("确定入坐此位置？", function () {
-                change_site(site);
-            });
-        }
-    } else {
-        _wd.info("加入班级后才能使用此功能！", "bgc5e");
-    }
-}
-
-function change_site(site) {
-    const para = {
-        token: _token,
-        userguid: _userguid,
-        cid: id,
-        phone: _phone
-    };
-    console.log(para);
-    _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
-        if (m_Error(msg, "修改座位")) {
-            var p = JSON.parse(msg);
-            console.log(p);
-            var l = p.message[0];
-            console.log(l);
-            if (l) {
-                var para = {};
-                var newSite = JSON.parse(JSON.stringify(l));
-                newSite.site = site;
-                para.json = newSite;
-                para.token = _token;
-                para.userguid = _userguid;
-                para.logo = "";
-                para.phone = _phone;
-                console.log("成员信息", para);
-                _wd.ajax_formdata(url + "/member/insert.do", true, para, function (msg) {
-                    // var d = document.querySelector("#toConfirm");
-                    var j = JSON.parse(msg);
-                    if (j.result >= 0) {
-                        _wd.info("入座成功！", "bgc5e");
-                        // get_information_logo();
-                        toMenu("cl_information");
-                    } else {
-                        _wd.info("入座失败！", "bgc24");
-                        toMenu("cl_information");
-                    }
-                });
-            }
-        }
-    }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
-    });
-}
 
 //添加通讯录
 function cl_information() {
     // daisWH();
-    daisWH();//设置默认座位表
+    // daisWH();//设置默认座位表
     // get_information_logo();
     var cont = document.getElementById("phone_list");
     cont.innerHTML = "";
@@ -807,7 +631,7 @@ function cl_information() {
         page: 1,
         pagesize: 200
     };
-    _wd.ajax_formdata(url + "/member/queryByCid.do", true, para, function (msg) {
+    _wd.ajax_formdata(url + "/areaMember/queryByCid.do", true, para, function (msg) {
         if (m_Error(msg, "获取班级成员")) {
             console.log(JSON.parse(msg));
             var p = JSON.parse(msg).message;
@@ -866,7 +690,7 @@ function cl_information() {
             });
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
     if (flagCheck === 2) {
         var f = {
@@ -886,10 +710,10 @@ function cl_information() {
         }
     } else {
         f = {
-            A_L: function () {
+            A_L: function (e) {
                 _wd.info("加入班级后才能使用此功能！", "bgc5e");
             },
-            A_R: function () {
+            A_R: function (e) {
                 _wd.info("加入班级后才能使用此功能！", "bgc5e");
             },
             A_O: function () {
@@ -911,7 +735,7 @@ function Help_Check(d, p) {
             num: 3
         };
         console.log(para);
-        _wd.ajax_formdata(url + "/member/verify.do", true, para, function (msg) {
+        _wd.ajax_formdata(url + "/areaMember/verify.do", true, para, function (msg) {
             if (m_Error(msg, "认证")) {
                 var p = JSON.parse(msg).message;
                 console.log(p);
@@ -926,7 +750,7 @@ function Help_Check(d, p) {
                 }
             }
         }, function (msg) {
-            _wd.info("错误！请重新登录！" + msg, "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     } else {
         _wd.info("无法帮TA认证！", "bgc5e");
@@ -950,7 +774,7 @@ function classmatesMember(p) {
         phone: p
     };
     console.log(para);
-    _wd.ajax_formdata(url + "/member/queryByCH.do", true, para, function (msg) {
+    _wd.ajax_formdata(url + "/areaMember/queryByCH.do", true, para, function (msg) {
         if (m_Error(msg, "获取班级成员")) {
             var p = JSON.parse(msg).message;
             console.log(p[0]);
@@ -1107,7 +931,7 @@ function classmatesMember(p) {
             div.innerHTML = msgHtml;
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
     cont.appendChild(div);
     _wd.show(cont);
@@ -1196,7 +1020,7 @@ function getGra_ph() {
             }
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 
 }
@@ -1380,7 +1204,7 @@ ph_touch.onclick = function () {
                                     fd.append("files", this.files[i]);
                                     reader.readAsDataURL(this.files[i]);  //转成base64
                                     reader.fileName = this.files[i].name;
-                                    reader.onload = function () {
+                                    reader.onload = function (e) {
                                         var imgMsg = {
                                             name: this.fileName,//获取文件名
                                             base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
@@ -1437,12 +1261,12 @@ ph_touch.onclick = function () {
                             }
                         }
                     }, function (msg) {
-                        _wd.info("错误！请重新登录！" + msg, "bgc24");
+                        _wd.info("错误！请重新登录！", "bgc24");
                     });
                 }
             }
         }, function (msg) {
-            _wd.info("错误！请重新登录！" + msg, "bgc24");
+            _wd.info("错误！请重新登录！", "bgc24");
         });
     } else {
         _wd.info("加入班级后才能使用此功能！", "bgc5e");
@@ -1578,15 +1402,63 @@ function get_cl_Photo(page, type) {
                         // }
                     }
                 }, function (msg) {
-                    _wd.info("错误！请重新登录！" + msg, "bgc24");
+                    _wd.info("错误！请重新登录！", "bgc24");
                 });
             });
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
+function getVideoBlob(url, callback) {
+    var xhr = new XMLHttpRequest();
+    var video = document.createElement("video");
+    xhr.open('get', url, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+        if (this.status === 200) {
+            spiderVideoResponse = this.response;
+            // 将response赋值为Video的src 或者也可以使用preView转换为base64的格式
+            // 截取第一帧的图片方法跟第一种情况一样，而且还解决了获取图片时跨域的问题 一举两得
+            video.src = URL.createObjectURL(this.response);
+        }
+    };
+    xhr.send();
+    var scale = 0.8;
+    console.log(video);
+    var init = function () {
+        video.addEventListener('loadeddata', captureImage);
+    };
+    var captureImage = function () {
+        var canvas = document.createElement("canvas");//创建一个canvas
+        canvas.width = video.videoWidth * scale;//设置canvas的宽度为视频的宽度
+        canvas.height = video.videoHeight * scale;//设置canvas的高度为视频的高度
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);//绘制图像
+        src = canvas.toDataURL("image/png");//将绘制的图像用img显示出来
+        callback(src);//返回图片
+    };
+    init();
+}
+
+function getVideoImg() {
+    var video = document.querySelector("#ph_list>video");
+    console.log(video);
+    var scale = 0.8;
+    var initialize = function () {
+        video.addEventListener('loadeddata', captureImage);
+    };
+    var captureImage = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth * scale;
+        canvas.height = video.videoHeight * scale;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        video.poster = canvas.toDataURL("image/png");
+        console.log(video);
+    };
+
+    initialize();
+}
 
 function ph_type_list(type) {
     switch (type) {
@@ -1668,7 +1540,7 @@ function addFolder(type) {
             }
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -1745,7 +1617,7 @@ function ph_addMore($id, $page, $type) {
             _wd.clear(ph_img);
         }
     }, function (msg) {
-        _wd.info("错误！请重新登录！" + msg, "bgc24");
+        _wd.info("错误！请重新登录！", "bgc24");
     });
 }
 
@@ -1906,13 +1778,13 @@ function addPhotos(o) {
                 var file_size = this.files[i].size;
                 var file_type = this.files[i].type;
                 if (file_type === "") {
-                    file_type = /\.[^.]+$/.exec(file_name);
+                    file_type = /\.[^\.]+$/.exec(file_name);
                 }
                 console.log(file_name, file_type);
                 if (o.type === 1) {
                     reader.readAsDataURL(this.files[i]);  //转成base64
                     reader.fileName = this.files[i].name;
-                    reader.onload = function () {
+                    reader.onload = function (e) {
                         var imgMsg = {
                             name: this.fileName,//获取文件名
                             base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里

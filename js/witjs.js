@@ -8,7 +8,7 @@ function getbrowser() {//判断网页在何种设备中打开
         Agents = ["windows phone", "android", "iphone", "ipad", "macintosh"];
     browsername = ["witknow", "micromessenger", "qq", "firefox", "chrome", "safari", "applewebkit", "opera"];
     for (var i = 0; i < browsername.length; i++) {
-        if (AgentInfo.indexOf(browsername[i]) >= 0)browser = browsername[i]
+        if (AgentInfo.indexOf(browsername[i]) >= 0) browser = browsername[i]
     }
     ;
     if (typeof externalfun == "function" || browser == "witknow") {
@@ -22,6 +22,7 @@ function getbrowser() {//判断网页在何种设备中打开
         }
     }
 }
+
 getbrowser();
 DPR = flag == 4 ? 1 : window.devicePixelRatio;
 SW = window.screen.availWidth;
@@ -190,6 +191,7 @@ function autocss() {
     }
     ;
 }
+
 /*function add_css(str_css) {
  var mystyle=document.getElementById("mystyle");
  if(mystyle==null){
@@ -220,18 +222,12 @@ function add_css(str_css) {
         } catch (e) {
         }
     }
-    try {
-        var mystyle = document.createStyleSheet();
-        mystyle.id = "mystyle";
-        mystyle.cssText = str_css;
-    }//ie
-    catch (e) {
-        var mystyle = document.createElement("style");
-        mystyle.id = "mystyle";
-        mystyle.type = "text/css";
-        mystyle.textContent = str_css;
-        document.getElementsByTagName("HEAD").item(0).appendChild(mystyle);
-    }
+    var mystyle = document.createElement("style");
+    mystyle.id = "mystyle";
+    mystyle.type = "text/css";
+    mystyle.textContent = str_css;
+    document.getElementsByTagName("HEAD").item(0).appendChild(mystyle);
+
 }//Firefox,Opera,Safari,Chrome
 //后加载图片
 function loadimg() {
@@ -241,10 +237,12 @@ function loadimg() {
             imgtags[i].src = imgtags[i].dataset.src
     }
 }
+
 function loadbgc(s, d) {
     var tobj = d ? document.getElementById(d) : document.body;
     tobj.style.backgroundImage = "url(" + s + ")";
 }
+
 function autoimgsize() {
     var pica = document.getElementsByName("picauto");
     for (var i = 0; i < pica.length; i++) {
@@ -277,6 +275,7 @@ function adj_nav(d, n) {
     }
     ;
 }
+
 function ifweixin() {
     if (browser == "micromessenger" || browser == "qq") {
         var newdiv = document.createElement("div");
@@ -297,5 +296,6 @@ function hrefs(h) {
         location.href = a[n + 1]
     }
 }
+
 //function hengshuping(){if(window.orientation!=orient){autocss()}}
 //window.addEventListener("orientationchange",hengshuping,false);

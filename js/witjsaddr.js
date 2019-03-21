@@ -4,8 +4,9 @@ var potitle, uln, ulnl, last_obj, nextobj, LIST, rep_mes = "", repln = -2, scrol
 var myevent = null;     //postmessage 传递后会丢失event句柄，因此无奈添加全局变量来保存第一次调用的句柄
 function creat_addr(nl, area) {
     last_obj = event.srcElement;
-    var old_adress = last_obj.innerHTML || last_obj.innerHTML || "";
+    var old_adress = last_obj.value || last_obj.innerHTML || "";
     myevent = event;
+    console.log(nl,area,old_adress);
     _wit.postmessage({
         functionname: "getseladdress",
         witparams: {ileve: nl, areacode: area, iniaddress: old_adress},
