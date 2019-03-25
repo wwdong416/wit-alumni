@@ -126,7 +126,7 @@ function noChecked() {
     document.getElementById("index_tip").innerText = "";
     var div = document.createElement("div");
     div.className = "fix topH W11 MA rad03e F2 bgc104";
-    div.innerHTML = '等待管理员审核！(点击右上角进入班级后台进行审核！)';
+    div.innerHTML = '等待管理员审核！';
     cont.appendChild(div);
 }
 
@@ -932,7 +932,10 @@ function Help_Check(d, p) {
         _wd.info("无法帮TA认证！", "bgc5e");
     }
 }
-
+function clear_addr(str) {
+    str = str.replace(/@@/g, "");//取消字符串中出现的@@
+    return str;
+}
 //班级成员详情
 function classmatesMember(p) {
     var cont = document.getElementById("classmates_page");
@@ -989,9 +992,10 @@ function classmatesMember(p) {
                     }
                 }
             }
+
             var addr = "";
             if (p[0].addr) {
-                addr = p[0].addr.split("@@")[0]+p[0].addr.split("@@")[1];
+                addr = clear_addr(p[0].addr);
             } else {
                 addr = "";
             }
@@ -1044,7 +1048,7 @@ function classmatesMember(p) {
                 '    <div class=" W11  PL1M PR1M bgc10  bordBDe6">' +
                 '        <div class="HN4M flexbox">' +
                 '            <div class="W31 FL  AL">地址</div>' +
-                '                <div  class="W32 FR AL P05M color8 ">' + addr +
+                '                <div  class="W32 FR AL  color8 ">' + addr +
                 '            </div>' +
                 '        </div>' +
                 '    </div>' +
@@ -1154,7 +1158,7 @@ var by_photos = [];//存放毕业照
 var ph_index = document.getElementById("ph_index").children;
 var ph_gray = "color8 radius index9 inlineB F8";//未激活小点的样式
 var ph_white = "color1 radius index9 inlineB F8";//激活状态的样式
-var _gra_id, byzPath;
+var byzPath;
 
 //获取毕业照
 function getGra_ph() {
@@ -1168,7 +1172,7 @@ function getGra_ph() {
         if (m_Error(msg, "获取毕业照")) {
             var p = JSON.parse(msg).message;
             if (p.length > 0) {
-                _gra_id = p[0].id;
+                var _gra_id = p[0].id;
                 var para1 = {
                     token: _token,
                     userguid: _userguid,
@@ -1265,8 +1269,7 @@ ph_touch.onclick = function () {
                 var p = JSON.parse(msg).message;
                 console.log(p);
 
-                if (p.length < 1) {
-                    _wd.info("请再次点击添加毕业照！", "bgc5e");
+                 if (p.length < 1) {
                     var para = {
                         json: {
                             sid: s_guid,
@@ -1284,161 +1287,14 @@ ph_touch.onclick = function () {
                         if (m_Error(msg, "上传毕业照文件")) {
                             var p = JSON.parse(msg);
                             console.log(p);
-                        }
-                    });
-                } else {
-                    _gra_id = p[0].id;
-                    var para1 = {
-                        token: _token,
-                        userguid: _userguid,
-                        cid: id,
-                        gid: _gra_id,
-                        page: 1,
-                        pagesize: 10
-                    };
-                    console.log(para1);
-                    _wd.ajax_formdata(url + "/record/queryByGid.do", true, para1, function (msg) {
-                        if (m_Error(msg, "获取所有毕业照")) {
-                            var p = JSON.parse(msg).message;
-                            console.log(p);
-                            var cont = document.getElementById("new_page");
-                            cont.innerHTML = "";
-                            var div = document.createElement("div");
-                            div.className = "fix top0  W11 CHmax bgc9 ofa";
-                            div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">毕业照' +
-                                '<div class="FL B4M H4M F2" onclick="_wd.hide(new_page)"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
-                                '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
-                                '</div>' +
-                                '<div class="bgc10 W11 MTH">' +
-                                '<div class="H1M W11"></div>' +
-                                '<div  class="MA rad03e bgcff P05M C4M AC" id="add_photo" >上传毕业照' +
-                                '</div>' +
-                                '<input type="file" id="up_photo" multiple="multiple" accept="image/*" class="none" capture="camera" >' +
-                                '<div id="gra_photo" class="W11  bgc10 MT"></div>' +
-                                '<div class="H1M W11"></div>' +
-                                '</div>';
-                            cont.appendChild(div);
-                            _wd.show(cont);
-                            var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
-                            var isIos = (ua.indexOf('iphone') !== -1) || (ua.indexOf('ipad') !== -1);
-                            if (isIos) {
-                                document.getElementById("up_photo").removeAttribute("capture");
-                            }
-                            var oSelect = document.getElementById("add_photo");
-                            var oInput = document.getElementById("up_photo");
-                            var gra_photo = document.getElementById("gra_photo");
-                            var upInput = document.getElementById("up_photo");
-                            var result;
-                            var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
-                            var fd;  //FormData方式发送请求
-                            oSelect.onclick = function () {
-                                if (p.length < 10) {
-                                    oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
-                                    //清空已选图片
-                                    oInput.click();
-                                } else {
-                                    _wd.info("毕业照上传数量已达上限！", "bgc24");
-                                }
-                            };
-
-
-                            if (typeof FileReader === 'undefined') {
-                                // alert("抱歉，你的浏览器不支持 FileReader");
-                                upInput.setAttribute('disabled', 'disabled');
-                            } else {
-                                upInput.addEventListener('change', readFile, false);
-                            }
-                            var imgHtml = JSON.parse(msg).logoPath + s_guid + "/" + id + "/";
-                            p.forEach(function (v) {
-                                var div = document.createElement("div");
-                                div.className = "   ofh AC";
-                                div.innerHTML =
-                                    '<img class=" W11 H11  OFC"  src="' + imgHtml + v.src + '" alt="" onerror="_wd.noFind_Pic(this)" onclick="toFull_img(this)">';
-                                gra_photo.appendChild(div);
-                            });
-                            _wd.clear(gra_photo);
-
-                            //上传毕业照
-                            function readFile() {
-                                fd = new FormData();
-                                var iLen = this.files.length;
-                                var index = 0;
-                                var cont = document.getElementById("ph_upload");
-                                var div = document.createElement("div");
-                                div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
-                                div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT ">' +
-                                    '<div class="FL B4M H4M F2" onclick="_wd.hide(\'ph_upload\')"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
-                                    '<div class="FR B4M H4M F2 color8 " id="ph_upload_btn" >上传</div>' +
-                                    '</div>' +
-                                    '<div class="bgc10 W11 P05M MTH" id="ch_list">' +
-                                    '</div>';
-                                cont.appendChild(div);
-                                _wd.show(cont);
-                                for (var i = 0; i < iLen; i++) {
-                                    var reader = new FileReader();
-                                    reader.index = i;
-                                    fd.append("files", this.files[i]);
-                                    reader.readAsDataURL(this.files[i]);  //转成base64
-                                    reader.fileName = this.files[i].name;
-                                    reader.onload = function () {
-                                        var imgMsg = {
-                                            name: this.fileName,//获取文件名
-                                            base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
-                                        };
-                                        dataArr.push(imgMsg);
-                                        result = ' <img class=" W11 H11  OFC" src="' + this.result + '" onclick="toFull_img(this)"/> ';
-                                        var div1 = document.createElement('div');
-                                        div1.innerHTML = result;
-                                        var upload_btn = document.getElementById("ph_upload_btn");
-                                        if (div1.innerHTML.length > 0) {
-                                            // document.getElementById("dbclick_delete").innerText = "长按图片删除！";
-                                            upload_btn.classList.add("colorff");
-                                            upload_btn.classList.remove("color8");
-                                        } else {
-                                            upload_btn.classList.add("color8");
-                                            upload_btn.classList.remove("colorff");
-                                        }
-                                        div1.className = "W11  ofh";
-                                        document.getElementById("ch_list").appendChild(div1);
-                                    }
-
-                                }
-                                document.getElementById("ph_upload_btn").onclick = function () {
-                                    if (iLen < 10) {
-                                        // var fd = new FormData();
-                                        fd.append("json", JSON.stringify({
-                                            cid: id,
-                                            sid: s_guid,
-                                            gid: _gra_id,
-                                            phone: _phone,
-                                            type: 5,
-                                            name: "毕业照",
-                                            src: "",
-                                            memo: "",
-                                            date: new Date().getTime(),
-                                            replay: ""
-                                        }));
-                                        fd.append("token", _token);
-                                        fd.append("userguid", _userguid);
-                                        _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
-                                            if (m_Error(msg, "上传毕业照")) {
-                                                _wd.hide("ph_upload");
-                                                _wd.hide("new_page");
-                                                toMenu("cl_photo");
-                                                console.log(msg);
-                                            }
-                                        }, function (msg) {
-                                            _wd.info("无法上传，请重试！" + msg, "bgc24");
-                                        });
-                                    } else {
-                                        _wd.info("毕业照最多上传10张！", "bgc24");
-                                    }
-                                }
+                            if (p.result > 0){
+                                upBYZ(p.message.id);
                             }
                         }
-                    }, function (msg) {
-                        _wd.info("错误！请重新登录！" + msg, "bgc24");
                     });
+                 }
+                else {
+                     upBYZ(p[0].id);
                 }
             }
         }, function (msg) {
@@ -1449,6 +1305,162 @@ ph_touch.onclick = function () {
     }
 };
 
+function upBYZ(_gra_id) {
+    // _gra_id = p[0].id;
+    var para1 = {
+        token: _token,
+        userguid: _userguid,
+        cid: id,
+        gid: _gra_id,
+        page: 1,
+        pagesize: 10
+    };
+    console.log(para1);
+    _wd.ajax_formdata(url + "/record/queryByGid.do", true, para1, function (msg) {
+        if (m_Error(msg, "获取所有毕业照")) {
+            var p = JSON.parse(msg).message;
+            console.log(p);
+            var cont = document.getElementById("new_page");
+            cont.innerHTML = "";
+            var div = document.createElement("div");
+            div.className = "fix top0  W11 CHmax bgc9 ofa";
+            div.innerHTML = '  <div class="fix index100 top0 H bgct1 W11 AC ffHT ">毕业照' +
+                '<div class="FL B4M H4M F2" onclick="_wd.hide(new_page)"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
+                '<div class="FR B4M H4M F2 color8" onclick=""></div>' +
+                '</div>' +
+                '<div class="bgc10 W11 MTH">' +
+                '<div class="H1M W11"></div>' +
+                '<div  class="MA rad03e bgcff P05M C4M AC" id="add_photo_byz" >上传毕业照' +
+                '</div>' +
+                '<input type="file" id="up_photo_1" multiple="multiple" accept="image/*" class="none" capture="camera" >' +
+                '<div id="gra_photo" class="W11  bgc10 MT"></div>' +
+                '<div class="H1M W11"></div>' +
+                '</div>';
+            cont.appendChild(div);
+            _wd.show(cont);
+            var ua = navigator.userAgent.toLowerCase(); //判断是否是苹果手机，是则是true
+            var isIos = (ua.indexOf('iphone') !== -1) || (ua.indexOf('ipad') !== -1);
+            if (isIos) {
+                document.getElementById("up_photo_1").removeAttribute("capture");
+            }
+            var oSelect = document.getElementById("add_photo_byz");
+            var oInput = document.getElementById("up_photo_1");
+            var gra_photo = document.getElementById("gra_photo");
+            var upInput = document.getElementById("up_photo_1");
+            var result;
+            var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
+            var fd;  //FormData方式发送请求
+            oSelect.onclick = function () {
+                if (p.length < 10) {
+                    oInput.value = "";   // 先将oInput值清空，否则选择图片与上次相同时change事件不会触发
+                    //清空已选图片
+                    oInput.click();
+                } else {
+                    _wd.info("毕业照上传数量已达上限！", "bgc24");
+                }
+            };
+            if (typeof FileReader === 'undefined') {
+                // alert("抱歉，你的浏览器不支持 FileReader");
+                upInput.setAttribute('disabled', 'disabled');
+            } else {
+                upInput.addEventListener('change', readFile, false);
+            }
+            var imgHtml = JSON.parse(msg).logoPath + s_guid + "/" + id + "/";
+            p.forEach(function (v) {
+                var div = document.createElement("div");
+                div.className = "   ofh AC";
+                div.innerHTML =
+                    '<img class=" W11 H11  OFC"  src="' + imgHtml + v.src + '" alt="" onerror="_wd.noFind_Pic(this)" onclick="toFull_img(this)">';
+                gra_photo.appendChild(div);
+            });
+            _wd.clear(gra_photo);
+
+            //上传毕业照
+            function readFile() {
+                fd = new FormData();
+                var iLen = this.files.length;
+                var index = 0;
+                var cont = document.getElementById("ph_upload");
+                var div = document.createElement("div");
+                div.className = "index100 absolute top0 left0  bgc10 W11 CHmin";
+                div.id = "ph_upload_xq";
+                div.innerHTML = '  <div class="fix index100 top0 H bgc9 W11 AC ffHT ">' +
+                    '<div class="FL B4M H4M F2" onclick="_wd.hide(\'ph_upload\')"> <img  src="../images/icon/back_w.png" class="FL B4M H4M P1M" /></div>' +
+                    '<div class="FR B4M H4M F2 color8 " id="ph_upload_btn" >上传</div>' +
+                    '</div>' +
+                    '<div class="bgc10 W11 P05M MTH" id="ch_list_5">' +
+                    '</div>';
+                cont.appendChild(div);
+                _wd.show(cont);
+                for (var i = 0; i < iLen; i++) {
+                    var reader = new FileReader();
+                    reader.index = i;
+                    fd.append("files", this.files[i]);
+                    reader.readAsDataURL(this.files[i]);  //转成base64
+                    reader.fileName = this.files[i].name;
+                    reader.onload = function () {
+                        var imgMsg = {
+                            name: this.fileName,//获取文件名
+                            base64: this.result   //reader.readAsDataURL方法执行完后，base64数据储存在reader.result里
+                        };
+                        dataArr.push(imgMsg);
+                        result = ' <img class=" W11 H11  OFC" src="' + this.result + '" onclick="toFull_img(this)"/> ';
+                        var div1 = document.createElement('div');
+                        div1.innerHTML = result;
+                        var upload_btn = document.getElementById("ph_upload_btn");
+                        if (div1.innerHTML.length > 0) {
+                            // document.getElementById("dbclick_delete").innerText = "长按图片删除！";
+                            upload_btn.classList.add("colorff");
+                            upload_btn.classList.remove("color8");
+                        } else {
+                            upload_btn.classList.add("color8");
+                            upload_btn.classList.remove("colorff");
+                        }
+                        div1.className = "W11  ofh";
+                        document.getElementById("ch_list_5").appendChild(div1);
+                    }
+
+                }
+                document.getElementById("ph_upload_btn").onclick = function () {
+                    if (iLen < 10) {
+                        // var fd = new FormData();
+                        fd.append("json", JSON.stringify({
+                            cid: id,
+                            sid: s_guid,
+                            gid: _gra_id,
+                            phone: _phone,
+                            type: 5,
+                            name: "毕业照",
+                            src: "",
+                            memo: "",
+                            date: new Date().getTime(),
+                            replay: ""
+                        }));
+                        fd.append("token", _token);
+                        fd.append("userguid", _userguid);
+                        _wd.ajax_formdata(url + "/record/insert.do", true, fd, function (msg) {
+                            if (m_Error(msg, "上传毕业照")) {
+                               var f =  document.getElementById("ph_upload_xq");
+                               document.getElementById("ph_upload").removeChild(f);
+                                _wd.hide("ph_upload");
+                                _wd.hide("new_page");
+                                toMenu("cl_photo");
+
+                                console.log(msg);
+                            }
+                        }, function (msg) {
+                            _wd.info("无法上传，请重试！" + msg, "bgc24");
+                        });
+                    } else {
+                        _wd.info("毕业照最多上传10张！", "bgc24");
+                    }
+                }
+            }
+        }
+    }, function (msg) {
+        _wd.info("错误！请重新登录！" + msg, "bgc24");
+    });
+}
 //获取所有班级档案
 function get_cl_Photo(page, type) {
     var ph_img = document.getElementById("ph_img");
