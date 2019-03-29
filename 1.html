@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, target-densitydpi=device-dpi">
+    <meta name="keywords" content="校友录，校友会,手机校友录，慧脑校友录">
+    <meta name="description" content="慧脑校友录,手机校友录，校友会">
+    <link rel="stylesheet" type="text/css" href="css/alumni.css">
+    <link rel="stylesheet" type="text/css" href="css/witcs.css">
+    <script src="js/witjs.js"></script>
+    <title>校友录</title>
+    <script src="js/witconfig.js"></script>
+</head>
+<body onload="_wit.postmessage({functionname: 'getuser', callback: 'init'});">
+<button id="a">111</button>
+</body>
+</html>
+<script>
+    "use strict";
+    autocss();
+    function init(u) {
+        console.log(u.perinfo.perexpeducationjson);
+        _wit.postmessage({
+            functionname: "alumniQuery",
+            callbackparam: JSON.stringify(u.perinfo.perexpeducationjson),
+            callback: "toAlumni"
+        });      //获取本地校友录
+    }               //init
+    function toAlumni(j, p) {
+        if (j.result >= 0) {
+            let el = JSON.parse(p);       //经历
+            const l = j.message;
+            if (l.length > 0) {
+                el = el.filter(function (v) {
+                    return l.findIndex(function (vv) {
+                        return vv.guid === v.class_name.split("||")[3];
+                    }) >= 0;
+                });             //未加入到本地的校友录经历
+                toList(l);
+                toLocal(el);
+            } else if (el.length > 0) {
+                toList(el);
+                toLocal(el);
+            } else _fun.toAlert("请添加经历信息！");
+        } else _fun.toAlert("用户数据异常！请重新登录");
+//        _wit.postmessage({functionname: "alumniQuery", callback: "toAlumni"});
+    }
+
+    function toList() {
+
+    }               //生成班级校友录
+    function toLocal() {
+        _wit.postmessage({
+            functionname: "alumniInsert",
+            witparams: {entity: {}, base64: ""},
+            callback: "toInsert"
+        });      //获取本地校友录
+    }               //加入本地校友录
+</script>

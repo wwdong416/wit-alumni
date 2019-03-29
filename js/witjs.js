@@ -69,6 +69,7 @@ function autocss() {
     F_scale = 100;
     Cmin = Math.min(CW, CH);
     Cmax = Math.max(CW, CH);
+
     D51 = Math.floor((CW - M) / Math.floor((CW - M) / (M * 7)) - M);
     D41 = Math.floor((CW - M) / Math.floor((CW - M) / (M * 8)) - M);
     D31 = Math.floor((CW - M) / Math.floor((CW - M) / (M * 10)) - M);
@@ -95,7 +96,7 @@ function autocss() {
     strcss += ".radM {border-radius:" + M + "px; }"
 //位置
     strcss += ".topM{top:" + M + "px;} .topH{top:" + H + "px;}.top5M{top:" + M * 5 + "px;} .top6M{top:" + M * 6 + "px;} .top2H{top:" + H * 2 + "px;} .topCH{top:" + CH + "px;} .topN2H{top:" + (-2 * H) + "px;}.topadv{top:" + (CW < CH ? M * 18 : 0) + "px;}"
-    strcss += ".top18M{top:" + M * 18 + "px;}.top36M{top:" + M * 36 + "px;}"
+    strcss += ".top18M{top:" + M * 18 + "px;}.top22M{top:" + M * 22 + "px;}.top36M{top:" + M * 36 + "px;}"
     strcss += ".bottomH{bottom:" + H + "px;} .bottom10M{bottom:" + M * 10 + "px;} .bottom13M{bottom:" + M * 13 + "px;} .bottom13{bottom:" + M * 13 + "px;}" +
         " .bottom34M{bottom:" + M * 34 + "px;}"
     strcss += ".leftM{left:" + M + "px;}.left2M{left:" + M * 2 + "px;} .leftH{left:" + H + "px;} .left5M{left:" + M * 5 + "px;}" +

@@ -83,7 +83,7 @@
             <div class="FL ML AL color8  bold ">座位表</div>
             <div class="FR ">
                 <!--<div class="FR rad03e bgc104 P05M MR" onclick="dais.init(this,0);" id="dais_value">-->
-                    <!--调整座位-->
+                <!--调整座位-->
                 <!--</div>-->
             </div>
             <div class="clear H3M"></div>
@@ -114,7 +114,7 @@
 </div>
 <!--档案-->
 <div id="photo" class="W11 AC MTH  none F3  ofh">
-    <div class="W11 FL">
+    <div class=" fix topH bgc10 W11 AC H18M">
         <!--毕业照-->
         <div class=" H18M ofh relative">
             <ul id="ph_gra" class="absolute">
@@ -124,48 +124,91 @@
             </ul>
         </div>
     </div>
-    <div class="W11 FL">
-        <div class="P1M  W11">
-            <div class="FL W43">
-                <div class="FL color8 P05M   AL">照片</div>
-                <img class="W43 " data-src="../images/icon/line.png" alt="">
-            </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">新建相册</div>
-            <div class="clear"></div>
-        </div>
-        <div class="W11" id="ph_img">
-            <!--照片-->
-        </div>
+    <div class="W11 H4M P1M top22M bgc10 FL fix">
+        <span class="  AR MT PR1M bold  active" id="a_folder" onclick="getPh_folder()">文件夹</span>
+        <span class="bold">·</span>
+        <span class="  AL MT PL1M  color8" id="a_time" onclick="getPh_time()">时间轴</span>
     </div>
-    <div class="W11 FL">
-        <div class="P1M  W11">
-            <div class="FL W43">
-                <div class="FL color8 P05M AL">视频</div>
-                <img class="W43 " data-src="../images/icon/line.png" alt="">
+    <div class="W11 FL" id="ph_folder">
+        <div class="H21M"></div>
+        <div class="W11 FL">
+            <div class="P1M  W11">
+                <div class="FL W43">
+                    <div class="FL color8 P05M   AL">照片</div>
+                    <img class="W43 " data-src="../images/icon/line.png" alt="">
+                </div>
+                <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(1)">新建相册</div>
+                <div class="clear"></div>
             </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">新建视频集</div>
-            <div class="clear"></div>
+            <div class="W11" id="ph_img">
+                <!--照片-->
+            </div>
         </div>
-        <div class="W11" id="ph_video">
-            <!--视频-->
+        <div class="W11 FL">
+            <div class="P1M  W11">
+                <div class="FL W43">
+                    <div class="FL color8 P05M AL">视频</div>
+                    <img class="W43 " data-src="../images/icon/line.png" alt="">
+                </div>
+                <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(2)">新建视频集</div>
+                <div class="clear"></div>
+            </div>
+            <div class="W11" id="ph_video">
+                <!--视频-->
+            </div>
+        </div>
+        <div class="W11 FL">
+            <div class="P1M  W11">
+                <div class="FL W43">
+                    <div class="FL color8 P05M AL">文件</div>
+                    <img class="W43 " data-src="../images/icon/line.png" alt="">
+                </div>
+                <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">新建文件夹</div>
+                <div class="clear"></div>
+            </div>
+            <div class="W11" id="ph_word">
+                <!--文件-->
+            </div>
+        </div>
+        <div class="W11 FL H9M AC F2 color8 PT1M ">—————— END ——————</div>
+    </div>
+    <div class="W11 FL none" id="ph_time">
+        <div class="H21M"></div>
+        <div class="H1M"></div>
+        <div class="C6M FL H64M  ">
+
+        </div>
+        <div class="B6M F2  H40M  right0 PR1M  fix">
+            <div class="bdL">
+                <div class=" P05M bgc4 bd_rad_r">最近</div>
+            </div>
+
+            <div class="bdL MT">
+                <div class=" P05M bgc4 bd_rad_r">2019</div>
+                <div>
+                    <div class="ACP MT05">12月</div>
+                    <div class="ACP MT05">11月</div>
+                    <div class="ACP MT05 bold colorff">10月</div>
+                    <div class="ACP MT05">9月</div>
+                    <div class="ACP MT05">8月</div>
+                    <div class="ACP MT05">7月</div>
+                    <div class="ACP MT05">6月</div>
+                    <div class="ACP MT05">5月</div>
+                    <div class="ACP MT05">4月</div>
+                    <div class="ACP MT05">3月</div>
+                    <div class="ACP MT05">2月</div>
+                    <div class="ACP MT05">1月</div>
+                </div>
+            </div>
+            <div class="bdL MT">
+                <div class=" P05M  bd_rad_r">2018</div>
+            </div>
+
         </div>
     </div>
 
-    <div class="W11 FL">
-        <div class="P1M  W11">
-            <div class="FL W43">
-                <div class="FL color8 P05M AL">文件</div>
-                <img class="W43 " data-src="../images/icon/line.png" alt="">
-            </div>
-            <div class="FR  rad03e bgc104 P05M W41" onclick="newPhoto(4)">新建文件夹</div>
-            <div class="clear"></div>
-        </div>
-        <div class="W11" id="ph_word">
-            <!--文件-->
-        </div>
-    </div>
     <div class="clear"></div>
-    <div class="W11 FL H9M AC F2 color8 PT1M ">—————— END ——————</div>
+
 </div>
 <div id="re_photo" class="ofh">
     <!--相册详细页面-->
@@ -289,6 +332,28 @@
                 }
             })(i)
         }
+    }
+
+    function getPh_folder() {
+        var btn_time = document.getElementById("a_time");
+        btn_time.className = "AL MT PL1M  color8";
+        var btn_folder = document.getElementById("a_folder");
+        btn_folder.className = "AR MT PR1M bold active";
+        var div_folder = document.getElementById("ph_folder");
+        div_folder.className = "W11 FL";
+        var div_time = document.getElementById("ph_time");
+        div_time.className = "W11 FL none";
+    }
+
+    function getPh_time() {
+        var btn_time = document.getElementById("a_time");
+        btn_time.className = "AL MT PL1M bold active ";
+        var btn_folder = document.getElementById("a_folder");
+        btn_folder.className = "AR MT PR1M color8 ";
+        var div_folder = document.getElementById("ph_folder");
+        div_folder.className = "W11 FL none";
+        var div_time = document.getElementById("ph_time");
+        div_time.className = "W11 FL ";
     }
 
     //调整座位表

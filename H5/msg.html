@@ -207,13 +207,20 @@
     <div class=" H1M W11 bordBDe6"></div>
     <div class=" W11  bgc119  bordBDe6">
         <details open>
-            <summary class="FL H AL W11 PL1M bordBD1 ">已加班级</summary>
+            <summary class="FL H AL W11 PL1M bordBD1 ">我的班级</summary>
             <div id="myAllClass"></div>
         </details>
         <div class="clear"></div>
     </div>
     <div class=" H1M W11 bordBDe6"></div>
-    <div class="W11 H AC bgcff" id="saveMsg" onclick="save();">保存</div>
+    <div class=" W11  bgc149  bordBDe6">
+        <details open>
+            <summary class="FL H AL W11 PL1M bordBD1 ">我的同城校友会</summary>
+            <div id="myAreaClass"></div>
+        </details>
+        <div class="clear"></div>
+    </div>
+    <div class="W11 H AC bgcff MT" id="saveMsg" onclick="save();">保存</div>
 </div>
 </body>
 </html>
@@ -231,6 +238,7 @@
     var myObject, myPrivacy, myPersocial;
     var myinfo;
 
+
     function loadend() {
         loadimg();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
@@ -245,8 +253,10 @@
         myObject = info.perobjectjson;
         myPrivacy = info.perprivacyobjectjson;
         myPersocial = info.persocialinforobjectjson;
-        console.log(myclass);
-        C_mydetails(myclass);
+        var j_myclass = JSON.stringify(myclass);
+        localStorage.setItem("myclass", j_myclass);
+        C_mydetails();
+        CityClass(myclass);
         _wit.postmessage({functionname: 'getuserinfo', callback: 'init'});
     }
 
@@ -273,10 +283,18 @@
         }
     }
 
-    function C_mydetails(c) {
+    function C_mydetails() {
+
+        var m = localStorage.getItem("myclass");
+        var my = JSON.parse(m);
+        var reSchool = [];
+        console.log(my);
         document.getElementById("myAllClass").innerHTML = "";
-        console.log(c);
-        c.forEach(function (v) {
+        my.forEach(function (v) {
+            reSchool.push(v.id);
+            console.log(reSchool);
+            localStorage.setItem("reSchool", JSON.stringify(reSchool));
+
             var div = document.createElement("div");
             var class_name = "未知班", date_end = "未知", cid = "";
             if (v.class_name.indexOf("||") > -1) {
@@ -295,12 +313,63 @@
                         date_end = _wd.getCut("-", 0, v.date_end);
                     }
                 }
+                var add_exit = "";
+                for (var i = 0; i < reSchool.length; i++) {
+                    if (v.id === reSchool[i]) {
+                        add_exit = '<div class="B4M H4M FR" data-id="false"  onclick="add_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/l_add.png" alt=""></div>';
+                    } else {
+                        add_exit = '<div class="B4M H4M FR" data-id="false"  onclick="exit_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/l_exit.png" alt=""></div>';
+
+                    }
+                }
                 div.className = " AL W11 H ellips PL1M bordBD1 FL";
-                div.innerHTML = '<div class="FL W65 ellips">' + v.unit_name + v.dept + date_end + "届" + class_name + '</div>' +
-                    '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/delete.png" alt=""></div>  ';
+                div.innerHTML = '<div class="FL C9M ellips">' + v.unit_name + v.dept + date_end + "届" + class_name + '</div>' +
+                    '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/l_del.png" alt=""></div>  ' + add_exit;
+
                 document.getElementById("myAllClass").appendChild(div);
             }
         });
+    }
+
+    function CityClass(d) {
+        if (myObject.per_address) {
+            var addr = _wd.getCut("||", 1, myObject.per_address);
+            var area_cn = _wd.getCut("@@", 0, myObject.per_address);
+            var area_name = "";
+            var area = "";
+            //判断地址是否为直辖市
+            if (addr.length >= 2) {
+                if (_wd.isProvince_level(addr)) {
+                    area = (addr.substring(0, 2) + "0000").substring(0, 6);
+                    console.log(area);
+                    area_name = _wd.getCut("-", 0, area_cn);
+                } else {
+                    area = (addr.substring(0, 4) + "0000").substring(0, 6);
+                    area_name = _wd.getCut("-", 0, area_cn) + (_wd.getCut("-", 1, area_cn) ? "-" + _wd.getCut("-", 1, area_cn) : "");
+                }
+                var school_id = [];//新建数组，存放学校id
+                d.forEach(function (v) {
+                    //判断学校id是否在数组中存在，不存在则加入
+                    if (!school_id.includes(v.unit_id)) {
+                        school_id.push(v.unit_id);//加入数组
+                        var div = document.createElement("div");
+                        div.setAttribute("data-id", v.unit_id + area);
+                        div.className = "AL W11 H ellips PL1M bordBD1 FL";
+                        div.innerHTML = '<div class="FL C9M ellips">' + v.unit_name + area_name + '校友会</div>' +
+                            '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/l_del.png" alt=""></div>  ' +
+                            '<div class="B4M H4M FR" onclick="del_school(' + v.id + ')" ><img class="B4M H4M P1M" src="../images/icon/l_add.png" alt=""></div>  ';
+                        // div.onclick = function () {
+                        //     window.open(area_url + "?sid=" + v.unit_id + "&cid=" + v.unit_id + area);
+                        // }
+                        document.getElementById("myAreaClass").appendChild(div);
+                    }
+                });
+                console.log(school_id);
+            } else {
+                _wd.toConfirm("请完善您当前的位置信息", addMsg);
+            }
+
+        }
     }
 
     function getClassMsg() {
@@ -412,6 +481,7 @@
             opener.location.reload();
             setTimeout(function () {
                 window.location.reload();
+                _wit.winclose();
             }, 1000)
 
         } else {
@@ -497,6 +567,26 @@
             }),
             callback: "delExp"
         });
+    }
+
+    function add_school(id) {
+        _wd.toConfirm("是否将此班级经历添加到主页？", function () {
+            addScl(id);
+        });
+    }
+
+    var addSchool = JSON.parse(localStorage.getItem("addSchool")) || [];
+    console.log(addSchool);
+    function addScl(id) {
+        console.log(id);
+        addSchool.push(id);
+        console.log(addSchool);
+        localStorage.setItem("addSchool", JSON.stringify(addSchool));
+
+    }
+
+    function exit_school() {
+
     }
 
     function delExp(msg, param) {

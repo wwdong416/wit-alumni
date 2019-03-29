@@ -106,8 +106,7 @@ var _wd = {
             document.body.removeChild(d);
         } else {
             var div = document.createElement("div");
-            div.className = "fix index999 AC CW bgc10";
-            div.style.height = CH - 4 * M + "px";
+            div.className = "fix index999 AC CH CW bgc10";
             div.id = "toError";
             div.innerHTML = '<div class="relative top40">' +
                 '<div class=" W11 MA">' +
@@ -554,7 +553,10 @@ var _wd = {
         obj.style.display = "none";
         return this;
     },
-
+    closeWindow: function (p,s) {
+        console.log(p,s);
+        p.removeChild(s);
+    },
     marquee: function (p, s) {
         var scrollWidth = document.getElementById(p).offsetWidth;
         var textWidth = document.getElementById(s).offsetWidth;
@@ -669,5 +671,22 @@ var _wd = {
 
         return ["11", "12", "31", "50"].indexOf(id.substr(0, 2)) >= 0;
     },
+    /**
+     * @return {boolean}
+     */
+    IsPC:function () {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+        "SymbianOS", "Windows Phone",
+        "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
 };
 
