@@ -141,7 +141,9 @@ li {
 .colorff {
     color: #ffc437;
 }
-
+.color9f9{
+    color: #9f947b;
+}
 .color75 {
     color: #757575;
     background: #ffffff;
@@ -166,6 +168,21 @@ li {
     white-space: nowrap;
 }
 .bdL { border-left: 4px solid #888888; }
+
 .bdR { border-right: 1px solid #888888; }
 
 .bd_rad_r { border-radius: 0 0.3em 0.3em 0; }
+
+.bd_d_l{
+    border-left: 4px solid #ffc437;
+    /*border-left-style: dashed;*/
+}
+
+.active_time{
+    border-left: 4px solid #ffc437;
+    color: #ffc437;
+    font-weight: bold;
+}
+.word_break{
+    word-wrap:break-word
+}

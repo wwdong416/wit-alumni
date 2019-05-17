@@ -15,16 +15,16 @@
 </head>
 
 <body class="ofhx ffWRYH" onload="loadend()" onresize="autocss()">
-<div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgca8b"></div>
+<div id="s_select" class="none index999 fix bottom0 W11 CH callnone bgc0"></div>
 <div id="re_notice" class="none index99 fix bottom0 W11 CH callnone"></div>
-<div id="new_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
+<div id="new_page" class="index100 fix bottom0 W11 CH callnone none bgc9"></div>
 <div id="classmates_page" class="index99 fix bottom0 W11 CH callnone none bgc9"></div>
 <div id="addBtn" class="W11 AC H none"></div>
 <div id="tip" class="W11 AC H none"></div>
-
+<div id="keyboard" class=" none"></div>
 <!--导航栏-->
-<div class="index90 fix top0 H W11 AC ffHT  bgct1">慧脑校友云
-    <img data-src='../images/icon/back_w.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
+<div class="index90 fix top0 H W11 AC ffHT  bgc10">慧脑校友云
+    <img data-src='../images/icon/back_b.png' class="FL B4M H4M P1M" onclick="_wit.winclose()"/>
     <img data-src='../images/icon/xy2.png' class="B4M H4M FR ICON " id="i_class"/>
 </div>
 <!--首页-->
@@ -99,9 +99,27 @@
         </div>
     </div>
     <div class="W11">
-        <div class="W11 ALP color8 MB bold LH2">
-            通讯录
+        <div class="W11 ALP color8  bold LH2">
+            <div class="FL B10M H4M LH3">通讯录</div>
+            <div class="FR C12M  F3 PR1M">
+                <ul class="W11">
+                    <li class="FR AC B4M H">
+                        <img class="H4M P1M" data-src="../images/icon/m_time.png" title="0" onclick="getMember(1,this);"
+                             lazy/>
+                    </li>
+                    <li class="FR AC B4M H">
+                        <img class="H4M P1M" data-src="../images/icon/m_comp.png" title="0" onclick="getMember(2,this);"
+                             lazy/>
+                    </li>
+                    <li class="FR AC B4M H">
+                        <img class="H4M P1M" data-src="../images/icon/m_name.png" title="0" onclick="getMember(3,this);"
+                             lazy/>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
         </div>
+        <div class="W11 ARP AR F1 color8 MB" id="member_list">排序方式：按加入时间排序(倒序)</div>
         <div class="W11 bordBD1">
         </div>
         <div id="phone_list" class="W11 bgcd1 ofhx">
@@ -114,23 +132,26 @@
 </div>
 <!--档案-->
 <div id="photo" class="W11 AC MTH  none F3  ofh">
-    <div class=" fix topH bgc10 W11 AC H18M">
+    <div class="index90 fix topH bgc10 W11 AC H18M" id="ph_byz">
         <!--毕业照-->
         <div class=" H18M ofh relative">
-            <ul id="ph_gra" class="absolute">
+            <ul id="ph_gra" class="absolute" onclick="isByz()">
                 <li><img data-src="../images/byz/3.png" alt="" class="W11 indexN FL" id="by_photo"></li>
             </ul>
             <ul id="ph_index" class="W21 AR absolute rightM bottom0">
             </ul>
         </div>
     </div>
-    <div class="W11 H4M P1M top22M bgc10 FL fix">
-        <span class="  AR MT PR1M bold  active" id="a_folder" onclick="getPh_folder()">文件夹</span>
-        <span class="bold">·</span>
-        <span class="  AL MT PL1M  color8" id="a_time" onclick="getPh_time()">时间轴</span>
+    <div class="W11 H4M  top22M bgc9 color8 FL fix index90" id="ph_nav">
+        <div class="W31 H4M P1M FL AC bold active" id="a_time" onclick="getPh_time()">时间轴</div>
+        <div class="W31 H4M   FL AC"><img class="H4M B4M" src="../images/icon/add_y.png" alt="" onclick="newRecord()">
+        </div>
+        <div class="W31 H4M  P1M AC FL bold" id="a_folder" onclick="getPh_folder()">文件夹</div>
     </div>
-    <div class="W11 FL" id="ph_folder">
+    <div id="newRecord"></div>
+    <div class="W11 FL none" id="ph_folder">
         <div class="H21M"></div>
+        <div class="H2M"></div>
         <div class="W11 FL">
             <div class="P1M  W11">
                 <div class="FL W43">
@@ -172,42 +193,28 @@
         </div>
         <div class="W11 FL H9M AC F2 color8 PT1M ">—————— END ——————</div>
     </div>
-    <div class="W11 FL none" id="ph_time">
-        <div class="H21M"></div>
-        <div class="H1M"></div>
-        <div class="C6M FL H64M  ">
-
+    <div class="W11 FL " id="ph_time">
+        <div class="H24M" id="ph_null"></div>
+        <div class="C6M MT FL ACP">
+            <div id="dy_ph_time"></div>
+            <div id="load_more_time"></div>
+            <div id="load_more_time_re"></div>
+            <div class="H6M"></div>
         </div>
-        <div class="B6M F2  H40M  right0 PR1M  fix">
-            <div class="bdL">
-                <div class=" P05M bgc4 bd_rad_r">最近</div>
+        <div class="B6M F2  H36M color333 right0 PR1M  fix CHmax ofa" id="ph_axis">
+            <div class="bdL ">
+                <div class="P05M bgc4 bd_rad_r" id="time_lately" onclick="getLately(this)">最近</div>
             </div>
-
-            <div class="bdL MT">
-                <div class=" P05M bgc4 bd_rad_r">2019</div>
-                <div>
-                    <div class="ACP MT05">12月</div>
-                    <div class="ACP MT05">11月</div>
-                    <div class="ACP MT05 bold colorff">10月</div>
-                    <div class="ACP MT05">9月</div>
-                    <div class="ACP MT05">8月</div>
-                    <div class="ACP MT05">7月</div>
-                    <div class="ACP MT05">6月</div>
-                    <div class="ACP MT05">5月</div>
-                    <div class="ACP MT05">4月</div>
-                    <div class="ACP MT05">3月</div>
-                    <div class="ACP MT05">2月</div>
-                    <div class="ACP MT05">1月</div>
-                </div>
+            <div id="axis_time"></div>
+            <div class="bdL MT" onclick="wit_date.init(this,0, '01');">
+                <div class="P05M  bd_rad_r">时间</div>
             </div>
-            <div class="bdL MT">
-                <div class=" P05M  bd_rad_r">2018</div>
-            </div>
-
+            <div></div>
         </div>
     </div>
 
     <div class="clear"></div>
+
 
 </div>
 <div id="re_photo" class="ofh">
@@ -216,7 +223,7 @@
 <div id="ph_upload">
     <!--上传页面-->
 </div>
-<div id="ph_new" class="none index99 fix bottom0 bgc10 W11 CH callnone">
+<div id="ph_new" class="none index100 fix bottom0 bgc10 W11 CH callnone">
 
 </div>
 <!--动态-->
@@ -268,14 +275,46 @@
 <script src="../js/wit_touch.js"></script>
 <script src="../js/wit_app.js"></script>
 <script src="../js/wit_data.js"></script>
+<script src="../js/lib/pinyin.js"></script>
 <script src="../js/lib/MD5.js"></script>
+<script src="../js/wit_autoTextarea.js"></script>
 <script>
     "use strict";
     autocss();
+    mob_back();
+    window.onhashchange = function (e) {
+        mob_back();
+    };
+    window.onpopstate = function () {
+        mob_back();
+    };
+    function mob_show(d) {
+        location.hash += d + ",";
+        console.log(location.hash);
+    }
+    function mob_hide(d) {
+        console.log(d);
+        history.go(-1);
+    }
+    function mob_back() {
+        Array.prototype.forEach.call(document.querySelectorAll("[data-hash]"), function (v) {
+            v.classList.add("none");
+        });
+        location.hash.ltrim("#").rtrim(",").split(",").forEach(function (v) {
+            v && document.querySelector("[data-hash=" + v + "]") && document.querySelector("[data-hash=" + v + "]").classList.remove("none");
+        });
+    }
 
     function loadend() {
         loadimg();
         _wit.postmessage({functionname: "getuser", callback: "callback"});
+
+        _wit.postmessage({
+            functionname: 'openWindowToBack',
+            witparams: {
+                message: "_wit.winclose()"
+            },
+        });
         // class_message();
     }
 
@@ -334,27 +373,6 @@
         }
     }
 
-    function getPh_folder() {
-        var btn_time = document.getElementById("a_time");
-        btn_time.className = "AL MT PL1M  color8";
-        var btn_folder = document.getElementById("a_folder");
-        btn_folder.className = "AR MT PR1M bold active";
-        var div_folder = document.getElementById("ph_folder");
-        div_folder.className = "W11 FL";
-        var div_time = document.getElementById("ph_time");
-        div_time.className = "W11 FL none";
-    }
-
-    function getPh_time() {
-        var btn_time = document.getElementById("a_time");
-        btn_time.className = "AL MT PL1M bold active ";
-        var btn_folder = document.getElementById("a_folder");
-        btn_folder.className = "AR MT PR1M color8 ";
-        var div_folder = document.getElementById("ph_folder");
-        div_folder.className = "W11 FL none";
-        var div_time = document.getElementById("ph_time");
-        div_time.className = "W11 FL ";
-    }
 
     //调整座位表
     // var dais = {

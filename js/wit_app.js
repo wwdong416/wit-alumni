@@ -12,8 +12,8 @@ var _wd = {
      */
 
     info: function ($t, $c, $time) {
-        var t = $t, time = $time || 1500, d = document.querySelector("#toInfo");
-        var className = "AC fix ffWRYH F2 MA color1 rad05e PB1M PT1M " + " " + $c;
+        var t = $t, time = $time || 2000, d = document.querySelector("#toInfo");
+        var className = "AC fix ffWRYH F2 MA color1 rad05e P1M " + " " + $c;
         if (d) {
             var div = d.querySelector("div");
             d.classList.remove("none");
@@ -56,8 +56,10 @@ var _wd = {
             var div = document.createElement("div");
             div.className = "fix index999 AC " + (modal ? "W11 top40" : "W11 CH");
             div.id = "toLoading";
-            div.innerHTML = '<img src="' + img + '" class="B8M relative ' + (modal ? "" : "top40") + '">';
-            $this.insertBefore(document.body, div);
+            div.innerHTML = '<img src="' + img + '" class="B8M relative ' + (modal ? "" : "top40") + '"  onerror="this.src =\'images/icon/witing2.gif\' " >';
+            if (div.querySelector("img")) {
+                $this.insertBefore(document.body, div);
+            }
             $this._sto = setTimeout(function () {
                 if (div) {
                     document.body.removeChild(div);
@@ -288,16 +290,15 @@ var _wd = {
             div.classList.add("none");
         }
     },
-    up_down:function(p,s){
-        console.log(s);
+    up_down: function (p, s) {
         var div = document.getElementById(p);
-        var u  = s.querySelector("b");
+        var u = s.querySelector("b");
         if (div.className.indexOf("none") > -1) {
             div.classList.remove("none");
-            u.innerHTML = " &#9650";
+            u.innerHTML = "&#9650";
         } else {
             div.classList.add("none");
-            u.innerHTML = " &#9660";
+            u.innerHTML = "&#9660";
         }
     },
     /**
@@ -553,8 +554,8 @@ var _wd = {
         obj.style.display = "none";
         return this;
     },
-    closeWindow: function (p,s) {
-        console.log(p,s);
+    closeWindow: function (p, s) {
+        console.log(p, s);
         p.removeChild(s);
     },
     marquee: function (p, s) {
@@ -577,6 +578,14 @@ var _wd = {
 
     },
     //实现将项目的图片转化成base64
+
+    // function(){
+    //     var url = "static/img/js1.jpg";//这是站内的一张图片资源，采用的相对路径
+    //     convertImgToBase64(url, function(base64Img){
+    //         //转化后的base64
+    //         alert(base64Img);
+    //     });
+    // }
     convertImgToBase64: function (url, callback, outputFormat) {
         var canvas = document.createElement('CANVAS'),
             ctx = canvas.getContext('2d'),
@@ -667,26 +676,40 @@ var _wd = {
         initialize();
     },
     //通过地址title判断是否为直辖市
-    isProvince_level:function (id) {
+    isProvince_level: function (id) {
 
         return ["11", "12", "31", "50"].indexOf(id.substr(0, 2)) >= 0;
     },
     /**
      * @return {boolean}
      */
-    IsPC:function () {
-    var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone",
-        "SymbianOS", "Windows Phone",
-        "iPad", "iPod"];
-    var flag = true;
-    for (var v = 0; v < Agents.length; v++) {
-        if (userAgentInfo.indexOf(Agents[v]) > 0) {
-            flag = false;
-            break;
+    IsPC: function () {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone",
+            "SymbianOS", "Windows Phone",
+            "iPad", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
         }
+        return flag;
+    },
+    delSameArray: function (array) {
+        var r = [];
+        for (var i = 0, l = array.length; i < l; i++) {
+            for (var j = i + 1; j < l; j++)
+                if (array[i] === array[j]) j = ++i;
+            r.push(array[i]);
+        }
+        return r;
+    },
+    fouces_input:function (d) {
+        var input = d.querySelector("input");
+        // input.style.
     }
-    return flag;
-}
+
 };
 

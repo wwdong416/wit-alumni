@@ -137,7 +137,7 @@ function autocss() {
     strcss += ".CW { width:" + CW + "px;} .C2W { width:" + CW * 2 + "px;} .CWS{width:" + (CW + 17) + "px;} .CW1T2 {width:" + (CW < CH ? 100 : 50) + "%;}";
     strcss += ".C3M { width:" + (CW - M * 3) + "px;}.C4M { width:" + (CW - M * 4) + "px;}.C6M { width:" + (CW - M * 6) + "px;}.C8M { width:" + (CW - M * 8) + "px;}" +
         ".C9M { width:" + (CW - M * 9) + "px;}.C10M { width:" + (CW - M * 10) + "px;}.C11M { width:" + (CW - M * 11) + "px;}"
-    strcss += ".C12M { width:" + (CW - M * 12 - 1) + "px;}.C15M { width:" + (CW - M * 15) + "px;}.C17M { width:" + (CW - M * 17) + "px;}"
+    strcss += ".C12M { width:" + (CW - M * 12 ) + "px;}.C15M { width:" + (CW - M * 15) + "px;}.C17M { width:" + (CW - M * 17) + "px;}"
     strcss += ".C18M { width:" + (CW - M * 18) + "px;}.C19M { width:" + (CW - M * 19) + "px;}.C20M { width:" + (CW - M * 20) + "px;}.C21M { width:" + (CW - M * 21) + "px;}.C22M { width:" + (CW - M * 22) + "px;}.C23M { width:" + (CW - M * 23) + "px;}.C24M { width:" + (CW - M * 24) + "px;}"
     strcss += ".C36M { width:" + (CW < CH ? CW : (CW - M * 36)) + "px;}"
     strcss += ".C9MT2 { width:" + (CW < M * 57 ? (CW - M * 9) : (CW * 0.5 - M * 8.5)) + "px;}"
